@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Processing - Offshore Wind Analysis Textbook</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <nav class="nav-main">
+        <a href="index.html">Home</a>
+        <a href="theory.html">Theory</a>
+        <a href="measurement.html">Measurements</a>
+        <a href="modeling.html">Modeling</a>
+        <a href="data-processing.html" class="active">Data Processing</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="advanced-topics.html">Advanced Topics</a>
+        <a href="calculators.html">Calculators</a>
+        <a href="exercises.html">Exercises</a>
+        <a href="formulas.html">Formulas</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="references.html">References</a>
+        <a href="datasets.html">Datasets</a>
+    </nav>
+
+    <div class="header">
+        <h1>📊 Data Processing & Quality Control</h1>
+        <p>From Raw Measurements to Analysis-Ready Datasets</p>
+    </div>
+
+    <div class="container">
+        <!-- Chapter Overview -->
+        <div class="section">
+            <h2>📚 Chapter Overview</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Data Quality Control</h3>
+                    <ul>
+                        <li><a href="#qc-procedures">QC Procedures</a></li>
+                        <li><a href="#flagging">Data Flagging</a></li>
+                        <li><a href="#validation">Validation Methods</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Processing Techniques</h3>
+                    <ul>
+                        <li><a href="#averaging">Time Averaging</a></li>
+                        <li><a href="#filtering">Filtering Methods</a></li>
+                        <li><a href="#gap-filling">Gap Filling</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Advanced Methods</h3>
+                    <ul>
+                        <li><a href="#mcp">MCP Techniques</a></li>
+                        <li><a href="#long-term">Long-term Correction</a></li>
+                        <li><a href="#uncertainty">Uncertainty Analysis</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: QC Procedures -->
+        <div class="section" id="qc-procedures">
+            <h2>1. Quality Control Procedures</h2>
+            
+            <div class="info-box">
+                <strong>Key Principle:</strong> Quality control must be systematic, documented, and traceable. Every data point should have an associated quality flag indicating its reliability.
+            </div>
+
+            <h3>1.1 QC Test Hierarchy</h3>
+            <table class="table">
+                <tr>
+                    <th>Level</th>
+                    <th>Test Type</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Completeness</td>
+                    <td>Check for missing data</td>
+                    <td>Null values, sensor offline</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Range</td>
+                    <td>Physical limits check</td>
+                    <td>Wind speed: 0-50 m/s</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Rate of Change</td>
+                    <td>Spike detection</td>
+                    <td>ΔWS > 10 m/s in 10 min</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Persistence</td>
+                    <td>Stuck sensor check</td>
+                    <td>Same value for >3 hours</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Internal Consistency</td>
+                    <td>Cross-parameter checks</td>
+                    <td>WS > 0 but σ_WS = 0</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Spatial Consistency</td>
+                    <td>Neighbor comparison</td>
+                    <td>Site differs >5σ from region</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Temporal Consistency</td>
+                    <td>Statistical comparison</td>
+                    <td>Monthly mean outside climatology</td>
+                </tr>
+            </table>
+
+            <h3>1.2 Automated QC Implementation</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Range Test Example</h4>
+                    <canvas id="rangeTest"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Spike Detection</h4>
+                    <canvas id="spikeDetection"></canvas>
+                </div>
+            </div>
+
+            <h3>1.3 QC Algorithm Example</h3>
+            <div class="formula">
+                <pre>
+def quality_control(data):
+    flags = np.zeros(len(data))
+    
+    # Level 1: Missing data
+    flags[np.isnan(data)] = 1
+    
+    # Level 2: Range check
+    flags[(data < min_val) | (data > max_val)] = 2
+    
+    # Level 3: Rate of change
+    delta = np.abs(np.diff(data))
+    flags[1:][delta > max_delta] = 3
+    
+    # Level 4: Persistence
+    for i in range(len(data) - window):
+        if np.std(data[i:i+window]) < min_std:
+            flags[i:i+window] = 4
+    
+    return flags
+                </pre>
+            </div>
+        </div>
+
+        <!-- Section 2: Data Flagging -->
+        <div class="section" id="flagging">
+            <h2>2. Data Flagging Systems</h2>
+            
+            <h3>2.1 Flag Definitions</h3>
+            <div class="info-box">
+                <strong>Standard Flag Convention (based on Ocean Data Standards):</strong>
+                <ul>
+                    <li><strong>0:</strong> No quality control performed</li>
+                    <li><strong>1:</strong> Good data</li>
+                    <li><strong>2:</strong> Probably good data</li>
+                    <li><strong>3:</strong> Potentially correctable bad data</li>
+                    <li><strong>4:</strong> Bad data</li>
+                    <li><strong>5:</strong> Value changed during QC</li>
+                    <li><strong>8:</strong> Interpolated value</li>
+                    <li><strong>9:</strong> Missing value</li>
+                </ul>
+            </div>
+
+            <h3>2.2 Multi-level Flagging</h3>
+            <canvas id="flaggingExample"></canvas>
+
+            <h3>2.3 Flag Propagation Rules</h3>
+            <table class="table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Input Flags</th>
+                    <th>Output Flag</th>
+                    <th>Rule</th>
+                </tr>
+                <tr>
+                    <td>Averaging</td>
+                    <td>Mix of 1,2</td>
+                    <td>2</td>
+                    <td>Inherit worst non-bad flag</td>
+                </tr>
+                <tr>
+                    <td>Averaging</td>
+                    <td>Any 4</td>
+                    <td>4</td>
+                    <td>Bad if any input is bad</td>
+                </tr>
+                <tr>
+                    <td>Interpolation</td>
+                    <td>1 on both sides</td>
+                    <td>8</td>
+                    <td>Mark as interpolated</td>
+                </tr>
+                <tr>
+                    <td>Calculation</td>
+                    <td>Any 9</td>
+                    <td>9</td>
+                    <td>Missing propagates</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 3: Validation Methods -->
+        <div class="section" id="validation">
+            <h2>3. Data Validation Methods</h2>
+            
+            <h3>3.1 Cross-Validation Techniques</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Redundant Sensor Comparison</h4>
+                    <canvas id="sensorComparison"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Height Consistency Check</h4>
+                    <canvas id="heightConsistency"></canvas>
+                </div>
+            </div>
+
+            <h3>3.2 Physical Consistency Checks</h3>
+            <div class="warning-box">
+                <strong>Common Physical Relationships:</strong>
+                <ul>
+                    <li>Wind shear must be positive in stable conditions</li>
+                    <li>TI typically decreases with wind speed</li>
+                    <li>σ_WD inversely related to wind speed</li>
+                    <li>Momentum flux consistent with shear</li>
+                </ul>
+            </div>
+
+            <h3>3.3 Statistical Validation</h3>
+            <canvas id="statisticalValidation"></canvas>
+        </div>
+
+        <!-- Section 4: Time Averaging -->
+        <div class="section" id="averaging">
+            <h2>4. Time Averaging Methods</h2>
+            
+            <h3>4.1 Standard Averaging Periods</h3>
+            <table class="table">
+                <tr>
+                    <th>Application</th>
+                    <th>Period</th>
+                    <th>Reason</th>
+                </tr>
+                <tr>
+                    <td>Turbulence</td>
+                    <td>10 minutes</td>
+                    <td>Captures turbulent scales, removes mesoscale</td>
+                </tr>
+                <tr>
+                    <td>Wind Resource</td>
+                    <td>10 minutes</td>
+                    <td>IEC 61400-12 standard</td>
+                </tr>
+                <tr>
+                    <td>Climatology</td>
+                    <td>Hourly</td>
+                    <td>Diurnal cycle resolution</td>
+                </tr>
+                <tr>
+                    <td>Extreme Events</td>
+                    <td>3 seconds</td>
+                    <td>Gust detection</td>
+                </tr>
+                <tr>
+                    <td>Wave Coupling</td>
+                    <td>30 minutes</td>
+                    <td>Wave period compatibility</td>
+                </tr>
+            </table>
+
+            <h3>4.2 Vector vs Scalar Averaging</h3>
+            <div class="formula">
+                <strong>Scalar Average:</strong> ū = (1/N) Σ u_i<br><br>
+                <strong>Vector Average:</strong> V̄ = (1/N) Σ V_i = ū + iv̄<br>
+                |V̄| = √(ū² + v̄²)<br>
+                θ̄ = atan2(v̄, ū)
+            </div>
+
+            <h3>4.3 Averaging Effects</h3>
+            <canvas id="averagingEffects"></canvas>
+        </div>
+
+        <!-- Section 5: Filtering Methods -->
+        <div class="section" id="filtering">
+            <h2>5. Data Filtering Techniques</h2>
+            
+            <h3>5.1 Digital Filter Types</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Low-pass Filter Response</h4>
+                    <canvas id="lowpassFilter"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Filter Comparison</h4>
+                    <canvas id="filterComparison"></canvas>
+                </div>
+            </div>
+
+            <h3>5.2 Common Filters for Wind Data</h3>
+            <table class="table">
+                <tr>
+                    <th>Filter Type</th>
+                    <th>Application</th>
+                    <th>Advantages</th>
+                    <th>Disadvantages</th>
+                </tr>
+                <tr>
+                    <td>Moving Average</td>
+                    <td>Trend extraction</td>
+                    <td>Simple, no phase shift</td>
+                    <td>Poor frequency response</td>
+                </tr>
+                <tr>
+                    <td>Butterworth</td>
+                    <td>Turbulence separation</td>
+                    <td>Flat passband</td>
+                    <td>Gradual roll-off</td>
+                </tr>
+                <tr>
+                    <td>Savitzky-Golay</td>
+                    <td>Smoothing with derivatives</td>
+                    <td>Preserves features</td>
+                    <td>Edge effects</td>
+                </tr>
+                <tr>
+                    <td>Median</td>
+                    <td>Spike removal</td>
+                    <td>Robust to outliers</td>
+                    <td>Nonlinear</td>
+                </tr>
+            </table>
+
+            <h3>5.3 Sector-wise Filtering</h3>
+            <div class="info-box">
+                <strong>Direction Sector Filtering:</strong>
+                <ul>
+                    <li>Mast wake sectors: ±15° from mast direction</li>
+                    <li>Turbine wake sectors: Based on layout</li>
+                    <li>Obstacle sectors: Site-specific</li>
+                    <li>Icing sectors: Temperature-based</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 6: Gap Filling -->
+        <div class="section" id="gap-filling">
+            <h2>6. Gap Filling Methods</h2>
+            
+            <h3>6.1 Gap Statistics</h3>
+            <canvas id="gapStatistics"></canvas>
+
+            <h3>6.2 Gap Filling Techniques</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Linear Interpolation</h4>
+                    <ul>
+                        <li>Short gaps (<1 hour)</li>
+                        <li>Stable conditions</li>
+                        <li>Simple implementation</li>
+                    </ul>
+                    <div class="formula">y = y₁ + (y₂-y₁)(t-t₁)/(t₂-t₁)</div>
+                </div>
+                <div class="card">
+                    <h4>Pattern Recognition</h4>
+                    <ul>
+                        <li>Diurnal patterns</li>
+                        <li>Similar days method</li>
+                        <li>Neural networks</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Physical Models</h4>
+                    <ul>
+                        <li>Vertical extrapolation</li>
+                        <li>MCP from nearby sites</li>
+                        <li>Mesoscale model data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>6.3 Validation of Gap-Filled Data</h3>
+            <div class="plot-box">
+                <h4>Gap Filling Performance</h4>
+                <canvas id="gapFillingValidation"></canvas>
+            </div>
+        </div>
+
+        <!-- Section 7: MCP Techniques -->
+        <div class="section" id="mcp">
+            <h2>7. Measure-Correlate-Predict (MCP)</h2>
+            
+            <div class="info-box">
+                <strong>MCP Purpose:</strong> Extend short-term measurements to long-term climate using reference data from nearby sites or reanalysis.
+            </div>
+
+            <h3>7.1 MCP Methods Comparison</h3>
+            <table class="table">
+                <tr>
+                    <th>Method</th>
+                    <th>Approach</th>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                </tr>
+                <tr>
+                    <td>Linear Regression</td>
+                    <td>y = ax + b</td>
+                    <td>Simple, unbiased mean</td>
+                    <td>Variance reduction</td>
+                </tr>
+                <tr>
+                    <td>Variance Ratio</td>
+                    <td>Scales variance</td>
+                    <td>Preserves distribution</td>
+                    <td>Assumes linear relation</td>
+                </tr>
+                <tr>
+                    <td>Matrix Methods</td>
+                    <td>Multiple references</td>
+                    <td>Uses all data</td>
+                    <td>Complex, overfitting risk</td>
+                </tr>
+                <tr>
+                    <td>Neural Networks</td>
+                    <td>Nonlinear mapping</td>
+                    <td>Captures complexity</td>
+                    <td>Black box, training needed</td>
+                </tr>
+            </table>
+
+            <h3>7.2 MCP Implementation</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Correlation Analysis</h4>
+                    <canvas id="mcpCorrelation"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Residual Analysis</h4>
+                    <canvas id="mcpResiduals"></canvas>
+                </div>
+            </div>
+
+            <h3>7.3 MCP Best Practices</h3>
+            <div class="warning-box">
+                <strong>Key Requirements:</strong>
+                <ul>
+                    <li>Minimum 12 months concurrent data</li>
+                    <li>Correlation coefficient > 0.8</li>
+                    <li>Reference site < 50 km away</li>
+                    <li>Similar terrain characteristics</li>
+                    <li>Validate on independent period</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 8: Long-term Correction -->
+        <div class="section" id="long-term">
+            <h2>8. Long-term Wind Climate Correction</h2>
+            
+            <h3>8.1 Inter-annual Variability</h3>
+            <canvas id="interannualVariability"></canvas>
+
+            <h3>8.2 Reference Data Sources</h3>
+            <table class="table">
+                <tr>
+                    <th>Source</th>
+                    <th>Period</th>
+                    <th>Resolution</th>
+                    <th>Best Use</th>
+                </tr>
+                <tr>
+                    <td>ERA5</td>
+                    <td>1979-present</td>
+                    <td>0.25°, hourly</td>
+                    <td>General reference</td>
+                </tr>
+                <tr>
+                    <td>MERRA-2</td>
+                    <td>1980-present</td>
+                    <td>0.5°, hourly</td>
+                    <td>Good over ocean</td>
+                </tr>
+                <tr>
+                    <td>CFSR/CFSv2</td>
+                    <td>1979-present</td>
+                    <td>0.5°, hourly</td>
+                    <td>High resolution</td>
+                </tr>
+                <tr>
+                    <td>Local Met Stations</td>
+                    <td>Varies</td>
+                    <td>Point, hourly</td>
+                    <td>Ground truth</td>
+                </tr>
+            </table>
+
+            <h3>8.3 Long-term Adjustment</h3>
+            <div class="formula">
+                Wind Speed Adjustment:<br>
+                WS_LT = WS_measured × (WS_ref_LT / WS_ref_concurrent)<br><br>
+                
+                Energy Adjustment:<br>
+                AEP_LT = AEP_measured × (WPD_ref_LT / WPD_ref_concurrent)
+            </div>
+        </div>
+
+        <!-- Section 9: Uncertainty Analysis -->
+        <div class="section" id="uncertainty">
+            <h2>9. Uncertainty Quantification in Processing</h2>
+            
+            <h3>9.1 Uncertainty Sources in Data Processing</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Uncertainty Cascade</h4>
+                    <canvas id="uncertaintyCascade"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Monte Carlo Results</h4>
+                    <canvas id="monteCarloUncertainty"></canvas>
+                </div>
+            </div>
+
+            <h3>9.2 Uncertainty Components</h3>
+            <table class="table">
+                <tr>
+                    <th>Component</th>
+                    <th>Typical Range</th>
+                    <th>Assessment Method</th>
+                </tr>
+                <tr>
+                    <td>QC Flagging</td>
+                    <td>0.5-1%</td>
+                    <td>Sensitivity analysis</td>
+                </tr>
+                <tr>
+                    <td>Gap Filling</td>
+                    <td>1-3%</td>
+                    <td>Cross-validation</td>
+                </tr>
+                <tr>
+                    <td>Averaging Method</td>
+                    <td>0.5-1%</td>
+                    <td>Method comparison</td>
+                </tr>
+                <tr>
+                    <td>MCP Model</td>
+                    <td>2-4%</td>
+                    <td>Residual analysis</td>
+                </tr>
+                <tr>
+                    <td>Long-term Adjustment</td>
+                    <td>3-5%</td>
+                    <td>Multi-reference comparison</td>
+                </tr>
+            </table>
+
+            <h3>9.3 Combined Uncertainty</h3>
+            <div class="formula">
+                Standard Uncertainty Combination:<br>
+                u_c = √(Σ u_i²)<br><br>
+                
+                Expanded Uncertainty (95% confidence):<br>
+                U = k × u_c, where k ≈ 2 for normal distribution
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section">
+            <h2>📝 Chapter Summary</h2>
+            <div class="success-box">
+                <h3>Key Data Processing Principles:</h3>
+                <ul>
+                    <li>Quality control must be systematic and well-documented</li>
+                    <li>Every processing step should be traceable and reversible</li>
+                    <li>Data flags preserve information about quality</li>
+                    <li>Validation using independent data is essential</li>
+                    <li>Gap filling methods must match the data characteristics</li>
+                    <li>MCP extends measurements but requires careful validation</li>
+                    <li>Uncertainty quantification is mandatory for decision-making</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Best Practices Checklist:</h3>
+                <ol>
+                    <li>✓ Implement multi-level QC procedures</li>
+                    <li>✓ Document all processing steps and parameters</li>
+                    <li>✓ Preserve raw data - never overwrite</li>
+                    <li>✓ Use appropriate averaging for each parameter</li>
+                    <li>✓ Validate gap-filled data statistically</li>
+                    <li>✓ Apply MCP only with sufficient correlation</li>
+                    <li>✓ Quantify and report all uncertainties</li>
+                    <li>✓ Follow international standards (IEC, IEA)</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Offshore Wind Analysis Textbook | Data Processing Chapter</p>
+        <p>
+            <a href="modeling.html">← Previous: Modeling</a> | 
+            <a href="case-studies.html">Next: Case Studies →</a>
+        </p>
+    </footer>
+
+    <!-- Modal for enlarged charts -->
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-canvas-container">
+                <canvas id="modalCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js visualizations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Range Test Example
+            new Chart('rangeTest', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 100}, (_, i) => i),
+                    datasets: [{
+                        label: 'Wind Speed',
+                        data: Array.from({length: 100}, (_, i) => {
+                            const base = 10 + 3 * Math.sin(i * 0.1);
+                            if (i === 30) return -2;  // Below range
+                            if (i === 70) return 55;  // Above range
+                            return base + (Math.random() - 0.5) * 2;
+                        }),
+                        borderColor: 'rgb(33, 150, 243)',
+                        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                        pointRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Range Test: Physical Limits Check' },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    yMin: 0,
+                                    yMax: 0,
+                                    borderColor: 'rgb(255, 99, 132)',
+                                    borderWidth: 2,
+                                    borderDash: [5, 5]
+                                },
+                                line2: {
+                                    type: 'line',
+                                    yMin: 50,
+                                    yMax: 50,
+                                    borderColor: 'rgb(255, 99, 132)',
+                                    borderWidth: 2,
+                                    borderDash: [5, 5]
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Time Index' } },
+                        y: { 
+                            title: { display: true, text: 'Wind Speed (m/s)' },
+                            min: -5,
+                            max: 60
+                        }
+                    }
+                }
+            });
+
+            // Spike Detection
+            new Chart('spikeDetection', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 50}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Original',
+                            data: Array.from({length: 50}, (_, i) => {
+                                const base = 12 + 2 * Math.sin(i * 0.2);
+                                if (i === 25) return base + 15;  // Spike
+                                return base + (Math.random() - 0.5) * 1;
+                            }),
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.1)'
+                        },
+                        {
+                            label: 'Filtered',
+                            data: Array.from({length: 50}, (_, i) => {
+                                const base = 12 + 2 * Math.sin(i * 0.2);
+                                return base + (Math.random() - 0.5) * 1;
+                            }),
+                            borderColor: 'rgb(76, 175, 80)',
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Spike Detection and Removal' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Time Index' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Flagging Example
+            new Chart('flaggingExample', {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Good (Flag 1)',
+                            data: Array.from({length: 40}, () => ({
+                                x: Math.random() * 24,
+                                y: 8 + Math.random() * 10
+                            })),
+                            backgroundColor: 'rgba(76, 175, 80, 0.6)'
+                        },
+                        {
+                            label: 'Questionable (Flag 2)',
+                            data: Array.from({length: 10}, () => ({
+                                x: Math.random() * 24,
+                                y: 5 + Math.random() * 20
+                            })),
+                            backgroundColor: 'rgba(255, 193, 7, 0.6)'
+                        },
+                        {
+                            label: 'Bad (Flag 4)',
+                            data: Array.from({length: 5}, () => ({
+                                x: Math.random() * 24,
+                                y: Math.random() * 30
+                            })),
+                            backgroundColor: 'rgba(244, 67, 54, 0.6)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Multi-level Data Flagging Example' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Hour of Day' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Sensor Comparison
+            new Chart('sensorComparison', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Sensor Pair',
+                        data: Array.from({length: 100}, () => {
+                            const truth = Math.random() * 20 + 2;
+                            const noise = (Math.random() - 0.5) * 1.5;
+                            return {x: truth, y: truth + noise};
+                        }),
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Redundant Sensor Cross-Validation' }
+                    },
+                    scales: {
+                        x: { 
+                            title: { display: true, text: 'Sensor 1 (m/s)' },
+                            min: 0,
+                            max: 25
+                        },
+                        y: { 
+                            title: { display: true, text: 'Sensor 2 (m/s)' },
+                            min: 0,
+                            max: 25
+                        }
+                    }
+                }
+            });
+
+            // Height Consistency
+            new Chart('heightConsistency', {
+                type: 'line',
+                data: {
+                    labels: [40, 60, 80, 100, 120],
+                    datasets: [
+                        {
+                            label: 'Measured',
+                            data: [8.5, 9.2, 9.8, 10.3, 10.8],
+                            borderColor: 'rgb(33, 150, 243)',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                        },
+                        {
+                            label: 'Power Law Fit',
+                            data: [8.5, 9.1, 9.6, 10.0, 10.3],
+                            borderColor: 'rgb(255, 99, 132)',
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Vertical Profile Consistency Check' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Statistical Validation
+            new Chart('statisticalValidation', {
+                type: 'bar',
+                data: {
+                    labels: ['Mean', 'Std Dev', 'Skewness', 'Kurtosis'],
+                    datasets: [
+                        {
+                            label: 'Site Data',
+                            data: [8.5, 3.2, 0.4, 2.8],
+                            backgroundColor: 'rgba(33, 150, 243, 0.6)'
+                        },
+                        {
+                            label: 'Expected Range',
+                            data: [8.2, 3.0, 0.3, 3.0],
+                            backgroundColor: 'rgba(76, 175, 80, 0.3)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Statistical Validation Against Climatology' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Value' } }
+                    }
+                }
+            });
+
+            // Averaging Effects
+            new Chart('averagingEffects', {
+                type: 'line',
+                data: {
+                    labels: ['1s', '3s', '10s', '1min', '10min', '1hr'],
+                    datasets: [
+                        {
+                            label: 'Maximum',
+                            data: [22, 20, 18, 16, 14, 12],
+                            borderColor: 'rgb(255, 99, 132)'
+                        },
+                        {
+                            label: 'Mean',
+                            data: [10, 10, 10, 10, 10, 10],
+                            borderColor: 'rgb(33, 150, 243)'
+                        },
+                        {
+                            label: 'Std Dev',
+                            data: [3.5, 3.2, 2.8, 2.2, 1.8, 1.2],
+                            borderColor: 'rgb(255, 206, 86)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Effect of Averaging Period on Statistics' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Averaging Period' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Filter Response
+            new Chart('lowpassFilter', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 50}, (_, i) => Math.pow(10, -2 + i * 0.08)),
+                    datasets: [{
+                        label: 'Butterworth',
+                        data: Array.from({length: 50}, (_, i) => {
+                            const f = Math.pow(10, -2 + i * 0.08);
+                            return 1 / Math.sqrt(1 + Math.pow(f / 0.1, 6));
+                        }),
+                        borderColor: 'rgb(33, 150, 243)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Low-pass Filter Frequency Response' }
+                    },
+                    scales: {
+                        x: { 
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Frequency (Hz)' }
+                        },
+                        y: { 
+                            title: { display: true, text: 'Magnitude' },
+                            min: 0,
+                            max: 1.1
+                        }
+                    }
+                }
+            });
+
+            // Filter Comparison
+            new Chart('filterComparison', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 100}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Raw Signal',
+                            data: Array.from({length: 100}, (_, i) => 
+                                10 + 2 * Math.sin(i * 0.1) + (Math.random() - 0.5) * 3
+                            ),
+                            borderColor: 'rgba(200, 200, 200, 0.5)',
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Moving Average',
+                            data: Array.from({length: 100}, (_, i) => 
+                                10 + 2 * Math.sin(i * 0.1) + (Math.random() - 0.5) * 0.5
+                            ),
+                            borderColor: 'rgb(255, 99, 132)'
+                        },
+                        {
+                            label: 'Butterworth',
+                            data: Array.from({length: 100}, (_, i) => 
+                                10 + 2 * Math.sin(i * 0.1)
+                            ),
+                            borderColor: 'rgb(33, 150, 243)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Filter Method Comparison' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Time Index' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Gap Statistics
+            new Chart('gapStatistics', {
+                type: 'bar',
+                data: {
+                    labels: ['<10min', '10min-1hr', '1-6hr', '6-24hr', '1-7days', '>7days'],
+                    datasets: [{
+                        label: 'Gap Frequency',
+                        data: [45, 25, 15, 8, 5, 2],
+                        backgroundColor: 'rgba(255, 152, 0, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Data Gap Length Distribution' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Percentage of Gaps (%)' } }
+                    }
+                }
+            });
+
+            // Gap Filling Validation
+            new Chart('gapFillingValidation', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Linear Interpolation',
+                        data: Array.from({length: 30}, () => {
+                            const truth = Math.random() * 15 + 5;
+                            const error = (Math.random() - 0.5) * 2;
+                            return {x: truth, y: truth + error};
+                        }),
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                    },
+                    {
+                        label: 'Pattern Recognition',
+                        data: Array.from({length: 30}, () => {
+                            const truth = Math.random() * 15 + 5;
+                            const error = (Math.random() - 0.5) * 1;
+                            return {x: truth, y: truth + error};
+                        }),
+                        backgroundColor: 'rgba(76, 175, 80, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Gap Filling Method Validation' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Actual Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Gap-Filled Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // MCP Correlation
+            new Chart('mcpCorrelation', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Concurrent Period',
+                        data: Array.from({length: 200}, () => {
+                            const ref = Math.random() * 15 + 3;
+                            const site = 0.9 * ref + 1 + (Math.random() - 0.5) * 2;
+                            return {x: ref, y: site};
+                        }),
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'MCP Correlation Analysis (r = 0.87)' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Reference Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Site Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // MCP Residuals
+            new Chart('mcpResiduals', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Residuals',
+                        data: Array.from({length: 100}, () => ({
+                            x: Math.random() * 20,
+                            y: (Math.random() - 0.5) * 3
+                        })),
+                        backgroundColor: 'rgba(255, 152, 0, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'MCP Residual Analysis' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Predicted Wind Speed (m/s)' } },
+                        y: { 
+                            title: { display: true, text: 'Residual (m/s)' },
+                            min: -5,
+                            max: 5
+                        }
+                    }
+                }
+            });
+
+            // Interannual Variability
+            new Chart('interannualVariability', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 20}, (_, i) => 2004 + i),
+                    datasets: [
+                        {
+                            label: 'Annual Mean Wind Speed',
+                            data: Array.from({length: 20}, (_, i) => 
+                                8.5 + 0.5 * Math.sin(i * 0.7) + (Math.random() - 0.5) * 0.8
+                            ),
+                            borderColor: 'rgb(33, 150, 243)',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                        },
+                        {
+                            label: 'Long-term Mean',
+                            data: Array(20).fill(8.5),
+                            borderColor: 'rgb(255, 99, 132)',
+                            borderDash: [10, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Inter-annual Wind Speed Variability' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Year' } },
+                        y: { 
+                            title: { display: true, text: 'Annual Mean Wind Speed (m/s)' },
+                            min: 7,
+                            max: 10
+                        }
+                    }
+                }
+            });
+
+            // Uncertainty Cascade
+            new Chart('uncertaintyCascade', {
+                type: 'bar',
+                data: {
+                    labels: ['Measurement', '+QC', '+Averaging', '+Gap Fill', '+MCP', '+Long-term'],
+                    datasets: [{
+                        label: 'Cumulative Uncertainty',
+                        data: [2, 2.2, 2.4, 3.0, 4.0, 5.5],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.6)',
+                            'rgba(139, 195, 74, 0.6)',
+                            'rgba(255, 235, 59, 0.6)',
+                            'rgba(255, 193, 7, 0.6)',
+                            'rgba(255, 152, 0, 0.6)',
+                            'rgba(244, 67, 54, 0.6)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Uncertainty Accumulation in Processing Chain' }
+                    },
+                    scales: {
+                        y: { 
+                            title: { display: true, text: 'Total Uncertainty (%)' },
+                            min: 0,
+                            max: 7
+                        }
+                    }
+                }
+            });
+
+            // Monte Carlo
+            new Chart('monteCarloUncertainty', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 50}, (_, i) => 7 + i * 0.1),
+                    datasets: [{
+                        label: 'P50',
+                        data: Array.from({length: 50}, (_, i) => {
+                            const x = 7 + i * 0.1;
+                            return 1000 * Math.exp(-Math.pow(x - 9, 2) / 0.5);
+                        }),
+                        borderColor: 'rgb(33, 150, 243)',
+                        backgroundColor: 'rgba(33, 150, 243, 0.2)'
+                    },
+                    {
+                        label: 'P90',
+                        data: Array.from({length: 50}, (_, i) => {
+                            const x = 7 + i * 0.1;
+                            return 1000 * Math.exp(-Math.pow(x - 8.4, 2) / 0.5);
+                        }),
+                        borderColor: 'rgb(255, 152, 0)',
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Monte Carlo Uncertainty Distribution' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Annual Mean Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Probability Density' } }
+                    }
+                }
+            });
+        });
+
+        // Modal functionality
+        let modal = document.getElementById('chartModal');
+        let modalCanvas = document.getElementById('modalCanvas');
+        let modalClose = document.querySelector('.modal-close');
+        let activeChart = null;
+
+        // Function to open modal with chart
+        function openChartModal(originalCanvas) {
+            let originalChart = Chart.getChart(originalCanvas);
+            if (!originalChart) return;
+
+            modal.style.display = 'block';
+            
+            let config = JSON.parse(JSON.stringify(originalChart.config));
+            
+            modalCanvas.width = 800;
+            modalCanvas.height = 600;
+            
+            if (activeChart) {
+                activeChart.destroy();
+            }
+            
+            activeChart = new Chart(modalCanvas, config);
+        }
+
+        // Close modal
+        modalClose.onclick = function() {
+            modal.style.display = 'none';
+            if (activeChart) {
+                activeChart.destroy();
+                activeChart = null;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                if (activeChart) {
+                    activeChart.destroy();
+                    activeChart = null;
+                }
+            }
+        }
+
+        // Add click handlers to all canvases after charts are loaded
+        setTimeout(() => {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                if (canvas.id !== 'modalCanvas') {
+                    canvas.classList.add('clickable-chart');
+                    canvas.addEventListener('click', function() {
+                        openChartModal(this);
+                    });
+                }
+            });
+        }, 500);
+    </script>
+</body>
+</html>

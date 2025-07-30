@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies - Offshore Wind Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .case-study {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 5px solid #0066cc;
+        }
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .case-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .case-info {
+            text-align: right;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .key-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            background: #0066cc;
+            border-radius: 50%;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 15px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background: #ddd;
+        }
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        .timeline-date {
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .lessons-learned {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .lessons-learned h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+        .lessons-learned ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .lessons-learned li {
+            margin: 5px 0;
+        }
+        .technical-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .detail-section {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .detail-section h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #0066cc;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .challenge-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        @media (max-width: 768px) {
+            .technical-details {
+                grid-template-columns: 1fr;
+            }
+            .key-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="theory.html">Theory</a></li>
+            <li><a href="measurement.html">Measurement</a></li>
+            <li><a href="data-processing.html">Data Processing</a></li>
+            <li><a href="modeling.html">Modeling</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="formulas.html">Formulas</a></li>
+            <li><a href="exercises.html">Exercises</a></li>
+            <li><a href="case-studies.html" class="active">Case Studies</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Offshore Wind Farm Case Studies</h1>
+        <p>Real-world examples demonstrating best practices, challenges, and innovations in offshore wind development.</p>
+
+        <!-- Case Study 1: Hornsea 2 -->
+        <div class="case-study">
+            <div class="case-header">
+                <div>
+                    <div class="case-title">Hornsea 2</div>
+                    <div style="color: #666; margin-top: 5px;">World's Largest Offshore Wind Farm (2022)</div>
+                </div>
+                <div class="case-info">
+                    Location: North Sea, UK<br>
+                    Developer: Ørsted<br>
+                    Operational: 2022
+                </div>
+            </div>
+
+            <div class="key-stats">
+                <div class="stat-box">
+                    <div class="stat-value">1.32 GW</div>
+                    <div class="stat-label">Total Capacity</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">165</div>
+                    <div class="stat-label">Turbines (8 MW)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">89 km</div>
+                    <div class="stat-label">Distance from Shore</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">462 km²</div>
+                    <div class="stat-label">Total Area</div>
+                </div>
+            </div>
+
+            <h3>Project Timeline</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2016</div>
+                    <div>Project awarded Contract for Difference (CfD)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2019</div>
+                    <div>Construction begins, first foundations installed</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2021</div>
+                    <div>First power generated, turbine installation accelerated</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2022</div>
+                    <div>Full commercial operation achieved</div>
+                </div>
+            </div>
+
+            <div class="technical-details">
+                <div class="detail-section">
+                    <h4>Wind Resource Assessment</h4>
+                    <ul>
+                        <li>Mean wind speed: 9.5 m/s at 100m</li>
+                        <li>Weibull k parameter: 2.3</li>
+                        <li>Capacity factor: 48%</li>
+                        <li>Annual energy production: ~5.5 TWh</li>
+                        <li>Met mast campaign: 3 years</li>
+                        <li>LiDAR validation: 18 months</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h4>Foundation Design</h4>
+                    <ul>
+                        <li>Type: Monopiles</li>
+                        <li>Diameter: 8-10 meters</li>
+                        <li>Weight: up to 1,400 tonnes</li>
+                        <li>Water depth: 23-28 meters</li>
+                        <li>Scour protection: Rock placement</li>
+                        <li>Installation vessel: specialized jack-up</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="hornsea2PowerCurve"></canvas>
+            </div>
+
+            <div class="lessons-learned">
+                <h4>Key Lessons Learned</h4>
+                <ul>
+                    <li><strong>Economies of scale:</strong> Larger turbines (8 MW vs 6 MW) reduced total number needed, lowering installation costs</li>
+                    <li><strong>Supply chain optimization:</strong> Coordinated manufacturing and installation reduced weather delays</li>
+                    <li><strong>Grid integration:</strong> Reactive power compensation equipment essential for stable operation at 89 km offshore</li>
+                    <li><strong>Environmental monitoring:</strong> Comprehensive marine mammal monitoring showed minimal impact during construction</li>
+                </ul>
+            </div>
+
+            <div class="challenge-box">
+                <strong>Challenge:</strong> COVID-19 pandemic disrupted supply chains and offshore operations<br>
+                <strong>Solution:</strong> Implemented strict health protocols, created offshore "bubbles", adjusted vessel rotations
+            </div>
+
+            <div class="success-box">
+                <strong>Success:</strong> Achieved 35% cost reduction compared to earlier projects through technology and scale<br>
+                <strong>Impact:</strong> Powers 1.4 million UK homes annually
+            </div>
+        </div>
+
+        <!-- Case Study 2: Hywind Scotland -->
+        <div class="case-study">
+            <div class="case-header">
+                <div>
+                    <div class="case-title">Hywind Scotland</div>
+                    <div style="color: #666; margin-top: 5px;">World's First Commercial Floating Wind Farm</div>
+                </div>
+                <div class="case-info">
+                    Location: North Sea, Scotland<br>
+                    Developer: Equinor<br>
+                    Operational: 2017
+                </div>
+            </div>
+
+            <div class="key-stats">
+                <div class="stat-box">
+                    <div class="stat-value">30 MW</div>
+                    <div class="stat-label">Total Capacity</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Turbines (6 MW)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">95-120m</div>
+                    <div class="stat-label">Water Depth</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">54%</div>
+                    <div class="stat-label">Capacity Factor</div>
+                </div>
+            </div>
+
+            <h3>Floating Technology Innovation</h3>
+            <div class="technical-details">
+                <div class="detail-section">
+                    <h4>Spar-Buoy Design</h4>
+                    <ul>
+                        <li>Draft: 78 meters below surface</li>
+                        <li>Displacement: 12,000 tonnes</li>
+                        <li>Ballast: Iron ore and water</li>
+                        <li>Mooring: 3-line catenary system</li>
+                        <li>Anchor type: Suction anchors</li>
+                        <li>Motion response: < 5° in extreme conditions</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h4>Performance Metrics</h4>
+                    <ul>
+                        <li>Availability: 97.5% (2018-2022 average)</li>
+                        <li>Best month CF: 65% (February 2020)</li>
+                        <li>Hurricane survival: Validated to 50-year storm</li>
+                        <li>O&M optimization: Remote reset capabilities</li>
+                        <li>Wake losses: < 5% due to spacing</li>
+                        <li>Grid compliance: Full reactive power range</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="hywindMonthlyProduction"></canvas>
+            </div>
+
+            <div class="lessons-learned">
+                <h4>Floating Wind Insights</h4>
+                <ul>
+                    <li><strong>Stability validation:</strong> Motion compensation systems performed better than modeled</li>
+                    <li><strong>Maintenance access:</strong> Higher accessibility than fixed-bottom in similar conditions</li>
+                    <li><strong>Cost trajectory:</strong> Demonstrated path to cost parity with fixed-bottom by 2030</li>
+                    <li><strong>Environmental benefits:</strong> Minimal seabed disturbance, reversible installation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Case Study 3: Block Island Wind Farm -->
+        <div class="case-study">
+            <div class="case-header">
+                <div>
+                    <div class="case-title">Block Island Wind Farm</div>
+                    <div style="color: #666; margin-top: 5px;">First U.S. Offshore Wind Farm</div>
+                </div>
+                <div class="case-info">
+                    Location: Rhode Island, USA<br>
+                    Developer: Ørsted/Eversource<br>
+                    Operational: 2016
+                </div>
+            </div>
+
+            <div class="key-stats">
+                <div class="stat-box">
+                    <div class="stat-value">30 MW</div>
+                    <div class="stat-label">Total Capacity</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Turbines (6 MW)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">$300M</div>
+                    <div class="stat-label">Total Investment</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">47.5%</div>
+                    <div class="stat-label">Capacity Factor</div>
+                </div>
+            </div>
+
+            <h3>U.S. Market Development</h3>
+            <div class="lessons-learned">
+                <h4>Regulatory and Market Insights</h4>
+                <ul>
+                    <li><strong>Permitting process:</strong> 8-year development timeline established framework for future projects</li>
+                    <li><strong>Local benefits:</strong> Replaced diesel generation on Block Island, reducing costs 40%</li>
+                    <li><strong>Supply chain:</strong> Demonstrated need for U.S. port infrastructure development</li>
+                    <li><strong>Environmental studies:</strong> Comprehensive 5-year pre/post construction monitoring program</li>
+                    <li><strong>Tourism impact:</strong> Became attraction, increasing island visits</li>
+                </ul>
+            </div>
+
+            <div class="challenge-box">
+                <strong>Challenge:</strong> No existing U.S. offshore wind supply chain or installation vessels<br>
+                <strong>Solution:</strong> Imported expertise and equipment from Europe, initiated U.S. vessel construction
+            </div>
+        </div>
+
+        <!-- Comparative Analysis -->
+        <div class="case-study">
+            <h2>Comparative Analysis</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Hornsea 2</th>
+                        <th>Hywind Scotland</th>
+                        <th>Block Island</th>
+                        <th>Industry Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Capacity Factor</td>
+                        <td>48%</td>
+                        <td>54%</td>
+                        <td>47.5%</td>
+                        <td>45%</td>
+                    </tr>
+                    <tr>
+                        <td>LCOE (2022 USD/MWh)</td>
+                        <td>$75</td>
+                        <td>$150</td>
+                        <td>$244</td>
+                        <td>$85</td>
+                    </tr>
+                    <tr>
+                        <td>Installation Time</td>
+                        <td>36 months</td>
+                        <td>15 months</td>
+                        <td>12 months</td>
+                        <td>24 months</td>
+                    </tr>
+                    <tr>
+                        <td>Availability</td>
+                        <td>95%</td>
+                        <td>97.5%</td>
+                        <td>95%</td>
+                        <td>94%</td>
+                    </tr>
+                    <tr>
+                        <td>Distance to Shore (km)</td>
+                        <td>89</td>
+                        <td>25</td>
+                        <td>5.6</td>
+                        <td>40</td>
+                    </tr>
+                    <tr>
+                        <td>Water Depth (m)</td>
+                        <td>23-28</td>
+                        <td>95-120</td>
+                        <td>26</td>
+                        <td>30</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="chart-container">
+                <canvas id="costReductionTrend"></canvas>
+            </div>
+        </div>
+
+        <!-- Future Projects Preview -->
+        <div class="case-study">
+            <h2>Emerging Projects and Technologies</h2>
+            
+            <div class="technical-details">
+                <div class="detail-section">
+                    <h4>Dogger Bank (UK) - 3.6 GW</h4>
+                    <ul>
+                        <li>World's largest under construction</li>
+                        <li>13 MW and 14 MW turbines</li>
+                        <li>HVDC transmission system</li>
+                        <li>130 km from shore</li>
+                        <li>COD: 2023-2026 (phases)</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h4>Vineyard Wind 1 (USA) - 800 MW</h4>
+                    <ul>
+                        <li>First commercial-scale U.S. project</li>
+                        <li>62 x 13 MW turbines</li>
+                        <li>Monopile foundations</li>
+                        <li>First U.S. Jones Act vessel</li>
+                        <li>COD: 2024</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <strong>Industry Trends:</strong>
+                <ul style="margin-top: 10px;">
+                    <li>Turbine scaling: 15-20 MW units becoming standard</li>
+                    <li>Floating wind: Multiple GW-scale projects in development</li>
+                    <li>Grid integration: Offshore energy hubs and Power-to-X</li>
+                    <li>Digitalization: AI-powered O&M optimization</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="navigation-footer">
+            <p>Next: <a href="advanced-topics.html">Advanced Topics</a> | See also: <a href="theory.html">Theory</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Hornsea 2 Power Curve Chart
+        const ctx1 = document.getElementById('hornsea2PowerCurve').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: [0, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25],
+                datasets: [{
+                    label: 'Turbine Power Output',
+                    data: [0, 0, 400, 1200, 3000, 5500, 7500, 8000, 8000, 8000, 8000, 8000, 0],
+                    borderColor: '#0066cc',
+                    backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'SG 8.0-167 DD Power Curve'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Wind Speed (m/s)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Power Output (kW)'
+                        },
+                        max: 9000
+                    }
+                }
+            }
+        });
+
+        // Hywind Monthly Production Chart
+        const ctx2 = document.getElementById('hywindMonthlyProduction').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: '2021 Monthly Capacity Factor',
+                    data: [58, 65, 52, 45, 38, 35, 40, 42, 48, 55, 60, 62],
+                    backgroundColor: '#0066cc'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Hywind Scotland - Seasonal Variation'
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Capacity Factor (%)'
+                        },
+                        max: 70
+                    }
+                }
+            }
+        });
+
+        // Cost Reduction Trend Chart
+        const ctx3 = document.getElementById('costReductionTrend').getContext('2d');
+        new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026, 2028, 2030],
+                datasets: [{
+                    label: 'Fixed-Bottom',
+                    data: [180, 165, 150, 140, 120, 95, 75, 65, 55, 50, 45],
+                    borderColor: '#0066cc',
+                    backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                    tension: 0.3
+                }, {
+                    label: 'Floating',
+                    data: [null, null, null, 300, 250, 200, 150, 120, 90, 70, 55],
+                    borderColor: '#ff6600',
+                    backgroundColor: 'rgba(255, 102, 0, 0.1)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'LCOE Reduction Trend (USD/MWh)'
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'LCOE (USD/MWh)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

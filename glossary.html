@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary - Offshore Wind Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .glossary-nav {
+            position: sticky;
+            top: 20px;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .glossary-nav h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        .letter-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .letter-links a {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .letter-links a:hover {
+            background: #0052a3;
+        }
+        .letter-links a.inactive {
+            background: #ccc;
+            cursor: default;
+        }
+        .glossary-section {
+            margin: 30px 0;
+        }
+        .letter-header {
+            font-size: 2em;
+            color: #0066cc;
+            border-bottom: 3px solid #0066cc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .term-entry {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #0066cc;
+            border-radius: 4px;
+        }
+        .term {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        .abbreviation {
+            color: #666;
+            font-style: italic;
+            margin-left: 10px;
+        }
+        .definition {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .related-terms {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .related-terms a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .related-terms a:hover {
+            text-decoration: underline;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #0066cc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .category-tag {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .no-results {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+            font-style: italic;
+        }
+        @media (max-width: 768px) {
+            .glossary-nav {
+                position: relative;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="theory.html">Theory</a></li>
+            <li><a href="measurement.html">Measurement</a></li>
+            <li><a href="data-processing.html">Data Processing</a></li>
+            <li><a href="modeling.html">Modeling</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="formulas.html">Formulas</a></li>
+            <li><a href="exercises.html">Exercises</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="advanced-topics.html">Advanced Topics</a></li>
+            <li><a href="glossary.html" class="active">Glossary</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Offshore Wind Energy Glossary</h1>
+        
+        <div class="glossary-nav">
+            <h3>Quick Navigation</h3>
+            <input type="text" class="search-box" id="searchBox" placeholder="Search terms..." onkeyup="searchGlossary()">
+            <div class="letter-links">
+                <a href="#A">A</a>
+                <a href="#B">B</a>
+                <a href="#C">C</a>
+                <a href="#D">D</a>
+                <a href="#E">E</a>
+                <a href="#F">F</a>
+                <a href="#G">G</a>
+                <a href="#H">H</a>
+                <a href="#I">I</a>
+                <a href="#J">J</a>
+                <a href="#K">K</a>
+                <a href="#L">L</a>
+                <a href="#M">M</a>
+                <a href="#N">N</a>
+                <a href="#O">O</a>
+                <a href="#P">P</a>
+                <a href="#Q">Q</a>
+                <a href="#R">R</a>
+                <a href="#S">S</a>
+                <a href="#T">T</a>
+                <a href="#U">U</a>
+                <a href="#V">V</a>
+                <a href="#W">W</a>
+                <a href="#X" class="inactive">X</a>
+                <a href="#Y">Y</a>
+                <a href="#Z">Z</a>
+            </div>
+        </div>
+
+        <div id="glossary-content">
+            <!-- A -->
+            <div class="glossary-section" id="A">
+                <h2 class="letter-header">A</h2>
+                
+                <div class="term-entry">
+                    <div class="term">AEP<span class="abbreviation">Annual Energy Production</span></div>
+                    <div class="definition">The total amount of electrical energy produced by a wind turbine or wind farm in one year, typically measured in MWh or GWh. Calculated by integrating the power curve with the wind speed distribution.</div>
+                    <div class="related-terms">Related: <a href="#C">Capacity Factor</a>, <a href="#P">Power Curve</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Availability<span class="category-tag">Operations</span></div>
+                    <div class="definition">The percentage of time that a wind turbine is technically capable of generating electricity, excluding downtime due to maintenance, repairs, or grid issues. Industry standard targets are typically 97-98%.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Anemometer<span class="category-tag">Measurement</span></div>
+                    <div class="definition">An instrument used to measure wind speed. Cup anemometers (rotating cups) and sonic anemometers (ultrasonic pulses) are most common in wind energy applications.</div>
+                    <div class="related-terms">Related: <a href="#M">Met Mast</a>, <a href="#L">LiDAR</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Array Cable<span class="category-tag">Electrical</span></div>
+                    <div class="definition">Medium voltage submarine cables (typically 33-66 kV) that connect individual wind turbines within an offshore wind farm to each other and to the offshore substation.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Atmospheric Stability<span class="category-tag">Meteorology</span></div>
+                    <div class="definition">A measure of the atmosphere's tendency to resist or enhance vertical motion. Unstable conditions enhance turbulence and mixing, while stable conditions suppress it. Critical for wind shear and turbulence predictions.</div>
+                    <div class="related-terms">Related: <a href="#R">Richardson Number</a>, <a href="#M">Monin-Obukhov Length</a></div>
+                </div>
+            </div>
+
+            <!-- B -->
+            <div class="glossary-section" id="B">
+                <h2 class="letter-header">B</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Betz Limit<span class="category-tag">Theory</span></div>
+                    <div class="definition">The theoretical maximum efficiency of a wind turbine, which is 16/27 (approximately 59.3%) of the kinetic energy in the wind. Named after German physicist Albert Betz who derived it in 1919.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Blade Pitch<span class="category-tag">Turbine Technology</span></div>
+                    <div class="definition">The angle of the turbine blades relative to the oncoming wind. Pitch control systems adjust this angle to optimize power output and protect the turbine in high winds.</div>
+                    <div class="related-terms">Related: <a href="#P">Pitch Control</a>, <a href="#F">Feathering</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Boundary Layer<span class="category-tag">Meteorology</span></div>
+                    <div class="definition">The lowest part of the atmosphere directly influenced by contact with the Earth's surface. For offshore wind, the marine atmospheric boundary layer typically extends 500-2000m and exhibits different characteristics than over land.</div>
+                </div>
+            </div>
+
+            <!-- C -->
+            <div class="glossary-section" id="C">
+                <h2 class="letter-header">C</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Capacity Factor<span class="abbreviation">CF</span></div>
+                    <div class="definition">The ratio of actual energy output to the theoretical maximum output if the turbine operated at rated power continuously. Modern offshore wind farms achieve 40-55% capacity factors.</div>
+                    <div class="related-terms">Related: <a href="#A">AEP</a>, <a href="#R">Rated Power</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">CfD<span class="abbreviation">Contract for Difference</span></div>
+                    <div class="definition">A financial mechanism used in several countries to provide long-term price stability for renewable energy projects. Generators receive the difference between a fixed strike price and the market price.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Cut-in Speed<span class="category-tag">Turbine Operation</span></div>
+                    <div class="definition">The minimum wind speed at which a turbine begins to generate power, typically 3-4 m/s for modern turbines. Below this speed, the turbine may rotate but doesn't produce electricity.</div>
+                    <div class="related-terms">Related: <a href="#C">Cut-out Speed</a>, <a href="#R">Rated Speed</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Cut-out Speed<span class="category-tag">Turbine Operation</span></div>
+                    <div class="definition">The wind speed at which a turbine shuts down to prevent damage, typically 25 m/s. The turbine feathers its blades and may use brakes to stop rotation.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Cp<span class="abbreviation">Power Coefficient</span></div>
+                    <div class="definition">The ratio of power extracted by the turbine to the total power available in the wind. Always less than the Betz limit (0.593), modern turbines achieve Cp values of 0.45-0.50.</div>
+                </div>
+            </div>
+
+            <!-- D -->
+            <div class="glossary-section" id="D">
+                <h2 class="letter-header">D</h2>
+                
+                <div class="term-entry">
+                    <div class="term">DEL<span class="abbreviation">Damage Equivalent Load</span></div>
+                    <div class="definition">A fatigue load metric that represents the cumulative damage from variable loading as an equivalent constant amplitude load. Used in turbine design and lifetime assessment.</div>
+                    <div class="related-terms">Related: <a href="#F">Fatigue</a>, <a href="#R">Rainflow Counting</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Direct Drive<span class="category-tag">Turbine Technology</span></div>
+                    <div class="definition">A turbine design where the rotor is directly connected to the generator without a gearbox. Offers higher reliability but requires larger, heavier generators.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Doppler Shift<span class="category-tag">Measurement</span></div>
+                    <div class="definition">The change in frequency of a wave due to relative motion between source and observer. Used in LiDAR and SODAR systems to measure wind speed by analyzing backscattered light or sound.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Dynamic Cable<span class="category-tag">Electrical</span></div>
+                    <div class="definition">Specialized power cables designed to connect floating wind turbines to the seabed cable network. Must withstand continuous motion and fatigue loading.</div>
+                </div>
+            </div>
+
+            <!-- E -->
+            <div class="glossary-section" id="E">
+                <h2 class="letter-header">E</h2>
+                
+                <div class="term-entry">
+                    <div class="term">EIA<span class="abbreviation">Environmental Impact Assessment</span></div>
+                    <div class="definition">A comprehensive study required before wind farm development to evaluate potential environmental effects including impacts on marine life, birds, visual amenity, and noise.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Export Cable<span class="category-tag">Electrical</span></div>
+                    <div class="definition">High voltage submarine cable (typically 132-275 kV) that transmits power from the offshore substation to the onshore grid connection point.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Extreme Wind Speed<span class="category-tag">Design</span></div>
+                    <div class="definition">The maximum wind speed expected at a site with a specific return period (e.g., 50-year extreme wind). Critical for structural design and typically determined using extreme value analysis.</div>
+                    <div class="related-terms">Related: <a href="#G">Gumbel Distribution</a>, <a href="#I">IEC Standards</a></div>
+                </div>
+            </div>
+
+            <!-- F -->
+            <div class="glossary-section" id="F">
+                <h2 class="letter-header">F</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Fatigue<span class="category-tag">Structural</span></div>
+                    <div class="definition">The progressive structural damage that occurs when a material is subjected to cyclic loading. Critical for offshore wind due to combined wind and wave loading over 20-25 year design life.</div>
+                    <div class="related-terms">Related: <a href="#D">DEL</a>, <a href="#S">S-N Curve</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Feathering<span class="category-tag">Turbine Operation</span></div>
+                    <div class="definition">Rotating turbine blades to a position parallel to the wind flow to minimize loads during shutdown or extreme winds. A critical safety feature.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">FLS<span class="abbreviation">Fatigue Limit State</span></div>
+                    <div class="definition">Design criterion ensuring that structures can withstand repeated loading throughout their design life without fatigue failure. One of the key limit states in offshore wind design.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Floating Foundation<span class="category-tag">Foundation</span></div>
+                    <div class="definition">Foundation types for deep water (>60m) including spar-buoy, semi-submersible, and tension-leg platforms (TLP). Enables wind development in waters too deep for fixed foundations.</div>
+                </div>
+            </div>
+
+            <!-- G -->
+            <div class="glossary-section" id="G">
+                <h2 class="letter-header">G</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Gearbox<span class="category-tag">Turbine Component</span></div>
+                    <div class="definition">Mechanical system that increases rotational speed from the slow-turning rotor (5-20 rpm) to the faster speed required by the generator (1000-1800 rpm). A critical component with high maintenance requirements.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Grid Code<span class="category-tag">Electrical</span></div>
+                    <div class="definition">Technical requirements that power generators must meet to connect to the electrical grid, including frequency response, voltage control, and fault ride-through capabilities.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Grouted Connection<span class="category-tag">Foundation</span></div>
+                    <div class="definition">The interface between monopile and transition piece filled with high-strength grout. Critical connection that has experienced failures leading to improved design standards.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Gumbel Distribution<span class="category-tag">Statistics</span></div>
+                    <div class="definition">Statistical distribution used to model extreme values such as maximum annual wind speeds. Essential for determining design loads with specific return periods.</div>
+                </div>
+            </div>
+
+            <!-- H -->
+            <div class="glossary-section" id="H">
+                <h2 class="letter-header">H</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Hub Height<span class="category-tag">Turbine Specification</span></div>
+                    <div class="definition">The height of the turbine rotor center above sea level or ground level. Modern offshore turbines have hub heights of 100-150m to access stronger, more consistent winds.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">HVAC<span class="abbreviation">High Voltage Alternating Current</span></div>
+                    <div class="definition">Traditional power transmission technology used for shorter distance offshore transmission (typically <80km). Beyond this distance, cable charging currents make HVDC more economical.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">HVDC<span class="abbreviation">High Voltage Direct Current</span></div>
+                    <div class="definition">Power transmission technology increasingly used for far-offshore wind farms (>80km) and interconnections. Lower losses over long distances but requires expensive converter stations.</div>
+                </div>
+            </div>
+
+            <!-- I -->
+            <div class="glossary-section" id="I">
+                <h2 class="letter-header">I</h2>
+                
+                <div class="term-entry">
+                    <div class="term">IEC 61400<span class="category-tag">Standards</span></div>
+                    <div class="definition">International standards for wind turbine design covering safety requirements, design loads, testing, and power performance measurement. IEC 61400-3 specifically addresses offshore turbines.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Integral Length Scale<span class="category-tag">Turbulence</span></div>
+                    <div class="definition">A measure of the average size of turbulent eddies in the flow. Larger offshore than onshore, affecting turbine loads and wake recovery.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Intertidal Zone<span class="category-tag">Environment</span></div>
+                    <div class="definition">The area between high and low tide marks. Cable installation through this zone requires special consideration for environmental protection and cable burial.</div>
+                </div>
+            </div>
+
+            <!-- J -->
+            <div class="glossary-section" id="J">
+                <h2 class="letter-header">J</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Jacket Foundation<span class="category-tag">Foundation</span></div>
+                    <div class="definition">A steel lattice structure with three or four legs used in water depths of 20-60m. Lighter than monopiles for equivalent water depth but more complex to manufacture and install.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">J-tube<span class="category-tag">Cable Protection</span></div>
+                    <div class="definition">A J-shaped tube attached to foundation structures to guide and protect submarine cables as they transition from seabed burial to above-water connection points.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Jones Act<span class="category-tag">Regulation</span></div>
+                    <div class="definition">U.S. federal law requiring that goods transported between U.S. ports be carried on U.S.-flagged vessels. Significantly impacts offshore wind installation logistics in U.S. waters.</div>
+                </div>
+            </div>
+
+            <!-- K -->
+            <div class="glossary-section" id="K">
+                <h2 class="letter-header">K</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Kaimal Spectrum<span class="category-tag">Turbulence</span></div>
+                    <div class="definition">A model describing the power spectral density of atmospheric turbulence as a function of frequency. Used in turbine design to generate synthetic turbulent wind fields.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Kelvin-Helmholtz Instability<span class="category-tag">Meteorology</span></div>
+                    <div class="definition">Wave-like instability that occurs at the interface between two fluid layers moving at different velocities. Can cause severe turbulence affecting turbine loads.</div>
+                </div>
+            </div>
+
+            <!-- L -->
+            <div class="glossary-section" id="L">
+                <h2 class="letter-header">L</h2>
+                
+                <div class="term-entry">
+                    <div class="term">LCOE<span class="abbreviation">Levelized Cost of Energy</span></div>
+                    <div class="definition">The average cost per unit of electricity generated over the project lifetime, accounting for all costs (capital, operating, financing) and energy production. Key metric for comparing energy technologies.</div>
+                    <div class="related-terms">Related: <a href="#C">CAPEX</a>, <a href="#O">OPEX</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">LiDAR<span class="abbreviation">Light Detection and Ranging</span></div>
+                    <div class="definition">Remote sensing technology using laser light to measure wind speeds at multiple heights. Floating LiDAR systems are increasingly used for offshore wind resource assessment.</div>
+                    <div class="related-terms">Related: <a href="#S">SODAR</a>, <a href="#M">Met Mast</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Low-Level Jet<span class="category-tag">Meteorology</span></div>
+                    <div class="definition">A ribbon of strong winds in the lower atmosphere, common in stable conditions. Can significantly impact wind resources and turbine loads, especially at night.</div>
+                </div>
+            </div>
+
+            <!-- M -->
+            <div class="glossary-section" id="M">
+                <h2 class="letter-header">M</h2>
+                
+                <div class="term-entry">
+                    <div class="term">MCP<span class="abbreviation">Measure-Correlate-Predict</span></div>
+                    <div class="definition">Statistical method to predict long-term wind resources at a site using short-term measurements correlated with long-term reference data from nearby locations.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Met Mast<span class="abbreviation">Meteorological Mast</span></div>
+                    <div class="definition">A tower equipped with instruments to measure wind speed, direction, temperature, and other atmospheric parameters at multiple heights. Traditional method for wind resource assessment.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Monin-Obukhov Length<span class="category-tag">Atmospheric Stability</span></div>
+                    <div class="definition">A parameter characterizing atmospheric stability in the surface layer. Positive values indicate stable conditions, negative values indicate unstable conditions.</div>
+                    <div class="related-terms">Related: <a href="#A">Atmospheric Stability</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Monopile<span class="category-tag">Foundation</span></div>
+                    <div class="definition">Single large-diameter steel tube (4-10m) driven into the seabed. Most common foundation type for offshore wind in water depths up to 40m due to simplicity and cost-effectiveness.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Morison Equation<span class="category-tag">Wave Loading</span></div>
+                    <div class="definition">Empirical equation to calculate wave forces on cylindrical structures, combining drag and inertia components. Fundamental for offshore foundation design.</div>
+                </div>
+            </div>
+
+            <!-- N -->
+            <div class="glossary-section" id="N">
+                <h2 class="letter-header">N</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Nacelle<span class="category-tag">Turbine Component</span></div>
+                    <div class="definition">The housing at the top of the tower containing the drivetrain components including gearbox, generator, power electronics, and control systems. Can weigh 300-600 tonnes for large turbines.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">NREL<span class="abbreviation">National Renewable Energy Laboratory</span></div>
+                    <div class="definition">U.S. Department of Energy laboratory that conducts wind energy research and develops widely-used tools like FAST for turbine modeling.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">NTM<span class="abbreviation">Normal Turbulence Model</span></div>
+                    <div class="definition">IEC 61400 standard model for turbulence intensity under normal operating conditions. Used to define design load cases for fatigue analysis.</div>
+                </div>
+            </div>
+
+            <!-- O -->
+            <div class="glossary-section" id="O">
+                <h2 class="letter-header">O</h2>
+                
+                <div class="term-entry">
+                    <div class="term">O&M<span class="abbreviation">Operations and Maintenance</span></div>
+                    <div class="definition">Ongoing activities to keep wind turbines operating efficiently, including scheduled maintenance, repairs, and condition monitoring. Major cost component for offshore wind.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Offshore Substation<span class="category-tag">Electrical</span></div>
+                    <div class="definition">Platform housing transformers and switchgear to step up voltage from turbine level (33-66kV) to transmission level (132-275kV). May include reactive compensation equipment.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">OPEX<span class="abbreviation">Operating Expenditure</span></div>
+                    <div class="definition">Ongoing costs including O&M, insurance, land lease, and management. Typically $40-60/kW/year for offshore wind, higher than onshore due to accessibility challenges.</div>
+                </div>
+            </div>
+
+            <!-- P -->
+            <div class="glossary-section" id="P">
+                <h2 class="letter-header">P</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Power Curve<span class="category-tag">Performance</span></div>
+                    <div class="definition">Graph showing turbine power output as a function of wind speed. Key parameters include cut-in speed, rated speed, rated power, and cut-out speed.</div>
+                    <div class="related-terms">Related: <a href="#C">Cp</a>, <a href="#R">Rated Power</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Power Purchase Agreement<span class="abbreviation">PPA</span></div>
+                    <div class="definition">Long-term contract between electricity generator and purchaser defining price and terms. Critical for project financing by providing revenue certainty.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Pitch Control<span class="category-tag">Turbine Control</span></div>
+                    <div class="definition">System that adjusts blade angle to control power output and loads. Active pitch control enables operation in variable wind conditions and provides overspeed protection.</div>
+                </div>
+            </div>
+
+            <!-- Q -->
+            <div class="glossary-section" id="Q">
+                <h2 class="letter-header">Q</h2>
+                
+                <div class="term-entry">
+                    <div class="term">QC<span class="abbreviation">Quality Control</span></div>
+                    <div class="definition">Systematic process to ensure data quality in wind measurements including range checks, trend analysis, and cross-validation between sensors.</div>
+                </div>
+            </div>
+
+            <!-- R -->
+            <div class="glossary-section" id="R">
+                <h2 class="letter-header">R</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Rated Power<span class="category-tag">Turbine Specification</span></div>
+                    <div class="definition">Maximum continuous power output of a wind turbine, typically reached at wind speeds of 11-15 m/s. Modern offshore turbines have ratings of 8-15 MW.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Rayleigh Distribution<span class="category-tag">Statistics</span></div>
+                    <div class="definition">Special case of the Weibull distribution with shape parameter k=2. Often used as a simple approximation for wind speed distribution.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Richardson Number<span class="category-tag">Atmospheric Stability</span></div>
+                    <div class="definition">Dimensionless number representing the ratio of buoyancy to shear forces. Used to characterize atmospheric stability: Ri>0.25 indicates stable conditions.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Rotor Diameter<span class="category-tag">Turbine Specification</span></div>
+                    <div class="definition">Diameter of the circle swept by the turbine blades. Modern offshore turbines have rotor diameters of 150-220m, with swept areas exceeding 40,000 m².</div>
+                </div>
+            </div>
+
+            <!-- S -->
+            <div class="glossary-section" id="S">
+                <h2 class="letter-header">S</h2>
+                
+                <div class="term-entry">
+                    <div class="term">SCADA<span class="abbreviation">Supervisory Control and Data Acquisition</span></div>
+                    <div class="definition">System for remote monitoring and control of wind turbines. Collects operational data (power, wind speed, temperatures) typically at 10-minute intervals.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Scour Protection<span class="category-tag">Foundation</span></div>
+                    <div class="definition">Rock or concrete mattresses placed around foundations to prevent erosion of seabed sediments by currents and waves. Critical for foundation stability.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Shear Exponent<span class="category-tag">Wind Profile</span></div>
+                    <div class="definition">Power law exponent (α) describing how wind speed increases with height. Typically 0.10-0.14 offshore, lower than onshore (0.14-0.20) due to lower surface roughness.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Significant Wave Height<span class="abbreviation">Hs</span></div>
+                    <div class="definition">Average height of the highest one-third of waves. Key parameter for offshore design, with 50-year values often exceeding 10m in exposed locations.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">SODAR<span class="abbreviation">Sonic Detection and Ranging</span></div>
+                    <div class="definition">Ground-based remote sensing using sound waves to measure wind profiles up to 200-300m. Lower cost than LiDAR but potentially less accurate in some conditions.</div>
+                </div>
+            </div>
+
+            <!-- T -->
+            <div class="glossary-section" id="T">
+                <h2 class="letter-header">T</h2>
+                
+                <div class="term-entry">
+                    <div class="term">TI<span class="abbreviation">Turbulence Intensity</span></div>
+                    <div class="definition">Ratio of wind speed standard deviation to mean wind speed, expressing the gustiness of the wind. Lower offshore (0.06-0.10) than onshore, reducing fatigue loads.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Tip Speed Ratio<span class="abbreviation">TSR or λ</span></div>
+                    <div class="definition">Ratio of blade tip speed to wind speed. Optimal TSR of 7-9 maximizes power coefficient. Used in turbine control and design optimization.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Transition Piece<span class="category-tag">Foundation</span></div>
+                    <div class="definition">Steel structure connecting the foundation (e.g., monopile) to the tower. Includes boat landing, access platform, and often houses electrical equipment.</div>
+                </div>
+            </div>
+
+            <!-- U -->
+            <div class="glossary-section" id="U">
+                <h2 class="letter-header">U</h2>
+                
+                <div class="term-entry">
+                    <div class="term">ULS<span class="abbreviation">Ultimate Limit State</span></div>
+                    <div class="definition">Design condition ensuring structures can withstand extreme loads (50-year return period) without collapse. One of the primary design criteria with FLS.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Upwind/Downwind<span class="category-tag">Turbine Configuration</span></div>
+                    <div class="definition">Rotor position relative to tower. Upwind (rotor faces wind, in front of tower) is standard for large turbines despite need for active yaw control.</div>
+                </div>
+            </div>
+
+            <!-- V -->
+            <div class="glossary-section" id="V">
+                <h2 class="letter-header">V</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Vortex Shedding<span class="category-tag">Fluid Dynamics</span></div>
+                    <div class="definition">Alternating vortices shed from cylindrical structures in cross-flow, causing oscillating forces. Can cause resonance in towers and foundations at specific wind speeds.</div>
+                </div>
+            </div>
+
+            <!-- W -->
+            <div class="glossary-section" id="W">
+                <h2 class="letter-header">W</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Wake Effect<span class="category-tag">Wind Farm Design</span></div>
+                    <div class="definition">Region of reduced wind speed and increased turbulence downstream of a turbine. Can reduce downstream turbine production by 10-20% depending on spacing.</div>
+                    <div class="related-terms">Related: <a href="#J">Jensen Model</a>, <a href="#W">Wake Recovery</a></div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Weibull Distribution<span class="category-tag">Statistics</span></div>
+                    <div class="definition">Two-parameter probability distribution widely used to model wind speed frequencies. Shape parameter (k) typically 1.8-2.2 offshore, scale parameter (A) related to mean wind speed.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Wind Rose<span class="category-tag">Data Visualization</span></div>
+                    <div class="definition">Circular plot showing frequency of winds by direction and speed. Essential for wind farm layout optimization and wake loss assessment.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Wind Shear<span class="category-tag">Wind Profile</span></div>
+                    <div class="definition">Change in wind speed or direction with height. Causes uneven loading across rotor swept area, influencing fatigue life and power production.</div>
+                </div>
+            </div>
+
+            <!-- Y -->
+            <div class="glossary-section" id="Y">
+                <h2 class="letter-header">Y</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Yaw<span class="category-tag">Turbine Control</span></div>
+                    <div class="definition">Rotation of nacelle to align rotor with wind direction. Active yaw systems use motors and wind direction sensors to optimize alignment within ±8°.</div>
+                </div>
+
+                <div class="term-entry">
+                    <div class="term">Yaw Error<span class="category-tag">Performance</span></div>
+                    <div class="definition">Misalignment between turbine axis and wind direction. Reduces power output by cos³(error angle) and increases fatigue loads.</div>
+                </div>
+            </div>
+
+            <!-- Z -->
+            <div class="glossary-section" id="Z">
+                <h2 class="letter-header">Z</h2>
+                
+                <div class="term-entry">
+                    <div class="term">Z0<span class="abbreviation">Roughness Length</span></div>
+                    <div class="definition">Parameter characterizing surface roughness in logarithmic wind profile. Very low over water (0.0001-0.001m), increasing with wave height.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results" style="display: none;">
+            No terms found matching your search.
+        </div>
+
+        <div class="navigation-footer">
+            <p>See also: <a href="formulas.html">Formula Reference</a> | <a href="theory.html">Theory</a></p>
+        </div>
+    </div>
+
+    <script>
+        function searchGlossary() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const allEntries = document.querySelectorAll('.term-entry');
+            const sections = document.querySelectorAll('.glossary-section');
+            const noResults = document.getElementById('no-results');
+            let hasResults = false;
+
+            if (searchTerm === '') {
+                // Show all entries and sections
+                allEntries.forEach(entry => entry.style.display = 'block');
+                sections.forEach(section => section.style.display = 'block');
+                noResults.style.display = 'none';
+                return;
+            }
+
+            // Hide all sections initially
+            sections.forEach(section => section.style.display = 'none');
+
+            // Search through entries
+            allEntries.forEach(entry => {
+                const term = entry.querySelector('.term').textContent.toLowerCase();
+                const definition = entry.querySelector('.definition').textContent.toLowerCase();
+                
+                if (term.includes(searchTerm) || definition.includes(searchTerm)) {
+                    entry.style.display = 'block';
+                    entry.closest('.glossary-section').style.display = 'block';
+                    hasResults = true;
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+
+            // Show/hide no results message
+            noResults.style.display = hasResults ? 'none' : 'block';
+        }
+
+        // Smooth scrolling for letter navigation
+        document.querySelectorAll('.letter-links a').forEach(link => {
+            if (!link.classList.contains('inactive')) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

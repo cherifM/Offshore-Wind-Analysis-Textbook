@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modeling - Offshore Wind Analysis Textbook</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <nav class="nav-main">
+        <a href="index.html">Home</a>
+        <a href="theory.html">Theory</a>
+        <a href="measurement.html">Measurements</a>
+        <a href="modeling.html" class="active">Modeling</a>
+        <a href="data-processing.html">Data Processing</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="advanced-topics.html">Advanced Topics</a>
+        <a href="calculators.html">Calculators</a>
+        <a href="exercises.html">Exercises</a>
+        <a href="formulas.html">Formulas</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="references.html">References</a>
+        <a href="datasets.html">Datasets</a>
+    </nav>
+
+    <div class="header">
+        <h1>🌊 Numerical Modeling & Simulations</h1>
+        <p>From Mesoscale to Microscale Wind Modeling</p>
+    </div>
+
+    <div class="container">
+        <!-- Chapter Overview -->
+        <div class="section">
+            <h2>📚 Chapter Overview</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Atmospheric Models</h3>
+                    <ul>
+                        <li><a href="#nwp">Numerical Weather Prediction</a></li>
+                        <li><a href="#mesoscale">Mesoscale Modeling (WRF)</a></li>
+                        <li><a href="#microscale">Microscale CFD/LES</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Wind Farm Modeling</h3>
+                    <ul>
+                        <li><a href="#wake">Wake Modeling</a></li>
+                        <li><a href="#layout">Layout Optimization</a></li>
+                        <li><a href="#aep">Energy Production</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Advanced Topics</h3>
+                    <ul>
+                        <li><a href="#coupling">Model Coupling</a></li>
+                        <li><a href="#uncertainty">Uncertainty Quantification</a></li>
+                        <li><a href="#validation">Model Validation</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: NWP -->
+        <div class="section" id="nwp">
+            <h2>1. Numerical Weather Prediction (NWP)</h2>
+            
+            <div class="info-box">
+                <strong>Definition:</strong> NWP models solve the governing equations of atmospheric motion on a discretized grid to forecast weather conditions.
+            </div>
+
+            <h3>1.1 Global NWP Models</h3>
+            <table class="table">
+                <tr>
+                    <th>Model</th>
+                    <th>Agency</th>
+                    <th>Resolution</th>
+                    <th>Forecast Length</th>
+                    <th>Updates</th>
+                </tr>
+                <tr>
+                    <td>GFS</td>
+                    <td>NOAA/NCEP</td>
+                    <td>0.25° (~28km)</td>
+                    <td>16 days</td>
+                    <td>4x daily</td>
+                </tr>
+                <tr>
+                    <td>ECMWF IFS</td>
+                    <td>ECMWF</td>
+                    <td>0.1° (~9km)</td>
+                    <td>10 days</td>
+                    <td>2x daily</td>
+                </tr>
+                <tr>
+                    <td>ICON</td>
+                    <td>DWD</td>
+                    <td>13km</td>
+                    <td>7.5 days</td>
+                    <td>4x daily</td>
+                </tr>
+                <tr>
+                    <td>ERA5</td>
+                    <td>ECMWF</td>
+                    <td>0.25° (~31km)</td>
+                    <td>Reanalysis</td>
+                    <td>Monthly</td>
+                </tr>
+            </table>
+
+            <h3>1.2 Governing Equations</h3>
+            <div class="formula-large">
+                Momentum: ∂u/∂t + u·∇u = -1/ρ ∇p - fk×u + ν∇²u<br>
+                Continuity: ∂ρ/∂t + ∇·(ρu) = 0<br>
+                Thermodynamic: ∂θ/∂t + u·∇θ = Q/cp
+            </div>
+
+            <h3>1.3 Parameterizations</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Grid Resolution Effects</h4>
+                    <canvas id="gridResolution"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Subgrid Processes</h4>
+                    <ul>
+                        <li><strong>PBL schemes:</strong> YSU, MYJ, MYNN</li>
+                        <li><strong>Surface layer:</strong> MM5, Eta similarity</li>
+                        <li><strong>Land surface:</strong> Noah, CLM</li>
+                        <li><strong>Radiation:</strong> RRTM, Dudhia</li>
+                        <li><strong>Microphysics:</strong> WSM, Thompson</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Mesoscale Modeling -->
+        <div class="section" id="mesoscale">
+            <h2>2. Mesoscale Modeling (WRF)</h2>
+            
+            <h3>2.1 WRF Model Setup</h3>
+            <div class="warning-box">
+                <strong>Domain Configuration Best Practices:</strong>
+                <ul>
+                    <li>Outer domain: 3-9 km resolution, covers synoptic features</li>
+                    <li>Middle domain: 1-3 km resolution, captures mesoscale</li>
+                    <li>Inner domain: 200m-1km, site-specific details</li>
+                    <li>Nesting ratio: 1:3 or 1:5 recommended</li>
+                    <li>Buffer zones: >10 grid points from boundaries</li>
+                </ul>
+            </div>
+
+            <h3>2.2 WRF Domain Example</h3>
+            <canvas id="wrfDomains"></canvas>
+
+            <h3>2.3 Offshore-Specific Settings</h3>
+            <table class="table">
+                <tr>
+                    <th>Component</th>
+                    <th>Recommended Option</th>
+                    <th>Reason</th>
+                </tr>
+                <tr>
+                    <td>PBL Scheme</td>
+                    <td>MYNN 2.5/3</td>
+                    <td>Better stable conditions</td>
+                </tr>
+                <tr>
+                    <td>Surface Layer</td>
+                    <td>MYNN</td>
+                    <td>Consistent with PBL</td>
+                </tr>
+                <tr>
+                    <td>SST Update</td>
+                    <td>Daily/6-hourly</td>
+                    <td>Captures diurnal cycle</td>
+                </tr>
+                <tr>
+                    <td>Sea Surface Roughness</td>
+                    <td>Wave-dependent</td>
+                    <td>Better momentum flux</td>
+                </tr>
+                <tr>
+                    <td>Vertical Levels</td>
+                    <td>>50, enhanced in PBL</td>
+                    <td>Resolve shear/veer</td>
+                </tr>
+            </table>
+
+            <h3>2.4 WRF Output Processing</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Hub Height Interpolation</h4>
+                    <canvas id="wrfInterpolation"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Temporal Downscaling</h4>
+                    <canvas id="temporalDownscale"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Microscale CFD/LES -->
+        <div class="section" id="microscale">
+            <h2>3. Microscale CFD and LES</h2>
+            
+            <h3>3.1 CFD Approaches</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>RANS (Reynolds-Averaged)</h4>
+                    <ul>
+                        <li>Steady-state solution</li>
+                        <li>k-ε, k-ω turbulence models</li>
+                        <li>Computationally efficient</li>
+                        <li>Limited for complex terrain</li>
+                    </ul>
+                    <p><strong>Use cases:</strong> Simple terrain, preliminary studies</p>
+                </div>
+                <div class="card">
+                    <h4>LES (Large Eddy Simulation)</h4>
+                    <ul>
+                        <li>Resolves large eddies</li>
+                        <li>Time-dependent</li>
+                        <li>Captures turbulence</li>
+                        <li>Computationally intensive</li>
+                    </ul>
+                    <p><strong>Use cases:</strong> Complex flows, wake studies</p>
+                </div>
+                <div class="card">
+                    <h4>DES (Detached Eddy)</h4>
+                    <ul>
+                        <li>Hybrid RANS-LES</li>
+                        <li>Efficient compromise</li>
+                        <li>Good for wakes</li>
+                        <li>Transition challenges</li>
+                    </ul>
+                    <p><strong>Use cases:</strong> Wind farm simulations</p>
+                </div>
+            </div>
+
+            <h3>3.2 Domain Setup</h3>
+            <div class="info-box">
+                <strong>CFD Domain Requirements:</strong>
+                <ul>
+                    <li>Inlet: 3-5× turbine height upstream</li>
+                    <li>Outlet: 10-15× turbine height downstream</li>
+                    <li>Lateral: 5× rotor diameter minimum</li>
+                    <li>Top: 3-5× turbine height (higher for IBL)</li>
+                    <li>Cell size at turbine: D/20 to D/10</li>
+                </ul>
+            </div>
+
+            <h3>3.3 Mesh Refinement</h3>
+            <canvas id="meshRefinement"></canvas>
+
+            <h3>3.4 Boundary Conditions</h3>
+            <table class="table">
+                <tr>
+                    <th>Boundary</th>
+                    <th>Velocity</th>
+                    <th>Turbulence</th>
+                    <th>Temperature</th>
+                </tr>
+                <tr>
+                    <td>Inlet</td>
+                    <td>Log/power profile</td>
+                    <td>k, ε profiles</td>
+                    <td>Stability profile</td>
+                </tr>
+                <tr>
+                    <td>Outlet</td>
+                    <td>Zero gradient</td>
+                    <td>Zero gradient</td>
+                    <td>Zero gradient</td>
+                </tr>
+                <tr>
+                    <td>Ground</td>
+                    <td>Wall function</td>
+                    <td>Wall function</td>
+                    <td>Fixed or flux</td>
+                </tr>
+                <tr>
+                    <td>Top</td>
+                    <td>Slip/symmetry</td>
+                    <td>Zero gradient</td>
+                    <td>Fixed gradient</td>
+                </tr>
+                <tr>
+                    <td>Lateral</td>
+                    <td>Periodic/slip</td>
+                    <td>Periodic/slip</td>
+                    <td>Periodic/zero gradient</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 4: Wake Modeling -->
+        <div class="section" id="wake">
+            <h2>4. Wake Modeling</h2>
+            
+            <h3>4.1 Wake Characteristics</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Wake Velocity Deficit</h4>
+                    <canvas id="wakeDeficit"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Wake Expansion</h4>
+                    <canvas id="wakeExpansion"></canvas>
+                </div>
+            </div>
+
+            <h3>4.2 Engineering Wake Models</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Jensen Model</h4>
+                    <div class="formula">
+                        V = V₀[1 - 2a/(1 + kx/r₀)²]
+                    </div>
+                    <ul>
+                        <li>Linear expansion</li>
+                        <li>Top-hat profile</li>
+                        <li>Simple, fast</li>
+                        <li>Conservative</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Gaussian Models</h4>
+                    <div class="formula">
+                        V = V₀[1 - C(x)exp(-r²/2σ²)]
+                    </div>
+                    <ul>
+                        <li>Realistic profile</li>
+                        <li>Variable expansion</li>
+                        <li>Better accuracy</li>
+                        <li>More parameters</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Dynamic Models</h4>
+                    <ul>
+                        <li>DWM (Dynamic Wake)</li>
+                        <li>Time-varying</li>
+                        <li>Meandering effects</li>
+                        <li>Fatigue loads</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>4.3 Wake Superposition</h3>
+            <div class="warning-box">
+                <strong>Superposition Methods:</strong>
+                <ul>
+                    <li><strong>Linear:</strong> δV_total = Σ δV_i (conservative)</li>
+                    <li><strong>Sum of squares:</strong> δV_total = √(Σ δV_i²) (common)</li>
+                    <li><strong>Maximum:</strong> δV_total = max(δV_i) (optimistic)</li>
+                    <li><strong>Momentum:</strong> Conservation-based (physical)</li>
+                </ul>
+            </div>
+
+            <h3>4.4 Wake Model Comparison</h3>
+            <canvas id="wakeComparison"></canvas>
+        </div>
+
+        <!-- Section 5: Layout Optimization -->
+        <div class="section" id="layout">
+            <h2>5. Wind Farm Layout Optimization</h2>
+            
+            <h3>5.1 Optimization Objectives</h3>
+            <div class="info-box">
+                <strong>Multi-objective optimization typically considers:</strong>
+                <ul>
+                    <li>Annual Energy Production (AEP) maximization</li>
+                    <li>Wake loss minimization</li>
+                    <li>Levelized Cost of Energy (LCOE) minimization</li>
+                    <li>Grid connection cost minimization</li>
+                    <li>Fatigue load minimization</li>
+                    <li>Noise constraints satisfaction</li>
+                </ul>
+            </div>
+
+            <h3>5.2 Optimization Algorithms</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Genetic Algorithm Progress</h4>
+                    <canvas id="gaOptimization"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Layout Patterns</h4>
+                    <canvas id="layoutPatterns"></canvas>
+                </div>
+            </div>
+
+            <h3>5.3 Constraint Handling</h3>
+            <table class="table">
+                <tr>
+                    <th>Constraint Type</th>
+                    <th>Typical Value</th>
+                    <th>Implementation</th>
+                </tr>
+                <tr>
+                    <td>Minimum Spacing</td>
+                    <td>3-5 D crosswind, 5-10 D downwind</td>
+                    <td>Hard constraint</td>
+                </tr>
+                <tr>
+                    <td>Boundary Limits</td>
+                    <td>Site-specific polygon</td>
+                    <td>Hard constraint</td>
+                </tr>
+                <tr>
+                    <td>Exclusion Zones</td>
+                    <td>Shipping lanes, cables</td>
+                    <td>Hard constraint</td>
+                </tr>
+                <tr>
+                    <td>Water Depth</td>
+                    <td>Technology dependent</td>
+                    <td>Soft constraint (cost)</td>
+                </tr>
+                <tr>
+                    <td>Grid Connection</td>
+                    <td>Distance to shore/substation</td>
+                    <td>Soft constraint (cost)</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 6: AEP Calculation -->
+        <div class="section" id="aep">
+            <h2>6. Annual Energy Production (AEP)</h2>
+            
+            <h3>6.1 AEP Calculation Framework</h3>
+            <div class="formula-large">
+                AEP = 8760 × Σᵢⱼ [P(Vᵢ,θⱼ) × f(Vᵢ,θⱼ) × A]<br>
+                where:<br>
+                P = Power at wind speed Vᵢ and direction θⱼ<br>
+                f = Joint probability of wind conditions<br>
+                A = Availability factor
+            </div>
+
+            <h3>6.2 Loss Factors</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Loss Cascade</h4>
+                    <canvas id="lossCascade"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Typical Loss Values</h4>
+                    <table class="table">
+                        <tr>
+                            <th>Loss Type</th>
+                            <th>Range (%)</th>
+                        </tr>
+                        <tr>
+                            <td>Wake Effects</td>
+                            <td>5-15</td>
+                        </tr>
+                        <tr>
+                            <td>Availability</td>
+                            <td>3-7</td>
+                        </tr>
+                        <tr>
+                            <td>Electrical</td>
+                            <td>2-3</td>
+                        </tr>
+                        <tr>
+                            <td>Turbine Performance</td>
+                            <td>1-3</td>
+                        </tr>
+                        <tr>
+                            <td>Environmental</td>
+                            <td>1-2</td>
+                        </tr>
+                        <tr>
+                            <td>Curtailment</td>
+                            <td>0-5</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <h3>6.3 Uncertainty in AEP</h3>
+            <canvas id="aepUncertainty"></canvas>
+        </div>
+
+        <!-- Section 7: Model Coupling -->
+        <div class="section" id="coupling">
+            <h2>7. Model Coupling Approaches</h2>
+            
+            <h3>7.1 Meso-Micro Coupling</h3>
+            <div class="info-box">
+                <strong>Coupling Strategies:</strong>
+                <ul>
+                    <li><strong>One-way nesting:</strong> Mesoscale → Microscale boundary conditions</li>
+                    <li><strong>Two-way coupling:</strong> Feedback from micro to meso</li>
+                    <li><strong>Offline coupling:</strong> Statistical downscaling</li>
+                    <li><strong>Online coupling:</strong> Concurrent execution</li>
+                </ul>
+            </div>
+
+            <h3>7.2 Coupling Workflow</h3>
+            <canvas id="couplingWorkflow"></canvas>
+
+            <h3>7.3 Wave-Atmosphere Coupling</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Wave Effects on Wind</h4>
+                    <canvas id="waveCoupling"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Coupling Parameters</h4>
+                    <ul>
+                        <li>Sea surface roughness</li>
+                        <li>Momentum flux</li>
+                        <li>Heat flux modifications</li>
+                        <li>Spray generation</li>
+                        <li>Wave breaking effects</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Uncertainty Quantification -->
+        <div class="section" id="uncertainty">
+            <h2>8. Uncertainty Quantification</h2>
+            
+            <h3>8.1 Sources of Uncertainty</h3>
+            <table class="table">
+                <tr>
+                    <th>Category</th>
+                    <th>Source</th>
+                    <th>Typical Magnitude</th>
+                    <th>Reduction Method</th>
+                </tr>
+                <tr>
+                    <td rowspan="3">Input Data</td>
+                    <td>Measurement uncertainty</td>
+                    <td>2-3%</td>
+                    <td>Better instrumentation</td>
+                </tr>
+                <tr>
+                    <td>Spatial representativeness</td>
+                    <td>3-5%</td>
+                    <td>Multiple locations</td>
+                </tr>
+                <tr>
+                    <td>Temporal variability</td>
+                    <td>5-10%</td>
+                    <td>Longer records</td>
+                </tr>
+                <tr>
+                    <td rowspan="3">Model</td>
+                    <td>Physical parameterizations</td>
+                    <td>3-5%</td>
+                    <td>Ensemble runs</td>
+                </tr>
+                <tr>
+                    <td>Numerical discretization</td>
+                    <td>1-2%</td>
+                    <td>Grid refinement</td>
+                </tr>
+                <tr>
+                    <td>Boundary conditions</td>
+                    <td>2-4%</td>
+                    <td>Sensitivity analysis</td>
+                </tr>
+            </table>
+
+            <h3>8.2 Uncertainty Propagation</h3>
+            <canvas id="uncertaintyProp"></canvas>
+
+            <h3>8.3 Ensemble Modeling</h3>
+            <div class="plot-box">
+                <h4>Ensemble Spread</h4>
+                <canvas id="ensembleSpread"></canvas>
+            </div>
+        </div>
+
+        <!-- Section 9: Model Validation -->
+        <div class="section" id="validation">
+            <h2>9. Model Validation</h2>
+            
+            <h3>9.1 Validation Metrics</h3>
+            <div class="formula">
+                Bias: BIAS = (1/n)Σ(Model - Obs)<br>
+                RMSE: RMSE = √[(1/n)Σ(Model - Obs)²]<br>
+                Correlation: r = Σ[(M-M̄)(O-Ō)] / √[Σ(M-M̄)²Σ(O-Ō)²]
+            </div>
+
+            <h3>9.2 Validation Best Practices</h3>
+            <div class="warning-box">
+                <strong>Key Principles:</strong>
+                <ul>
+                    <li>Use independent data for validation (not used in calibration)</li>
+                    <li>Validate at multiple heights and locations</li>
+                    <li>Check both mean and turbulent quantities</li>
+                    <li>Assess model performance across stability regimes</li>
+                    <li>Document all assumptions and limitations</li>
+                </ul>
+            </div>
+
+            <h3>9.3 Validation Results Example</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Model vs Observations</h4>
+                    <canvas id="modelValidation"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Error Statistics</h4>
+                    <canvas id="errorStats"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section">
+            <h2>📝 Chapter Summary</h2>
+            <div class="success-box">
+                <h3>Key Modeling Concepts:</h3>
+                <ul>
+                    <li>Multi-scale modeling is essential for offshore wind assessment</li>
+                    <li>Each scale requires different approaches and assumptions</li>
+                    <li>Wake modeling significantly impacts energy predictions</li>
+                    <li>Layout optimization is a complex multi-objective problem</li>
+                    <li>Model coupling improves accuracy but increases complexity</li>
+                    <li>Uncertainty quantification is crucial for risk assessment</li>
+                    <li>Thorough validation builds confidence in results</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Modeling Workflow:</h3>
+                <ol>
+                    <li>Define objectives and constraints</li>
+                    <li>Select appropriate model scales and types</li>
+                    <li>Configure domains and parameters</li>
+                    <li>Run simulations with quality checks</li>
+                    <li>Post-process and analyze results</li>
+                    <li>Quantify uncertainties</li>
+                    <li>Validate against measurements</li>
+                    <li>Document assumptions and limitations</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Offshore Wind Analysis Textbook | Modeling Chapter</p>
+        <p>
+            <a href="measurement.html">← Previous: Measurements</a> | 
+            <a href="data-processing.html">Next: Data Processing →</a>
+        </p>
+    </footer>
+
+    <script>
+        // Chart.js visualizations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Grid Resolution Effects
+            new Chart('gridResolution', {
+                type: 'line',
+                data: {
+                    labels: [100, 50, 25, 10, 5, 2, 1, 0.5, 0.2],
+                    datasets: [
+                        {
+                            label: 'Resolved Features',
+                            data: [10, 20, 35, 50, 65, 80, 90, 95, 98],
+                            borderColor: 'rgb(76, 175, 80)',
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Computational Cost',
+                            data: [1, 2, 5, 20, 50, 200, 500, 2000, 10000],
+                            borderColor: 'rgb(244, 67, 54)',
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Resolution vs Features & Cost' }
+                    },
+                    scales: {
+                        x: { 
+                            title: { display: true, text: 'Grid Resolution (km)' },
+                            type: 'logarithmic',
+                            reverse: true
+                        },
+                        y: { 
+                            title: { display: true, text: 'Resolved Features (%)' },
+                            position: 'left'
+                        },
+                        y1: {
+                            title: { display: true, text: 'Relative Cost' },
+                            position: 'right',
+                            type: 'logarithmic',
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                }
+            });
+
+            // WRF Domains
+            const wrfCanvas = document.getElementById('wrfDomains');
+            const wrfCtx = wrfCanvas.getContext('2d');
+            
+            // Background
+            wrfCtx.fillStyle = '#e3f2fd';
+            wrfCtx.fillRect(0, 0, 400, 300);
+            
+            // Domain boxes
+            const domains = [
+                {x: 20, y: 20, w: 360, h: 260, color: 'rgba(255, 99, 132, 0.3)', label: 'd01: 9km'},
+                {x: 80, y: 60, w: 240, h: 180, color: 'rgba(54, 162, 235, 0.3)', label: 'd02: 3km'},
+                {x: 140, y: 100, w: 120, h: 100, color: 'rgba(255, 206, 86, 0.3)', label: 'd03: 1km'},
+                {x: 170, y: 130, w: 60, h: 40, color: 'rgba(75, 192, 192, 0.3)', label: 'd04: 333m'}
+            ];
+            
+            domains.forEach(domain => {
+                wrfCtx.fillStyle = domain.color;
+                wrfCtx.fillRect(domain.x, domain.y, domain.w, domain.h);
+                wrfCtx.strokeStyle = domain.color.replace('0.3', '1');
+                wrfCtx.strokeRect(domain.x, domain.y, domain.w, domain.h);
+                
+                wrfCtx.fillStyle = '#333';
+                wrfCtx.font = '12px Arial';
+                wrfCtx.fillText(domain.label, domain.x + 5, domain.y + 15);
+            });
+            
+            // Wind farm location
+            wrfCtx.fillStyle = '#f44336';
+            wrfCtx.beginPath();
+            wrfCtx.arc(200, 150, 5, 0, 2 * Math.PI);
+            wrfCtx.fill();
+            
+            wrfCtx.font = 'bold 14px Arial';
+            wrfCtx.fillText('Nested WRF Domains', 120, 290);
+
+            // WRF Interpolation
+            new Chart('wrfInterpolation', {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Model Levels',
+                            data: [
+                                {x: 8.5, y: 10}, {x: 9.0, y: 30}, {x: 9.5, y: 50},
+                                {x: 10.0, y: 80}, {x: 10.5, y: 120}, {x: 11.0, y: 160}
+                            ],
+                            backgroundColor: 'rgb(33, 150, 243)',
+                            pointRadius: 6
+                        },
+                        {
+                            label: 'Interpolated',
+                            data: [{x: 10.3, y: 100}],
+                            backgroundColor: 'rgb(255, 99, 132)',
+                            pointRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Hub Height Interpolation' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Height (m)' } }
+                    }
+                }
+            });
+
+            // Temporal Downscaling
+            new Chart('temporalDownscale', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 48}, (_, i) => i * 0.5),
+                    datasets: [
+                        {
+                            label: '3-hourly WRF',
+                            data: Array.from({length: 48}, (_, i) => {
+                                if (i % 6 === 0) return 8 + 2 * Math.sin(i * 0.26);
+                                return null;
+                            }),
+                            borderColor: 'rgb(244, 67, 54)',
+                            pointRadius: 4,
+                            showLine: false
+                        },
+                        {
+                            label: '10-min Interpolated',
+                            data: Array.from({length: 48}, (_, i) => 
+                                8 + 2 * Math.sin(i * 0.26) + (Math.random() - 0.5) * 0.5
+                            ),
+                            borderColor: 'rgb(76, 175, 80)',
+                            borderWidth: 1,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Temporal Downscaling' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Time (hours)' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Mesh Refinement
+            const meshCanvas = document.getElementById('meshRefinement');
+            const meshCtx = meshCanvas.getContext('2d');
+            
+            meshCtx.fillStyle = '#f0f0f0';
+            meshCtx.fillRect(0, 0, 400, 300);
+            
+            // Draw mesh with refinement
+            meshCtx.strokeStyle = '#999';
+            meshCtx.lineWidth = 0.5;
+            
+            // Coarse mesh
+            for (let x = 0; x < 400; x += 40) {
+                meshCtx.beginPath();
+                meshCtx.moveTo(x, 0);
+                meshCtx.lineTo(x, 300);
+                meshCtx.stroke();
+            }
+            for (let y = 0; y < 300; y += 40) {
+                meshCtx.beginPath();
+                meshCtx.moveTo(0, y);
+                meshCtx.lineTo(400, y);
+                meshCtx.stroke();
+            }
+            
+            // Medium refinement
+            meshCtx.strokeStyle = '#666';
+            for (let x = 120; x <= 280; x += 20) {
+                meshCtx.beginPath();
+                meshCtx.moveTo(x, 80);
+                meshCtx.lineTo(x, 220);
+                meshCtx.stroke();
+            }
+            for (let y = 80; y <= 220; y += 20) {
+                meshCtx.beginPath();
+                meshCtx.moveTo(120, y);
+                meshCtx.lineTo(280, y);
+                meshCtx.stroke();
+            }
+            
+            // Fine refinement
+            meshCtx.strokeStyle = '#333';
+            for (let x = 180; x <= 220; x += 5) {
+                meshCtx.beginPath();
+                meshCtx.moveTo(x, 140);
+                meshCtx.lineTo(x, 160);
+                meshCtx.stroke();
+            }
+            for (let y = 140; y <= 160; y += 5) {
+                meshCtx.beginPath();
+                meshCtx.moveTo(180, y);
+                meshCtx.lineTo(220, y);
+                meshCtx.stroke();
+            }
+            
+            // Turbine
+            meshCtx.fillStyle = '#f44336';
+            meshCtx.fillRect(195, 145, 10, 10);
+            
+            meshCtx.fillStyle = '#333';
+            meshCtx.font = 'bold 14px Arial';
+            meshCtx.fillText('Adaptive Mesh Refinement', 100, 20);
+
+            // Wake Deficit
+            new Chart('wakeDeficit', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 20}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Centerline',
+                            data: Array.from({length: 20}, (_, i) => 
+                                i === 0 ? 0.4 : 0.4 * Math.pow(1 / (1 + 0.075 * i), 2)
+                            ),
+                            borderColor: 'rgb(255, 99, 132)'
+                        },
+                        {
+                            label: 'r = 0.5D',
+                            data: Array.from({length: 20}, (_, i) => 
+                                i === 0 ? 0.3 : 0.3 * Math.pow(1 / (1 + 0.075 * i), 2) * 0.7
+                            ),
+                            borderColor: 'rgb(54, 162, 235)'
+                        },
+                        {
+                            label: 'r = 1.0D',
+                            data: Array.from({length: 20}, (_, i) => 
+                                i === 0 ? 0.1 : 0.1 * Math.pow(1 / (1 + 0.075 * i), 2) * 0.4
+                            ),
+                            borderColor: 'rgb(255, 206, 86)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wake Velocity Deficit' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Distance (D)' } },
+                        y: { 
+                            title: { display: true, text: 'Velocity Deficit' },
+                            min: 0,
+                            max: 0.5
+                        }
+                    }
+                }
+            });
+
+            // Wake Expansion
+            new Chart('wakeExpansion', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 20}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Wake Radius',
+                            data: Array.from({length: 20}, (_, i) => 0.5 + 0.075 * i),
+                            borderColor: 'rgb(76, 175, 80)',
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            fill: '+1'
+                        },
+                        {
+                            label: 'Wake Radius',
+                            data: Array.from({length: 20}, (_, i) => -(0.5 + 0.075 * i)),
+                            borderColor: 'rgb(76, 175, 80)',
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            fill: '-1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wake Expansion' },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Distance (D)' } },
+                        y: { 
+                            title: { display: true, text: 'Radius (D)' },
+                            min: -2,
+                            max: 2
+                        }
+                    }
+                }
+            });
+
+            // Wake Comparison
+            new Chart('wakeComparison', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 30}, (_, i) => i * 0.5),
+                    datasets: [
+                        {
+                            label: 'Jensen',
+                            data: Array.from({length: 30}, (_, i) => {
+                                const x = i * 0.5;
+                                return x === 0 ? 1 : 1 - 2 * 0.33 / Math.pow(1 + 0.04 * x, 2);
+                            }),
+                            borderColor: 'rgb(255, 99, 132)'
+                        },
+                        {
+                            label: 'Gaussian',
+                            data: Array.from({length: 30}, (_, i) => {
+                                const x = i * 0.5;
+                                const sigma = 0.5 + 0.08 * x;
+                                return x === 0 ? 1 : 1 - 0.5 * Math.exp(-0.5 / (sigma * sigma));
+                            }),
+                            borderColor: 'rgb(54, 162, 235)'
+                        },
+                        {
+                            label: 'LES Data',
+                            data: Array.from({length: 30}, (_, i) => {
+                                const x = i * 0.5;
+                                return x === 0 ? 1 : 0.4 + 0.6 * (1 + 0.2 * Math.sin(x)) / (1 + 0.05 * x);
+                            }),
+                            borderColor: 'rgb(75, 192, 192)',
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wake Model Comparison (Centerline)' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Distance (D)' } },
+                        y: { 
+                            title: { display: true, text: 'Normalized Velocity' },
+                            min: 0.3,
+                            max: 1.1
+                        }
+                    }
+                }
+            });
+
+            // GA Optimization
+            new Chart('gaOptimization', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 50}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Best Fitness',
+                            data: Array.from({length: 50}, (_, i) => 
+                                0.85 + 0.13 * (1 - Math.exp(-i / 10))
+                            ),
+                            borderColor: 'rgb(76, 175, 80)'
+                        },
+                        {
+                            label: 'Mean Fitness',
+                            data: Array.from({length: 50}, (_, i) => 
+                                0.75 + 0.15 * (1 - Math.exp(-i / 15))
+                            ),
+                            borderColor: 'rgb(33, 150, 243)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Genetic Algorithm Convergence' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Generation' } },
+                        y: { 
+                            title: { display: true, text: 'Normalized AEP' },
+                            min: 0.7,
+                            max: 1.0
+                        }
+                    }
+                }
+            });
+
+            // Layout Patterns
+            const layoutCanvas = document.getElementById('layoutPatterns');
+            const layoutCtx = layoutCanvas.getContext('2d');
+            
+            layoutCtx.fillStyle = '#e3f2fd';
+            layoutCtx.fillRect(0, 0, 400, 300);
+            
+            // Regular grid
+            layoutCtx.fillStyle = 'rgb(255, 99, 132)';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    layoutCtx.beginPath();
+                    layoutCtx.arc(50 + i * 30, 50 + j * 30, 4, 0, 2 * Math.PI);
+                    layoutCtx.fill();
+                }
+            }
+            layoutCtx.fillStyle = '#333';
+            layoutCtx.font = '12px Arial';
+            layoutCtx.fillText('Regular', 45, 150);
+            
+            // Optimized
+            const optPositions = [
+                {x: 200, y: 40}, {x: 170, y: 70}, {x: 230, y: 80},
+                {x: 160, y: 110}, {x: 210, y: 120}, {x: 250, y: 100},
+                {x: 180, y: 140}, {x: 240, y: 140}
+            ];
+            layoutCtx.fillStyle = 'rgb(76, 175, 80)';
+            optPositions.forEach(pos => {
+                layoutCtx.beginPath();
+                layoutCtx.arc(pos.x, pos.y, 4, 0, 2 * Math.PI);
+                layoutCtx.fill();
+            });
+            layoutCtx.fillStyle = '#333';
+            layoutCtx.fillText('Optimized', 195, 150);
+            
+            // Prevailing wind arrow
+            layoutCtx.strokeStyle = '#666';
+            layoutCtx.lineWidth = 2;
+            layoutCtx.beginPath();
+            layoutCtx.moveTo(320, 200);
+            layoutCtx.lineTo(320, 250);
+            layoutCtx.moveTo(310, 240);
+            layoutCtx.lineTo(320, 250);
+            layoutCtx.lineTo(330, 240);
+            layoutCtx.stroke();
+            layoutCtx.fillText('Wind', 305, 270);
+            
+            layoutCtx.font = 'bold 14px Arial';
+            layoutCtx.fillText('Layout Comparison', 130, 20);
+
+            // Loss Cascade
+            new Chart('lossCascade', {
+                type: 'bar',
+                data: {
+                    labels: ['Gross', 'Wake', 'Avail.', 'Elec.', 'Perf.', 'Env.', 'Curt.', 'Net'],
+                    datasets: [{
+                        label: 'Energy (GWh/yr)',
+                        data: [100, 90, 85, 83, 81, 80, 78, 78],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.8)',
+                            'rgba(33, 150, 243, 0.6)',
+                            'rgba(33, 150, 243, 0.6)',
+                            'rgba(33, 150, 243, 0.6)',
+                            'rgba(33, 150, 243, 0.6)',
+                            'rgba(33, 150, 243, 0.6)',
+                            'rgba(33, 150, 243, 0.6)',
+                            'rgba(255, 152, 0, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Energy Loss Cascade' }
+                    },
+                    scales: {
+                        y: { 
+                            title: { display: true, text: 'Annual Energy (GWh)' },
+                            min: 0,
+                            max: 110
+                        }
+                    }
+                }
+            });
+
+            // AEP Uncertainty
+            new Chart('aepUncertainty', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 100}, (_, i) => 70 + i * 0.4),
+                    datasets: [
+                        {
+                            label: 'P50',
+                            data: Array.from({length: 100}, (_, i) => {
+                                const x = 70 + i * 0.4;
+                                return 100 * Math.exp(-Math.pow(x - 100, 2) / 200);
+                            }),
+                            borderColor: 'rgb(33, 150, 243)',
+                            backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                            fill: false
+                        },
+                        {
+                            label: 'P90',
+                            data: Array.from({length: 100}, (_, i) => {
+                                const x = 70 + i * 0.4;
+                                return 100 * Math.exp(-Math.pow(x - 92, 2) / 200);
+                            }),
+                            borderColor: 'rgb(255, 152, 0)',
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'AEP Probability Distribution' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'AEP (GWh/yr)' } },
+                        y: { title: { display: true, text: 'Probability Density' } }
+                    }
+                }
+            });
+
+            // Coupling Workflow
+            const couplingCanvas = document.getElementById('couplingWorkflow');
+            const couplingCtx = couplingCanvas.getContext('2d');
+            
+            couplingCtx.fillStyle = '#f0f0f0';
+            couplingCtx.fillRect(0, 0, 400, 300);
+            
+            // Boxes
+            const boxes = [
+                {x: 50, y: 30, w: 100, h: 40, text: 'Global NWP', color: '#bbdefb'},
+                {x: 50, y: 100, w: 100, h: 40, text: 'Mesoscale', color: '#c8e6c9'},
+                {x: 50, y: 170, w: 100, h: 40, text: 'Microscale', color: '#ffe0b2'},
+                {x: 250, y: 100, w: 100, h: 40, text: 'Wave Model', color: '#f8bbd0'},
+                {x: 150, y: 240, w: 100, h: 40, text: 'Wind Farm', color: '#d1c4e9'}
+            ];
+            
+            boxes.forEach(box => {
+                couplingCtx.fillStyle = box.color;
+                couplingCtx.fillRect(box.x, box.y, box.w, box.h);
+                couplingCtx.strokeStyle = '#666';
+                couplingCtx.strokeRect(box.x, box.y, box.w, box.h);
+                
+                couplingCtx.fillStyle = '#333';
+                couplingCtx.font = '12px Arial';
+                couplingCtx.textAlign = 'center';
+                couplingCtx.fillText(box.text, box.x + box.w/2, box.y + 25);
+            });
+            
+            // Arrows
+            couplingCtx.strokeStyle = '#666';
+            couplingCtx.lineWidth = 2;
+            
+            // NWP to Meso
+            couplingCtx.beginPath();
+            couplingCtx.moveTo(100, 70);
+            couplingCtx.lineTo(100, 100);
+            couplingCtx.stroke();
+            
+            // Meso to Micro
+            couplingCtx.beginPath();
+            couplingCtx.moveTo(100, 140);
+            couplingCtx.lineTo(100, 170);
+            couplingCtx.stroke();
+            
+            // Wave to Meso
+            couplingCtx.beginPath();
+            couplingCtx.moveTo(250, 120);
+            couplingCtx.lineTo(150, 120);
+            couplingCtx.stroke();
+            
+            // Micro to Wind Farm
+            couplingCtx.beginPath();
+            couplingCtx.moveTo(100, 210);
+            couplingCtx.lineTo(150, 250);
+            couplingCtx.stroke();
+            
+            couplingCtx.textAlign = 'left';
+            couplingCtx.font = 'bold 14px Arial';
+            couplingCtx.fillText('Model Coupling Framework', 100, 20);
+
+            // Wave Coupling
+            new Chart('waveCoupling', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'z0 vs Wave Age',
+                        data: Array.from({length: 50}, () => {
+                            const waveAge = Math.random() * 2 + 0.5;
+                            const z0 = 0.0002 * (1 + 2 * Math.exp(-waveAge));
+                            return {x: waveAge, y: z0};
+                        }),
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wave-Dependent Roughness' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wave Age (cp/u*)' } },
+                        y: { 
+                            title: { display: true, text: 'z0 (m)' },
+                            type: 'logarithmic'
+                        }
+                    }
+                }
+            });
+
+            // Uncertainty Propagation
+            new Chart('uncertaintyProp', {
+                type: 'bar',
+                data: {
+                    labels: ['Wind', 'Shear', 'TI', 'Losses', 'Model', 'Total'],
+                    datasets: [{
+                        label: 'Uncertainty (%)',
+                        data: [4, 2, 3, 3, 4, 7.5],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Uncertainty Components' }
+                    },
+                    scales: {
+                        y: { 
+                            title: { display: true, text: 'Standard Deviation (%)' },
+                            min: 0,
+                            max: 10
+                        }
+                    }
+                }
+            });
+
+            // Ensemble Spread
+            new Chart('ensembleSpread', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 48}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Ensemble Mean',
+                            data: Array.from({length: 48}, (_, i) => 
+                                10 + 3 * Math.sin(i * 0.13) + 0.5 * Math.sin(i * 0.5)
+                            ),
+                            borderColor: 'rgb(255, 99, 132)',
+                            borderWidth: 3
+                        },
+                        ...Array.from({length: 5}, (_, j) => ({
+                            label: `Member ${j+1}`,
+                            data: Array.from({length: 48}, (_, i) => 
+                                10 + 3 * Math.sin(i * 0.13 + j * 0.2) + 
+                                0.5 * Math.sin(i * 0.5) + (Math.random() - 0.5) * 2
+                            ),
+                            borderColor: 'rgba(33, 150, 243, 0.3)',
+                            borderWidth: 1,
+                            pointRadius: 0
+                        }))
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Ensemble Model Spread' },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Forecast Hour' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Model Validation
+            new Chart('modelValidation', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Model vs Mast',
+                        data: Array.from({length: 100}, () => {
+                            const obs = Math.random() * 20 + 2;
+                            const model = obs + (Math.random() - 0.5) * 3 + 0.5;
+                            return {x: obs, y: model};
+                        }),
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Model Validation Scatter' }
+                    },
+                    scales: {
+                        x: { 
+                            title: { display: true, text: 'Observed Wind Speed (m/s)' },
+                            min: 0,
+                            max: 25
+                        },
+                        y: { 
+                            title: { display: true, text: 'Modeled Wind Speed (m/s)' },
+                            min: 0,
+                            max: 25
+                        }
+                    }
+                }
+            });
+
+            // Error Statistics
+            new Chart('errorStats', {
+                type: 'bar',
+                data: {
+                    labels: ['Bias', 'RMSE', 'MAE', 'r²'],
+                    datasets: [
+                        {
+                            label: 'Mesoscale',
+                            data: [0.5, 1.8, 1.2, 0.85],
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                        },
+                        {
+                            label: 'Microscale',
+                            data: [0.2, 1.2, 0.8, 0.92],
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Model Error Statistics' }
+                    },
+                    scales: {
+                        y: { 
+                            title: { display: true, text: 'Value' }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    <!-- Modal for enlarged charts -->
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-canvas-container">
+                <canvas id="modalCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        let modal = document.getElementById('chartModal');
+        let modalCanvas = document.getElementById('modalCanvas');
+        let modalClose = document.querySelector('.modal-close');
+        let activeChart = null;
+
+        // Function to open modal with chart
+        function openChartModal(originalCanvas) {
+            // Special handling for custom drawn canvases
+            const customCanvases = ['wrfDomains', 'meshRefinement', 'layoutPatterns', 'couplingWorkflow'];
+            if (customCanvases.includes(originalCanvas.id)) {
+                // For custom drawn canvases, just copy the image
+                modal.style.display = 'block';
+                modalCanvas.width = 800;
+                modalCanvas.height = 600;
+                const modalCtx = modalCanvas.getContext('2d');
+                modalCtx.fillStyle = '#fff';
+                modalCtx.fillRect(0, 0, modalCanvas.width, modalCanvas.height);
+                modalCtx.drawImage(originalCanvas, 0, 0, modalCanvas.width, modalCanvas.height);
+                return;
+            }
+
+            // Get the chart instance from the original canvas
+            let originalChart = Chart.getChart(originalCanvas);
+            if (!originalChart) return;
+
+            modal.style.display = 'block';
+            
+            // Clone the chart configuration
+            let config = JSON.parse(JSON.stringify(originalChart.config));
+            
+            // Adjust size for modal
+            modalCanvas.width = 800;
+            modalCanvas.height = 600;
+            
+            // Destroy previous chart if exists
+            if (activeChart) {
+                activeChart.destroy();
+            }
+            
+            // Create new chart in modal
+            activeChart = new Chart(modalCanvas, config);
+        }
+
+        // Close modal
+        modalClose.onclick = function() {
+            modal.style.display = 'none';
+            if (activeChart) {
+                activeChart.destroy();
+                activeChart = null;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                if (activeChart) {
+                    activeChart.destroy();
+                    activeChart = null;
+                }
+            }
+        }
+
+        // Add click handlers to all canvases after charts are loaded
+        setTimeout(() => {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                if (canvas.id !== 'modalCanvas') {
+                    canvas.classList.add('clickable-chart');
+                    canvas.addEventListener('click', function() {
+                        openChartModal(this);
+                    });
+                }
+            });
+        }, 500);
+    </script>
+</body>
+</html>

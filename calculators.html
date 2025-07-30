@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculators - Offshore Wind Analysis Textbook</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="calculators.js"></script>
+</head>
+<body>
+    <nav class="nav-main">
+        <a href="index.html">Home</a>
+        <a href="theory.html">Theory</a>
+        <a href="measurement.html">Measurements</a>
+        <a href="modeling.html">Modeling</a>
+        <a href="data-processing.html">Data Processing</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="advanced-topics.html">Advanced Topics</a>
+        <a href="calculators.html" class="active">Calculators</a>
+        <a href="exercises.html">Exercises</a>
+        <a href="formulas.html">Formulas</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="references.html">References</a>
+        <a href="datasets.html">Datasets</a>
+    </nav>
+
+    <div class="header">
+        <h1>🧮 Interactive Calculators</h1>
+        <p>Practical Tools for Wind Resource Assessment</p>
+    </div>
+
+    <div class="container">
+        <!-- Calculator Navigation -->
+        <div class="section">
+            <h2>Available Calculators</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Wind Profiles</h3>
+                    <ul>
+                        <li><a href="#shear-calc">Shear Exponent</a></li>
+                        <li><a href="#extrapolation-calc">Height Extrapolation</a></li>
+                        <li><a href="#air-density-calc">Air Density</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Statistics</h3>
+                    <ul>
+                        <li><a href="#weibull-calc">Weibull Distribution</a></li>
+                        <li><a href="#wind-dir-calc">Wind Direction</a></li>
+                        <li><a href="#ti-calc">Turbulence Intensity</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Energy & Economics</h3>
+                    <ul>
+                        <li><a href="#power-density-calc">Power Density</a></li>
+                        <li><a href="#aep-calc">AEP Calculator</a></li>
+                        <li><a href="#lcoe-calc">LCOE Calculator</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shear Exponent Calculator -->
+        <div class="section" id="shear-calc">
+            <h2>Wind Shear Exponent Calculator</h2>
+            <div class="calculator">
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Wind Speed 1 (m/s):</label>
+                            <input type="number" class="form-control" id="shear-v1" value="8.0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Height 1 (m):</label>
+                            <input type="number" class="form-control" id="shear-h1" value="10" step="1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Wind Speed 2 (m/s):</label>
+                            <input type="number" class="form-control" id="shear-v2" value="10.0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Height 2 (m):</label>
+                            <input type="number" class="form-control" id="shear-h2" value="100" step="1">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calculateShear()">Calculate</button>
+                <div class="calculator-result mt-20" id="shear-result" style="display:none;">
+                    Shear Exponent α = <span id="shear-alpha"></span>
+                </div>
+            </div>
+            <div class="info-box mt-20">
+                <strong>Typical Values:</strong> Offshore α = 0.10-0.15, Onshore α = 0.15-0.25
+            </div>
+        </div>
+
+        <!-- Height Extrapolation Calculator -->
+        <div class="section" id="extrapolation-calc">
+            <h2>Wind Speed Height Extrapolation</h2>
+            <div class="calculator">
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="switchTab('power-law')">Power Law</button>
+                        <button class="tab-button" onclick="switchTab('log-law')">Log Law</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="power-law-tab">
+                        <div class="calculator-grid">
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Reference Wind Speed (m/s):</label>
+                                    <input type="number" class="form-control" id="extrap-vref" value="8.5" step="0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Reference Height (m):</label>
+                                    <input type="number" class="form-control" id="extrap-href" value="10" step="1">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Target Height (m):</label>
+                                    <input type="number" class="form-control" id="extrap-htarget" value="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Shear Exponent α:</label>
+                                    <input type="number" class="form-control" id="extrap-alpha" value="0.11" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="log-law-tab">
+                        <div class="calculator-grid">
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Reference Wind Speed (m/s):</label>
+                                    <input type="number" class="form-control" id="log-vref" value="8.5" step="0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Reference Height (m):</label>
+                                    <input type="number" class="form-control" id="log-href" value="10" step="1">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Target Height (m):</label>
+                                    <input type="number" class="form-control" id="log-htarget" value="100" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Roughness Length z₀ (m):</label>
+                                    <input type="number" class="form-control" id="log-z0" value="0.0002" step="0.0001">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="calculateExtrapolation()">Calculate</button>
+                <div class="calculator-result mt-20" id="extrap-result" style="display:none;">
+                    Wind Speed at Target Height = <span id="extrap-speed"></span> m/s
+                </div>
+                
+                <canvas id="extrapChart" style="margin-top: 20px; display:none;"></canvas>
+            </div>
+        </div>
+
+        <!-- Weibull Calculator -->
+        <div class="section" id="weibull-calc">
+            <h2>Weibull Distribution Calculator</h2>
+            <div class="calculator">
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Shape Parameter k:</label>
+                            <input type="number" class="form-control" id="weibull-k" value="2.0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Scale Parameter A (m/s):</label>
+                            <input type="number" class="form-control" id="weibull-A" value="9.0" step="0.1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Calculate at Speed (m/s):</label>
+                            <input type="number" class="form-control" id="weibull-v" value="10.0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mean Wind Speed:</label>
+                            <input type="text" class="form-control" id="weibull-mean" readonly>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calculateWeibullDist()">Calculate</button>
+                <div class="calculator-result mt-20" id="weibull-result" style="display:none;">
+                    <div>PDF = <span id="weibull-pdf"></span></div>
+                    <div>CDF = <span id="weibull-cdf"></span></div>
+                    <div>P(V > v) = <span id="weibull-exceed"></span></div>
+                </div>
+                
+                <canvas id="weibullChart" style="margin-top: 20px;"></canvas>
+            </div>
+        </div>
+
+        <!-- Power Density Calculator -->
+        <div class="section" id="power-density-calc">
+            <h2>Wind Power Density Calculator</h2>
+            <div class="calculator">
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Air Density ρ (kg/m³):</label>
+                            <input type="number" class="form-control" id="wpd-rho" value="1.225" step="0.001">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Wind Speed (m/s):</label>
+                            <input type="number" class="form-control" id="wpd-speed" value="10.0" step="0.1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Weibull k:</label>
+                            <input type="number" class="form-control" id="wpd-k" value="2.0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Weibull A (m/s):</label>
+                            <input type="number" class="form-control" id="wpd-A" value="9.0" step="0.1">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calculatePowerDensity()">Calculate</button>
+                <div class="calculator-result mt-20" id="wpd-result" style="display:none;">
+                    <div>Instantaneous Power Density = <span id="wpd-instant"></span> W/m²</div>
+                    <div>Mean Power Density (Weibull) = <span id="wpd-mean"></span> W/m²</div>
+                    <div>Wind Class = <span id="wpd-class"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Turbulence Intensity Calculator -->
+        <div class="section" id="ti-calc">
+            <h2>Turbulence Intensity Calculator</h2>
+            <div class="calculator">
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Wind Speed Std Dev σ (m/s):</label>
+                            <input type="number" class="form-control" id="ti-sigma" value="1.5" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mean Wind Speed (m/s):</label>
+                            <input type="number" class="form-control" id="ti-mean" value="10.0" step="0.1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">IEC Class:</label>
+                            <select class="form-control" id="ti-iec">
+                                <option value="A">Class A (High)</option>
+                                <option value="B" selected>Class B (Medium)</option>
+                                <option value="C">Class C (Low)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Reference TI at 15 m/s:</label>
+                            <input type="text" class="form-control" id="ti-ref" readonly>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calculateTI()">Calculate</button>
+                <div class="calculator-result mt-20" id="ti-result" style="display:none;">
+                    <div>Turbulence Intensity = <span id="ti-value"></span></div>
+                    <div>IEC Characteristic TI = <span id="ti-iec-value"></span></div>
+                    <div>Status: <span id="ti-status"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AEP Calculator -->
+        <div class="section" id="aep-calc">
+            <h2>Annual Energy Production (AEP) Calculator</h2>
+            <div class="calculator">
+                <h3>Wind Distribution</h3>
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Weibull k:</label>
+                            <input type="number" class="form-control" id="aep-k" value="2.0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Weibull A (m/s):</label>
+                            <input type="number" class="form-control" id="aep-A" value="9.0" step="0.1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Hub Height (m):</label>
+                            <input type="number" class="form-control" id="aep-height" value="100" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Air Density (kg/m³):</label>
+                            <input type="number" class="form-control" id="aep-rho" value="1.225" step="0.001">
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Turbine Parameters</h3>
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Rated Power (MW):</label>
+                            <input type="number" class="form-control" id="aep-rated" value="5.0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Rotor Diameter (m):</label>
+                            <input type="number" class="form-control" id="aep-diameter" value="126" step="1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Cut-in Speed (m/s):</label>
+                            <input type="number" class="form-control" id="aep-cutin" value="3.0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cut-out Speed (m/s):</label>
+                            <input type="number" class="form-control" id="aep-cutout" value="25.0" step="0.5">
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Losses</h3>
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Availability (%):</label>
+                            <input type="number" class="form-control" id="aep-availability" value="97" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Wake Losses (%):</label>
+                            <input type="number" class="form-control" id="aep-wake" value="8" step="0.5">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Electrical Losses (%):</label>
+                            <input type="number" class="form-control" id="aep-electrical" value="3" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Other Losses (%):</label>
+                            <input type="number" class="form-control" id="aep-other" value="2" step="0.5">
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="calculateAEPFull()">Calculate AEP</button>
+                <div class="calculator-result mt-20" id="aep-result" style="display:none;">
+                    <div>Gross AEP = <span id="aep-gross"></span> GWh/year</div>
+                    <div>Net AEP = <span id="aep-net"></span> GWh/year</div>
+                    <div>Capacity Factor = <span id="aep-cf"></span>%</div>
+                    <div>Full Load Hours = <span id="aep-flh"></span> hours/year</div>
+                </div>
+                
+                <canvas id="aepChart" style="margin-top: 20px; display:none;"></canvas>
+            </div>
+        </div>
+
+        <!-- LCOE Calculator -->
+        <div class="section" id="lcoe-calc">
+            <h2>Levelized Cost of Energy (LCOE) Calculator</h2>
+            <div class="calculator">
+                <h3>Project Parameters</h3>
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">CAPEX (€/MW):</label>
+                            <input type="number" class="form-control" id="lcoe-capex" value="3000000" step="100000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">OPEX (€/MW/year):</label>
+                            <input type="number" class="form-control" id="lcoe-opex" value="50000" step="5000">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Project Capacity (MW):</label>
+                            <input type="number" class="form-control" id="lcoe-capacity" value="500" step="50">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Net AEP (GWh/year):</label>
+                            <input type="number" class="form-control" id="lcoe-aep" value="2000" step="100">
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Financial Parameters</h3>
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Discount Rate (%):</label>
+                            <input type="number" class="form-control" id="lcoe-discount" value="7" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Project Lifetime (years):</label>
+                            <input type="number" class="form-control" id="lcoe-lifetime" value="25" step="1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Electricity Price (€/MWh):</label>
+                            <input type="number" class="form-control" id="lcoe-price" value="80" step="5">
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="calculateLCOEFull()">Calculate LCOE</button>
+                <div class="calculator-result mt-20" id="lcoe-result" style="display:none;">
+                    <div>LCOE = <span id="lcoe-value"></span> €/MWh</div>
+                    <div>Total CAPEX = <span id="lcoe-total-capex"></span> M€</div>
+                    <div>NPV Revenue = <span id="lcoe-npv"></span> M€</div>
+                    <div>Payback Period ≈ <span id="lcoe-payback"></span> years</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Air Density Calculator -->
+        <div class="section" id="air-density-calc">
+            <h2>Air Density Calculator</h2>
+            <div class="calculator">
+                <div class="calculator-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Pressure (Pa):</label>
+                            <input type="number" class="form-control" id="density-pressure" value="101325" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Temperature (°C):</label>
+                            <input type="number" class="form-control" id="density-temp" value="15" step="0.5">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Relative Humidity (%):</label>
+                            <input type="number" class="form-control" id="density-humidity" value="60" step="5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Altitude (m):</label>
+                            <input type="number" class="form-control" id="density-altitude" value="0" step="10">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calculateDensity()">Calculate</button>
+                <div class="calculator-result mt-20" id="density-result" style="display:none;">
+                    <div>Air Density = <span id="density-value"></span> kg/m³</div>
+                    <div>Density Ratio = <span id="density-ratio"></span> (relative to standard)</div>
+                    <div>Power Adjustment Factor = <span id="density-power"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wind Direction Statistics -->
+        <div class="section" id="wind-dir-calc">
+            <h2>Wind Direction Statistics Calculator</h2>
+            <div class="calculator">
+                <div class="form-group">
+                    <label class="form-label">Enter Wind Directions (degrees, comma-separated):</label>
+                    <textarea class="form-control" id="winddir-data" rows="4">
+350, 10, 355, 5, 0, 15, 20, 355, 10, 5, 0, 350, 15, 10, 355
+                    </textarea>
+                </div>
+                <button class="btn btn-primary" onclick="calculateWindDir()">Calculate</button>
+                <div class="calculator-result mt-20" id="winddir-result" style="display:none;">
+                    <div>Mean Direction = <span id="winddir-mean"></span>°</div>
+                    <div>Standard Deviation = <span id="winddir-std"></span>°</div>
+                    <div>Resultant Length = <span id="winddir-r"></span></div>
+                    <div>Prevailing Sector = <span id="winddir-sector"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Offshore Wind Analysis Textbook | Interactive Calculators</p>
+        <p>
+            <a href="advanced-topics.html">← Previous: Advanced Topics</a> | 
+            <a href="exercises.html">Next: Exercises →</a>
+        </p>
+    </footer>
+
+    <script>
+        // Calculator Functions
+        function calculateShear() {
+            const v1 = parseFloat(document.getElementById('shear-v1').value);
+            const h1 = parseFloat(document.getElementById('shear-h1').value);
+            const v2 = parseFloat(document.getElementById('shear-v2').value);
+            const h2 = parseFloat(document.getElementById('shear-h2').value);
+            
+            const alpha = calculateShearExponent(v1, h1, v2, h2);
+            
+            document.getElementById('shear-alpha').textContent = alpha.toFixed(3);
+            document.getElementById('shear-result').style.display = 'block';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function calculateExtrapolation() {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            let speed;
+            
+            if (activeTab === 'power-law-tab') {
+                const vRef = parseFloat(document.getElementById('extrap-vref').value);
+                const hRef = parseFloat(document.getElementById('extrap-href').value);
+                const hTarget = parseFloat(document.getElementById('extrap-htarget').value);
+                const alpha = parseFloat(document.getElementById('extrap-alpha').value);
+                
+                speed = powerLawExtrapolation(vRef, hRef, hTarget, alpha);
+                
+                // Draw profile
+                drawWindProfile('power', vRef, hRef, alpha);
+            } else {
+                const vRef = parseFloat(document.getElementById('log-vref').value);
+                const hRef = parseFloat(document.getElementById('log-href').value);
+                const hTarget = parseFloat(document.getElementById('log-htarget').value);
+                const z0 = parseFloat(document.getElementById('log-z0').value);
+                
+                speed = logLawExtrapolation(vRef, hRef, hTarget, z0);
+                
+                // Draw profile
+                drawWindProfile('log', vRef, hRef, z0);
+            }
+            
+            document.getElementById('extrap-speed').textContent = speed.toFixed(2);
+            document.getElementById('extrap-result').style.display = 'block';
+            document.getElementById('extrapChart').style.display = 'block';
+        }
+
+        function drawWindProfile(type, vRef, hRef, param) {
+            const heights = Array.from({length: 20}, (_, i) => 10 + i * 10);
+            const speeds = heights.map(h => {
+                if (type === 'power') {
+                    return powerLawExtrapolation(vRef, hRef, h, param);
+                } else {
+                    return logLawExtrapolation(vRef, hRef, h, param);
+                }
+            });
+            
+            const ctx = document.getElementById('extrapChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: speeds,
+                    datasets: [{
+                        label: 'Wind Profile',
+                        data: heights,
+                        borderColor: 'rgb(33, 150, 243)',
+                        backgroundColor: 'rgba(33, 150, 243, 0.1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Speed Profile' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Height (m)' } }
+                    }
+                }
+            });
+        }
+
+        function calculateWeibullDist() {
+            const k = parseFloat(document.getElementById('weibull-k').value);
+            const A = parseFloat(document.getElementById('weibull-A').value);
+            const v = parseFloat(document.getElementById('weibull-v').value);
+            
+            const result = calculateWeibull(k, A, v);
+            const mean = A * gamma(1 + 1/k);
+            
+            document.getElementById('weibull-pdf').textContent = result.pdf.toFixed(4);
+            document.getElementById('weibull-cdf').textContent = result.cdf.toFixed(4);
+            document.getElementById('weibull-exceed').textContent = (1 - result.cdf).toFixed(4);
+            document.getElementById('weibull-mean').value = mean.toFixed(2);
+            document.getElementById('weibull-result').style.display = 'block';
+            
+            // Draw Weibull distribution
+            drawWeibullChart(k, A);
+        }
+
+        function drawWeibullChart(k, A) {
+            const speeds = Array.from({length: 50}, (_, i) => i * 0.5);
+            const pdf = speeds.map(v => calculateWeibull(k, A, v).pdf);
+            
+            const ctx = document.getElementById('weibullChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: speeds,
+                    datasets: [{
+                        label: 'Weibull PDF',
+                        data: pdf,
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Weibull Distribution' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Probability Density' } }
+                    }
+                }
+            });
+        }
+
+        function calculatePowerDensity() {
+            const rho = parseFloat(document.getElementById('wpd-rho').value);
+            const speed = parseFloat(document.getElementById('wpd-speed').value);
+            const k = parseFloat(document.getElementById('wpd-k').value);
+            const A = parseFloat(document.getElementById('wpd-A').value);
+            
+            const instantPower = calculateWindPowerDensity(rho, speed);
+            const meanPower = calculateWindPowerDensity(rho, A) * gamma(1 + 3/k) / Math.pow(gamma(1 + 1/k), 3);
+            
+            let windClass = '';
+            if (meanPower < 200) windClass = 'Class 1 (Poor)';
+            else if (meanPower < 300) windClass = 'Class 2 (Marginal)';
+            else if (meanPower < 400) windClass = 'Class 3 (Fair)';
+            else if (meanPower < 500) windClass = 'Class 4 (Good)';
+            else if (meanPower < 600) windClass = 'Class 5 (Excellent)';
+            else if (meanPower < 800) windClass = 'Class 6 (Outstanding)';
+            else windClass = 'Class 7 (Superb)';
+            
+            document.getElementById('wpd-instant').textContent = instantPower.toFixed(1);
+            document.getElementById('wpd-mean').textContent = meanPower.toFixed(1);
+            document.getElementById('wpd-class').textContent = windClass;
+            document.getElementById('wpd-result').style.display = 'block';
+        }
+
+        function calculateTI() {
+            const sigma = parseFloat(document.getElementById('ti-sigma').value);
+            const mean = parseFloat(document.getElementById('ti-mean').value);
+            const iecClass = document.getElementById('ti-iec').value;
+            
+            const ti = calculateTurbulenceIntensity(sigma, mean);
+            
+            // IEC reference values
+            const iecRef = { 'A': 0.16, 'B': 0.14, 'C': 0.12 };
+            const iref = iecRef[iecClass];
+            document.getElementById('ti-ref').value = iref;
+            
+            // IEC characteristic TI
+            const iecTI = iref * (0.75 + 3.8/mean);
+            
+            const status = ti <= iecTI ? 'Within IEC Class ' + iecClass : 'Exceeds IEC Class ' + iecClass;
+            
+            document.getElementById('ti-value').textContent = (ti * 100).toFixed(1) + '%';
+            document.getElementById('ti-iec-value').textContent = (iecTI * 100).toFixed(1) + '%';
+            document.getElementById('ti-status').textContent = status;
+            document.getElementById('ti-result').style.display = 'block';
+        }
+
+        function calculateAEPFull() {
+            const k = parseFloat(document.getElementById('aep-k').value);
+            const A = parseFloat(document.getElementById('aep-A').value);
+            const ratedPower = parseFloat(document.getElementById('aep-rated').value) * 1000; // MW to kW
+            const diameter = parseFloat(document.getElementById('aep-diameter').value);
+            const cutIn = parseFloat(document.getElementById('aep-cutin').value);
+            const cutOut = parseFloat(document.getElementById('aep-cutout').value);
+            const availability = parseFloat(document.getElementById('aep-availability').value) / 100;
+            const wakeLoss = parseFloat(document.getElementById('aep-wake').value) / 100;
+            const elecLoss = parseFloat(document.getElementById('aep-electrical').value) / 100;
+            const otherLoss = parseFloat(document.getElementById('aep-other').value) / 100;
+            
+            // Generate power curve (simplified)
+            const powerCurve = [];
+            for (let v = 0; v <= 30; v++) {
+                let power = 0;
+                if (v >= cutIn && v < 12) {
+                    power = ratedPower * Math.pow((v - cutIn) / (12 - cutIn), 3);
+                } else if (v >= 12 && v < cutOut) {
+                    power = ratedPower;
+                }
+                powerCurve.push({ speed: v, power: power });
+            }
+            
+            // Generate wind distribution
+            const windDistribution = [];
+            for (let v = 0; v <= 30; v++) {
+                const freq = calculateWeibull(k, A, v).pdf;
+                windDistribution.push({ speed: v, frequency: freq });
+            }
+            
+            // Calculate AEP
+            const grossAEP = calculateAEP(powerCurve, windDistribution, 1) / 1000000; // Convert to GWh
+            const totalLossFactor = (1 - wakeLoss) * (1 - elecLoss) * (1 - otherLoss) * availability;
+            const netAEP = grossAEP * totalLossFactor;
+            
+            const cf = calculateCapacityFactor(netAEP * 1000000, ratedPower);
+            const flh = cf * 8760;
+            
+            document.getElementById('aep-gross').textContent = grossAEP.toFixed(1);
+            document.getElementById('aep-net').textContent = netAEP.toFixed(1);
+            document.getElementById('aep-cf').textContent = (cf * 100).toFixed(1);
+            document.getElementById('aep-flh').textContent = flh.toFixed(0);
+            document.getElementById('aep-result').style.display = 'block';
+            
+            // Draw power curve
+            drawPowerCurve(powerCurve);
+            document.getElementById('aepChart').style.display = 'block';
+        }
+
+        function drawPowerCurve(powerCurve) {
+            const ctx = document.getElementById('aepChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: powerCurve.map(p => p.speed),
+                    datasets: [{
+                        label: 'Power Curve',
+                        data: powerCurve.map(p => p.power / 1000), // Convert to MW
+                        borderColor: 'rgb(76, 175, 80)',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Turbine Power Curve' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Power Output (MW)' } }
+                    }
+                }
+            });
+        }
+
+        function calculateLCOEFull() {
+            const capexPerMW = parseFloat(document.getElementById('lcoe-capex').value);
+            const opexPerMW = parseFloat(document.getElementById('lcoe-opex').value);
+            const capacity = parseFloat(document.getElementById('lcoe-capacity').value);
+            const aep = parseFloat(document.getElementById('lcoe-aep').value) * 1000; // GWh to MWh
+            const discountRate = parseFloat(document.getElementById('lcoe-discount').value) / 100;
+            const lifetime = parseFloat(document.getElementById('lcoe-lifetime').value);
+            const price = parseFloat(document.getElementById('lcoe-price').value);
+            
+            const totalCapex = capexPerMW * capacity;
+            const annualOpex = opexPerMW * capacity;
+            
+            const lcoe = calculateLCOE(totalCapex, annualOpex, aep, discountRate, lifetime);
+            
+            // Calculate NPV
+            let npvRevenue = 0;
+            for (let year = 1; year <= lifetime; year++) {
+                const revenue = aep * price;
+                const discountFactor = Math.pow(1 + discountRate, -year);
+                npvRevenue += revenue * discountFactor;
+            }
+            
+            // Simple payback
+            const annualRevenue = aep * price;
+            const annualProfit = annualRevenue - annualOpex;
+            const payback = totalCapex / annualProfit;
+            
+            document.getElementById('lcoe-value').textContent = lcoe.toFixed(2);
+            document.getElementById('lcoe-total-capex').textContent = (totalCapex / 1000000).toFixed(1);
+            document.getElementById('lcoe-npv').textContent = (npvRevenue / 1000000).toFixed(1);
+            document.getElementById('lcoe-payback').textContent = payback.toFixed(1);
+            document.getElementById('lcoe-result').style.display = 'block';
+        }
+
+        function calculateDensity() {
+            const pressure = parseFloat(document.getElementById('density-pressure').value);
+            const temp = parseFloat(document.getElementById('density-temp').value);
+            const humidity = parseFloat(document.getElementById('density-humidity').value);
+            const altitude = parseFloat(document.getElementById('density-altitude').value);
+            
+            // Adjust pressure for altitude
+            const adjustedPressure = pressure * Math.pow(1 - 0.0065 * altitude / 288.15, 5.255);
+            
+            const density = calculateAirDensity(adjustedPressure, temp, humidity);
+            const standardDensity = 1.225;
+            const ratio = density / standardDensity;
+            
+            document.getElementById('density-value').textContent = density.toFixed(3);
+            document.getElementById('density-ratio').textContent = ratio.toFixed(3);
+            document.getElementById('density-power').textContent = ratio.toFixed(3);
+            document.getElementById('density-result').style.display = 'block';
+        }
+
+        function calculateWindDir() {
+            const dataText = document.getElementById('winddir-data').value;
+            const directions = dataText.split(',').map(d => parseFloat(d.trim())).filter(d => !isNaN(d));
+            
+            const stats = calculateWindDirectionStats(directions);
+            
+            // Determine sector
+            const sectorNames = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 
+                               'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+            const sectorIndex = Math.round(stats.meanDirection / 22.5) % 16;
+            const sector = sectorNames[sectorIndex];
+            
+            document.getElementById('winddir-mean').textContent = stats.meanDirection.toFixed(1);
+            document.getElementById('winddir-std').textContent = stats.standardDeviation.toFixed(1);
+            document.getElementById('winddir-r').textContent = stats.resultantLength.toFixed(3);
+            document.getElementById('winddir-sector').textContent = sector;
+            document.getElementById('winddir-result').style.display = 'block';
+        }
+
+        // Helper function for gamma function (approximation)
+        function gamma(z) {
+            // Stirling's approximation
+            if (z < 0.5) {
+                return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+            }
+            
+            const g = 7;
+            const C = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+                     771.32342877765313, -176.61502916214059, 12.507343278686905,
+                     -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+            
+            z -= 1;
+            let x = C[0];
+            for (let i = 1; i < g + 2; i++) {
+                x += C[i] / (z + i);
+            }
+            
+            const t = z + g + 0.5;
+            const sqrt2pi = Math.sqrt(2 * Math.PI);
+            
+            return sqrt2pi * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercises - Offshore Wind Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .exercise {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .exercise-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .difficulty {
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .difficulty.easy {
+            background: #d4edda;
+            color: #155724;
+        }
+        .difficulty.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .difficulty.hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .problem {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+        .solution {
+            margin: 15px 0;
+            padding: 15px;
+            background: #e8f4fd;
+            border-radius: 5px;
+            display: none;
+        }
+        .solution.show {
+            display: block;
+        }
+        .show-solution-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .show-solution-btn:hover {
+            background: #0052a3;
+        }
+        .hint {
+            background: #fffbeb;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #fbbf24;
+            display: none;
+        }
+        .hint.show {
+            display: block;
+        }
+        .show-hint-btn {
+            background: #fbbf24;
+            color: #78350f;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .data-table {
+            margin: 15px 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .data-table th {
+            background: #f0f0f0;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .exercise-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .exercise-nav button {
+            background: #e0e0e0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .exercise-nav button.active {
+            background: #0066cc;
+            color: white;
+        }
+        .step {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .answer-check {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="theory.html">Theory</a></li>
+            <li><a href="measurement.html">Measurement</a></li>
+            <li><a href="data-processing.html">Data Processing</a></li>
+            <li><a href="modeling.html">Modeling</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="formulas.html">Formulas</a></li>
+            <li><a href="exercises.html" class="active">Exercises</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Practice Exercises</h1>
+        
+        <div class="exercise-nav">
+            <button onclick="filterExercises('all')" class="active">All Exercises</button>
+            <button onclick="filterExercises('wind-profiles')">Wind Profiles</button>
+            <button onclick="filterExercises('statistics')">Statistics</button>
+            <button onclick="filterExercises('power-energy')">Power & Energy</button>
+            <button onclick="filterExercises('data-analysis')">Data Analysis</button>
+            <button onclick="filterExercises('economics')">Economics</button>
+        </div>
+
+        <!-- Exercise 1: Wind Profile Calculation -->
+        <div class="exercise" data-category="wind-profiles">
+            <div class="exercise-header">
+                <div class="exercise-title">Exercise 1: Wind Profile Extrapolation</div>
+                <div class="difficulty easy">Easy</div>
+            </div>
+            
+            <div class="problem">
+                <p><strong>Problem:</strong></p>
+                <p>A meteorological mast measures wind speed at two heights:</p>
+                <ul>
+                    <li>At 50m: 7.2 m/s</li>
+                    <li>At 80m: 7.8 m/s</li>
+                </ul>
+                <p>Calculate:</p>
+                <ol>
+                    <li>The shear exponent (α)</li>
+                    <li>Wind speed at 100m hub height using the power law</li>
+                    <li>Wind speed at 100m using logarithmic law (assume z₀ = 0.03m)</li>
+                </ol>
+            </div>
+            
+            <button class="show-hint-btn" onclick="toggleHint(1)">Show Hint</button>
+            <div class="hint" id="hint-1">
+                <p>For the shear exponent, use: α = ln(v₂/v₁) / ln(z₂/z₁)</p>
+                <p>For the log law, first calculate u* from the two known points.</p>
+            </div>
+            
+            <button class="show-solution-btn" onclick="toggleSolution(1)">Show Solution</button>
+            <div class="solution" id="solution-1">
+                <p><strong>Solution:</strong></p>
+                <div class="step">
+                    <p><strong>Step 1: Calculate shear exponent</strong></p>
+                    <p>α = ln(7.8/7.2) / ln(80/50) = ln(1.083) / ln(1.6) = 0.080 / 0.470 = 0.170</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 2: Wind speed at 100m using power law</strong></p>
+                    <p>v(100) = 7.8 × (100/80)^0.170 = 7.8 × 1.039 = 8.10 m/s</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 3: Wind speed at 100m using log law</strong></p>
+                    <p>First, find u* using the two measurements:</p>
+                    <p>7.2 = (u*/0.4) × ln(50/0.03) and 7.8 = (u*/0.4) × ln(80/0.03)</p>
+                    <p>u* = 0.559 m/s</p>
+                    <p>v(100) = (0.559/0.4) × ln(100/0.03) = 1.398 × 8.112 = 11.34 m/s</p>
+                </div>
+                
+                <div class="answer-check">
+                    <p>✓ Shear exponent: α = 0.170</p>
+                    <p>✓ Power law: v(100m) = 8.10 m/s</p>
+                    <p>✓ Log law: v(100m) = 11.34 m/s</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 2: Weibull Distribution -->
+        <div class="exercise" data-category="statistics">
+            <div class="exercise-header">
+                <div class="exercise-title">Exercise 2: Weibull Distribution Analysis</div>
+                <div class="difficulty medium">Medium</div>
+            </div>
+            
+            <div class="problem">
+                <p><strong>Problem:</strong></p>
+                <p>Wind speed data from an offshore site shows:</p>
+                <ul>
+                    <li>Mean wind speed: 8.5 m/s</li>
+                    <li>Standard deviation: 3.8 m/s</li>
+                </ul>
+                <p>Calculate:</p>
+                <ol>
+                    <li>Weibull k and A parameters using the method of moments</li>
+                    <li>Probability that wind speed exceeds 15 m/s</li>
+                    <li>Most probable wind speed (mode)</li>
+                    <li>Wind speed exceeded 90% of the time</li>
+                </ol>
+            </div>
+            
+            <button class="show-hint-btn" onclick="toggleHint(2)">Show Hint</button>
+            <div class="hint" id="hint-2">
+                <p>Use k = (σ/v̄)^(-1.086) for the shape parameter</p>
+                <p>For the mode: v_mode = A × ((k-1)/k)^(1/k) when k > 1</p>
+            </div>
+            
+            <button class="show-solution-btn" onclick="toggleSolution(2)">Show Solution</button>
+            <div class="solution" id="solution-2">
+                <p><strong>Solution:</strong></p>
+                <div class="step">
+                    <p><strong>Step 1: Calculate Weibull parameters</strong></p>
+                    <p>k = (σ/v̄)^(-1.086) = (3.8/8.5)^(-1.086) = (0.447)^(-1.086) = 2.41</p>
+                    <p>A = v̄/Γ(1 + 1/k) = 8.5/Γ(1.415) = 8.5/0.887 = 9.58 m/s</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 2: Probability v > 15 m/s</strong></p>
+                    <p>P(v > 15) = exp[-(15/9.58)^2.41] = exp(-3.21) = 0.040 = 4.0%</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 3: Most probable wind speed</strong></p>
+                    <p>v_mode = 9.58 × ((2.41-1)/2.41)^(1/2.41) = 9.58 × 0.834 = 7.99 m/s</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 4: Wind speed exceeded 90% of time</strong></p>
+                    <p>F(v) = 0.10, so: 0.10 = 1 - exp[-(v/9.58)^2.41]</p>
+                    <p>v = 9.58 × [-ln(0.90)]^(1/2.41) = 9.58 × 0.324 = 3.10 m/s</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 3: Power and Energy -->
+        <div class="exercise" data-category="power-energy">
+            <div class="exercise-header">
+                <div class="exercise-title">Exercise 3: Annual Energy Production</div>
+                <div class="difficulty medium">Medium</div>
+            </div>
+            
+            <div class="problem">
+                <p><strong>Problem:</strong></p>
+                <p>A 10 MW offshore wind turbine has the following characteristics:</p>
+                <table class="data-table">
+                    <tr>
+                        <th>Wind Speed (m/s)</th>
+                        <th>3</th>
+                        <th>5</th>
+                        <th>7</th>
+                        <th>9</th>
+                        <th>11</th>
+                        <th>13</th>
+                        <th>15</th>
+                        <th>17</th>
+                        <th>25</th>
+                    </tr>
+                    <tr>
+                        <th>Power (MW)</th>
+                        <th>0</th>
+                        <th>0.5</th>
+                        <th>2.0</th>
+                        <th>4.5</th>
+                        <th>7.5</th>
+                        <th>9.5</th>
+                        <th>10.0</th>
+                        <th>10.0</th>
+                        <th>0</th>
+                    </tr>
+                    <tr>
+                        <th>Frequency (%)</th>
+                        <th>5</th>
+                        <th>10</th>
+                        <th>15</th>
+                        <th>20</th>
+                        <th>20</th>
+                        <th>15</th>
+                        <th>10</th>
+                        <th>5</th>
+                        <th>0</th>
+                    </tr>
+                </table>
+                <p>Calculate:</p>
+                <ol>
+                    <li>Annual Energy Production (assume 97% availability)</li>
+                    <li>Capacity Factor</li>
+                    <li>Full load hours</li>
+                </ol>
+            </div>
+            
+            <button class="show-solution-btn" onclick="toggleSolution(3)">Show Solution</button>
+            <div class="solution" id="solution-3">
+                <p><strong>Solution:</strong></p>
+                <div class="step">
+                    <p><strong>Step 1: Calculate AEP</strong></p>
+                    <p>AEP = Σ(Power × Frequency × 8760 × Availability)</p>
+                    <p>= (0×0.05 + 0.5×0.10 + 2.0×0.15 + 4.5×0.20 + 7.5×0.20 + 9.5×0.15 + 10×0.10 + 10×0.05) × 8760 × 0.97</p>
+                    <p>= 5.675 MW × 8760 × 0.97 = 48,243 MWh</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 2: Capacity Factor</strong></p>
+                    <p>CF = AEP / (Rated Power × 8760) = 48,243 / (10 × 8760) = 0.551 = 55.1%</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 3: Full load hours</strong></p>
+                    <p>FLH = AEP / Rated Power = 48,243 / 10 = 4,824 hours</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 4: Data Analysis -->
+        <div class="exercise" data-category="data-analysis">
+            <div class="exercise-header">
+                <div class="exercise-title">Exercise 4: Data Quality Control</div>
+                <div class="difficulty hard">Hard</div>
+            </div>
+            
+            <div class="problem">
+                <p><strong>Problem:</strong></p>
+                <p>You have 10-minute wind speed data with the following issues:</p>
+                <ul>
+                    <li>15% of data shows constant values of 0 m/s (icing)</li>
+                    <li>5% of data has values > 50 m/s (sensor malfunction)</li>
+                    <li>10% of data is missing (gaps)</li>
+                    <li>Some data shows unrealistic jumps (>10 m/s change in 10 min)</li>
+                </ul>
+                <p>Tasks:</p>
+                <ol>
+                    <li>Design a QC procedure with appropriate flags</li>
+                    <li>Estimate the data recovery rate after QC</li>
+                    <li>Propose gap-filling methods for different gap lengths</li>
+                    <li>Calculate uncertainty in annual mean due to missing data</li>
+                </ol>
+            </div>
+            
+            <button class="show-solution-btn" onclick="toggleSolution(4)">Show Solution</button>
+            <div class="solution" id="solution-4">
+                <p><strong>Solution:</strong></p>
+                <div class="step">
+                    <p><strong>Step 1: QC Procedure Design</strong></p>
+                    <ul>
+                        <li>Flag 1: Range check (0 < v < 40 m/s)</li>
+                        <li>Flag 2: Icing check (v = 0 for > 3 consecutive records)</li>
+                        <li>Flag 3: Rate of change (|Δv| < 10 m/s per 10 min)</li>
+                        <li>Flag 4: Statistical outliers (v > μ + 4σ)</li>
+                        <li>Flag 5: Missing data</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 2: Data Recovery Rate</strong></p>
+                    <p>Total flagged: 15% + 5% + 10% = 30% (assuming no overlap)</p>
+                    <p>Additional rate-of-change failures: ~2%</p>
+                    <p>Expected recovery rate: 100% - 32% = 68%</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 3: Gap-Filling Methods</strong></p>
+                    <ul>
+                        <li>Gaps < 1 hour: Linear interpolation</li>
+                        <li>Gaps 1-6 hours: Diurnal pattern matching</li>
+                        <li>Gaps 6-24 hours: MCP with nearby stations</li>
+                        <li>Gaps > 24 hours: Seasonal adjustment from historical data</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 4: Uncertainty Calculation</strong></p>
+                    <p>Standard error = σ/√n × √(1/(1-f))</p>
+                    <p>Where f = fraction missing = 0.32</p>
+                    <p>Uncertainty increases by factor of √(1/0.68) = 1.21</p>
+                    <p>If σ = 4 m/s, n = 52,560 (annual 10-min records)</p>
+                    <p>Uncertainty = 4/√52,560 × 1.21 = 0.021 m/s</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 5: Economic Analysis -->
+        <div class="exercise" data-category="economics">
+            <div class="exercise-header">
+                <div class="exercise-title">Exercise 5: LCOE Calculation</div>
+                <div class="difficulty hard">Hard</div>
+            </div>
+            
+            <div class="problem">
+                <p><strong>Problem:</strong></p>
+                <p>An offshore wind farm project has:</p>
+                <ul>
+                    <li>50 turbines × 10 MW = 500 MW total</li>
+                    <li>CAPEX: $4,000/kW</li>
+                    <li>OPEX: $50/kW/year</li>
+                    <li>Capacity factor: 48%</li>
+                    <li>Project lifetime: 25 years</li>
+                    <li>Discount rate: 7%</li>
+                    <li>Decommissioning cost: 5% of CAPEX (in year 25)</li>
+                </ul>
+                <p>Calculate:</p>
+                <ol>
+                    <li>Total CAPEX</li>
+                    <li>Annual energy production</li>
+                    <li>LCOE including decommissioning</li>
+                    <li>Sensitivity to ±10% change in capacity factor</li>
+                </ol>
+            </div>
+            
+            <button class="show-solution-btn" onclick="toggleSolution(5)">Show Solution</button>
+            <div class="solution" id="solution-5">
+                <p><strong>Solution:</strong></p>
+                <div class="step">
+                    <p><strong>Step 1: Total CAPEX</strong></p>
+                    <p>CAPEX = 500,000 kW × $4,000/kW = $2,000,000,000</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 2: Annual Energy Production</strong></p>
+                    <p>AEP = 500 MW × 8760 h × 0.48 = 2,102,400 MWh = 2,102,400,000 kWh</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 3: LCOE Calculation</strong></p>
+                    <p>NPV of OPEX:</p>
+                    <p>Annual OPEX = 500,000 × $50 = $25,000,000</p>
+                    <p>NPV(OPEX) = $25M × [(1-(1+0.07)^-25)/0.07] = $25M × 11.654 = $291,350,000</p>
+                    
+                    <p>Decommissioning NPV:</p>
+                    <p>Decom cost = 0.05 × $2B = $100M</p>
+                    <p>NPV(Decom) = $100M / (1.07)^25 = $18,425,000</p>
+                    
+                    <p>NPV of AEP:</p>
+                    <p>NPV(AEP) = 2,102,400,000 × 11.654 = 24,501,369,600 kWh</p>
+                    
+                    <p>LCOE = ($2,000M + $291.35M + $18.425M) / 24,501,369,600</p>
+                    <p>LCOE = $2,309,775,000 / 24,501,369,600 = $0.0943/kWh = $94.3/MWh</p>
+                </div>
+                
+                <div class="step">
+                    <p><strong>Step 4: Sensitivity Analysis</strong></p>
+                    <p>CF = 52.8% (+10%): AEP increases by 10%, LCOE = $85.7/MWh (-9.1%)</p>
+                    <p>CF = 43.2% (-10%): AEP decreases by 10%, LCOE = $104.8/MWh (+11.1%)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Programming Exercise -->
+        <div class="exercise" data-category="data-analysis">
+            <div class="exercise-header">
+                <div class="exercise-title">Exercise 6: Wind Rose Analysis (Programming)</div>
+                <div class="difficulty medium">Medium</div>
+            </div>
+            
+            <div class="problem">
+                <p><strong>Problem:</strong></p>
+                <p>Write a function to calculate wind rose statistics from wind speed and direction data.</p>
+                <p>Given arrays of wind speed (m/s) and direction (degrees), calculate:</p>
+                <ol>
+                    <li>Frequency distribution by direction (16 sectors)</li>
+                    <li>Mean wind speed for each sector</li>
+                    <li>Weibull parameters for each sector</li>
+                </ol>
+                
+                <div class="code-block">
+// Sample data structure
+const windData = {
+    speed: [7.2, 8.1, 6.5, ...],  // m/s
+    direction: [245, 250, 235, ...] // degrees
+};
+
+// Your function should return:
+// {
+//   sectors: [0, 22.5, 45, ..., 337.5],
+//   frequency: [0.05, 0.08, ...],
+//   meanSpeed: [6.5, 7.2, ...],
+//   weibullK: [2.1, 2.3, ...],
+//   weibullA: [7.3, 8.1, ...]
+// }
+                </div>
+            </div>
+            
+            <button class="show-solution-btn" onclick="toggleSolution(6)">Show Solution</button>
+            <div class="solution" id="solution-6">
+                <p><strong>Solution:</strong></p>
+                <div class="code-block">
+function calculateWindRose(windData) {
+    const sectors = 16;
+    const sectorWidth = 360 / sectors;
+    const result = {
+        sectors: [],
+        frequency: new Array(sectors).fill(0),
+        meanSpeed: new Array(sectors).fill(0),
+        speedData: Array.from({length: sectors}, () => []),
+        weibullK: new Array(sectors).fill(0),
+        weibullA: new Array(sectors).fill(0)
+    };
+    
+    // Initialize sector centers
+    for (let i = 0; i < sectors; i++) {
+        result.sectors[i] = i * sectorWidth;
+    }
+    
+    // Bin data by direction
+    windData.direction.forEach((dir, idx) => {
+        const speed = windData.speed[idx];
+        let sector = Math.floor((dir + sectorWidth/2) / sectorWidth) % sectors;
+        result.speedData[sector].push(speed);
+    });
+    
+    // Calculate statistics for each sector
+    for (let i = 0; i < sectors; i++) {
+        const speeds = result.speedData[i];
+        if (speeds.length > 0) {
+            // Frequency
+            result.frequency[i] = speeds.length / windData.speed.length;
+            
+            // Mean speed
+            const mean = speeds.reduce((a, b) => a + b) / speeds.length;
+            result.meanSpeed[i] = mean;
+            
+            // Standard deviation
+            const variance = speeds.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / speeds.length;
+            const std = Math.sqrt(variance);
+            
+            // Weibull parameters (method of moments)
+            const cv = std / mean;
+            result.weibullK[i] = Math.pow(cv, -1.086);
+            result.weibullA[i] = mean / gamma(1 + 1/result.weibullK[i]);
+        }
+    }
+    
+    return result;
+}
+
+// Helper function for gamma calculation
+function gamma(z) {
+    // Stirling's approximation for gamma function
+    if (z < 0.5) {
+        return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+    }
+    const g = 7;
+    const n = 9;
+    const pi = Math.PI;
+    const sq2pi = Math.sqrt(2 * pi);
+    
+    const a = [
+        1.000000000000000174663,
+        5716.400188274341379136,
+        -14815.30426768413909044,
+        14291.49277657478554025,
+        -6348.160217641458813289,
+        1301.608286058321874105,
+        -108.1767053514369634679,
+        2.605696505611755827729,
+        -0.007423452510201416151527e-8
+    ];
+    
+    z -= 1;
+    let x = a[0];
+    for (let i = 1; i < n; i++) {
+        x += a[i] / (z + i);
+    }
+    
+    const t = z + g + 0.5;
+    return sq2pi * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+}
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-footer">
+            <p>See also: <a href="formulas.html">Formula Reference</a> | <a href="calculators.html">Interactive Calculators</a></p>
+        </div>
+    </div>
+
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(`solution-${id}`);
+            solution.classList.toggle('show');
+        }
+        
+        function toggleHint(id) {
+            const hint = document.getElementById(`hint-${id}`);
+            hint.classList.toggle('show');
+        }
+        
+        function filterExercises(category) {
+            const exercises = document.querySelectorAll('.exercise');
+            const buttons = document.querySelectorAll('.exercise-nav button');
+            
+            // Update active button
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(category) || 
+                    (category === 'all' && btn.textContent === 'All Exercises')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show/hide exercises
+            exercises.forEach(ex => {
+                if (category === 'all' || ex.dataset.category === category) {
+                    ex.style.display = 'block';
+                } else {
+                    ex.style.display = 'none';
+                }
+            });
+        }
+        
+        // MathJax configuration
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</body>
+</html>

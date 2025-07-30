@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula Reference - Offshore Wind Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .formula-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .formula-box {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #0066cc;
+            border-radius: 4px;
+        }
+        .formula-name {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+        .formula-variables {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .formula-variables li {
+            margin: 5px 0;
+        }
+        .formula-category {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+        .quick-nav {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .quick-nav h3 {
+            margin-top: 0;
+        }
+        .quick-nav a {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="theory.html">Theory</a></li>
+            <li><a href="measurement.html">Measurement</a></li>
+            <li><a href="data-processing.html">Data Processing</a></li>
+            <li><a href="modeling.html">Modeling</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="formulas.html" class="active">Formulas</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Formula Reference Sheet</h1>
+        
+        <div class="quick-nav">
+            <h3>Quick Navigation</h3>
+            <a href="#wind-profiles">Wind Profiles</a>
+            <a href="#statistics">Statistics</a>
+            <a href="#power-energy">Power & Energy</a>
+            <a href="#turbulence">Turbulence</a>
+            <a href="#atmospheric">Atmospheric</a>
+            <a href="#waves-loads">Waves & Loads</a>
+            <a href="#economics">Economics</a>
+        </div>
+
+        <section id="wind-profiles" class="formula-section">
+            <h2>Wind Profile Formulas</h2>
+            
+            <div class="formula-box">
+                <div class="formula-category">Power Law</div>
+                <div class="formula-name">Wind Speed Extrapolation - Power Law</div>
+                <div>
+                    \[v(z) = v_{ref} \left(\frac{z}{z_{ref}}\right)^\alpha\]
+                </div>
+                <ul class="formula-variables">
+                    <li>v(z) = wind speed at height z [m/s]</li>
+                    <li>v<sub>ref</sub> = reference wind speed [m/s]</li>
+                    <li>z = height above ground [m]</li>
+                    <li>z<sub>ref</sub> = reference height [m]</li>
+                    <li>α = shear exponent [-]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Logarithmic Law</div>
+                <div class="formula-name">Wind Speed Extrapolation - Log Law</div>
+                <div>
+                    \[v(z) = \frac{u_*}{\kappa} \ln\left(\frac{z}{z_0}\right)\]
+                </div>
+                <ul class="formula-variables">
+                    <li>u<sub>*</sub> = friction velocity [m/s]</li>
+                    <li>κ = von Kármán constant ≈ 0.4</li>
+                    <li>z<sub>0</sub> = roughness length [m]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Shear Analysis</div>
+                <div class="formula-name">Shear Exponent Calculation</div>
+                <div>
+                    \[\alpha = \frac{\ln(v_2/v_1)}{\ln(z_2/z_1)}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>v<sub>1</sub>, v<sub>2</sub> = wind speeds at heights z<sub>1</sub>, z<sub>2</sub></li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Stability Correction</div>
+                <div class="formula-name">Monin-Obukhov Similarity Theory</div>
+                <div>
+                    \[v(z) = \frac{u_*}{\kappa} \left[\ln\left(\frac{z}{z_0}\right) - \Psi_m\left(\frac{z}{L}\right)\right]\]
+                </div>
+                <ul class="formula-variables">
+                    <li>Ψ<sub>m</sub> = stability function for momentum</li>
+                    <li>L = Obukhov length [m]</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="statistics" class="formula-section">
+            <h2>Statistical Distributions</h2>
+            
+            <div class="formula-box">
+                <div class="formula-category">Weibull Distribution</div>
+                <div class="formula-name">Weibull Probability Density Function</div>
+                <div>
+                    \[f(v) = \frac{k}{A}\left(\frac{v}{A}\right)^{k-1}\exp\left[-\left(\frac{v}{A}\right)^k\right]\]
+                </div>
+                <ul class="formula-variables">
+                    <li>k = shape parameter [-]</li>
+                    <li>A = scale parameter [m/s]</li>
+                    <li>v = wind speed [m/s]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Weibull Distribution</div>
+                <div class="formula-name">Weibull Cumulative Distribution Function</div>
+                <div>
+                    \[F(v) = 1 - \exp\left[-\left(\frac{v}{A}\right)^k\right]\]
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Parameter Estimation</div>
+                <div class="formula-name">Method of Moments - Weibull Parameters</div>
+                <div>
+                    \[k = \left(\frac{\sigma}{\bar{v}}\right)^{-1.086}\]
+                    \[A = \frac{\bar{v}}{\Gamma(1 + 1/k)}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>σ = standard deviation of wind speed</li>
+                    <li>v̄ = mean wind speed</li>
+                    <li>Γ = gamma function</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Extreme Value</div>
+                <div class="formula-name">Gumbel Distribution for Extreme Winds</div>
+                <div>
+                    \[F(v) = \exp\left[-\exp\left(-\frac{v-\mu}{\beta}\right)\right]\]
+                    \[v_R = \mu - \beta\ln\left[-\ln\left(1-\frac{1}{R}\right)\right]\]
+                </div>
+                <ul class="formula-variables">
+                    <li>μ = location parameter</li>
+                    <li>β = scale parameter</li>
+                    <li>v<sub>R</sub> = R-year return wind speed</li>
+                    <li>R = return period [years]</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="power-energy" class="formula-section">
+            <h2>Power and Energy</h2>
+            
+            <div class="formula-box">
+                <div class="formula-category">Wind Power</div>
+                <div class="formula-name">Available Wind Power</div>
+                <div>
+                    \[P_{wind} = \frac{1}{2}\rho A v^3\]
+                </div>
+                <ul class="formula-variables">
+                    <li>ρ = air density [kg/m³]</li>
+                    <li>A = swept area [m²]</li>
+                    <li>v = wind speed [m/s]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Turbine Power</div>
+                <div class="formula-name">Turbine Power Output</div>
+                <div>
+                    \[P = \frac{1}{2}\rho A v^3 C_p(\lambda, \beta)\]
+                </div>
+                <ul class="formula-variables">
+                    <li>C<sub>p</sub> = power coefficient [-]</li>
+                    <li>λ = tip speed ratio [-]</li>
+                    <li>β = pitch angle [degrees]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Betz Limit</div>
+                <div class="formula-name">Maximum Power Coefficient</div>
+                <div>
+                    \[C_{p,max} = \frac{16}{27} \approx 0.593\]
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Annual Energy</div>
+                <div class="formula-name">Annual Energy Production</div>
+                <div>
+                    \[AEP = \sum_{i=1}^{n} P(v_i) \cdot f(v_i) \cdot 8760 \cdot \eta\]
+                </div>
+                <ul class="formula-variables">
+                    <li>P(v<sub>i</sub>) = power at wind speed v<sub>i</sub> [kW]</li>
+                    <li>f(v<sub>i</sub>) = frequency of wind speed v<sub>i</sub> [-]</li>
+                    <li>η = availability factor [-]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Capacity Factor</div>
+                <div class="formula-name">Capacity Factor Calculation</div>
+                <div>
+                    \[CF = \frac{AEP}{P_{rated} \times 8760}\]
+                </div>
+            </div>
+        </section>
+
+        <section id="turbulence" class="formula-section">
+            <h2>Turbulence</h2>
+            
+            <div class="formula-box">
+                <div class="formula-category">Turbulence Intensity</div>
+                <div class="formula-name">Turbulence Intensity Definition</div>
+                <div>
+                    \[TI = \frac{\sigma_u}{\bar{u}}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>σ<sub>u</sub> = standard deviation of wind speed</li>
+                    <li>ū = mean wind speed</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">IEC Standards</div>
+                <div class="formula-name">Normal Turbulence Model (NTM)</div>
+                <div>
+                    \[\sigma_1 = I_{ref}(0.75v_{hub} + b)\]
+                </div>
+                <ul class="formula-variables">
+                    <li>I<sub>ref</sub> = reference turbulence intensity</li>
+                    <li>v<sub>hub</sub> = hub height wind speed [m/s]</li>
+                    <li>b = 5.6 m/s</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Spectral Analysis</div>
+                <div class="formula-name">Kaimal Spectrum</div>
+                <div>
+                    \[\frac{fS_u(f)}{\sigma_u^2} = \frac{4f_L/(1+6f_L)^{5/3}}{1}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>S<sub>u</sub>(f) = power spectral density</li>
+                    <li>f = frequency [Hz]</li>
+                    <li>f<sub>L</sub> = normalized frequency = fL<sub>u</sub>/ū</li>
+                    <li>L<sub>u</sub> = integral length scale</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Length Scales</div>
+                <div class="formula-name">Integral Length Scale</div>
+                <div>
+                    \[L_u = \int_0^\infty R_{uu}(\tau) d\tau\]
+                </div>
+                <ul class="formula-variables">
+                    <li>R<sub>uu</sub>(τ) = autocorrelation function</li>
+                    <li>τ = time lag [s]</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="atmospheric" class="formula-section">
+            <h2>Atmospheric Stability</h2>
+            
+            <div class="formula-box">
+                <div class="formula-category">Stability Parameters</div>
+                <div class="formula-name">Richardson Number</div>
+                <div>
+                    \[Ri = \frac{g}{\theta}\frac{\partial\theta/\partial z}{(\partial u/\partial z)^2}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>g = gravitational acceleration [m/s²]</li>
+                    <li>θ = potential temperature [K]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Stability Parameters</div>
+                <div class="formula-name">Obukhov Length</div>
+                <div>
+                    \[L = -\frac{u_*^3\bar{\theta}}{\kappa g\overline{w'\theta'}}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>w'θ' = kinematic heat flux [K·m/s]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Air Density</div>
+                <div class="formula-name">Air Density Calculation</div>
+                <div>
+                    \[\rho = \frac{p}{R_d T_v}\]
+                    \[T_v = T(1 + 0.608q)\]
+                </div>
+                <ul class="formula-variables">
+                    <li>p = pressure [Pa]</li>
+                    <li>R<sub>d</sub> = gas constant for dry air = 287.05 J/(kg·K)</li>
+                    <li>T<sub>v</sub> = virtual temperature [K]</li>
+                    <li>q = specific humidity [kg/kg]</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="waves-loads" class="formula-section">
+            <h2>Waves and Loads</h2>
+            
+            <div class="formula-box">
+                <div class="formula-category">Wave Theory</div>
+                <div class="formula-name">Linear Wave Theory - Dispersion Relation</div>
+                <div>
+                    \[\omega^2 = gk\tanh(kh)\]
+                </div>
+                <ul class="formula-variables">
+                    <li>ω = angular frequency [rad/s]</li>
+                    <li>k = wave number = 2π/L [rad/m]</li>
+                    <li>h = water depth [m]</li>
+                    <li>L = wavelength [m]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Wave Statistics</div>
+                <div class="formula-name">Significant Wave Height</div>
+                <div>
+                    \[H_s = 4\sqrt{m_0}\]
+                    \[H_{1/3} = \text{mean of highest 1/3 of waves}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>m<sub>0</sub> = zeroth moment of wave spectrum</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Wave Loads</div>
+                <div class="formula-name">Morison Equation</div>
+                <div>
+                    \[F = \frac{1}{2}\rho C_D D |u|u + \rho C_M \frac{\pi D^2}{4}\dot{u}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>C<sub>D</sub> = drag coefficient</li>
+                    <li>C<sub>M</sub> = inertia coefficient</li>
+                    <li>D = cylinder diameter [m]</li>
+                    <li>u = water particle velocity [m/s]</li>
+                    <li>u̇ = water particle acceleration [m/s²]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Fatigue</div>
+                <div class="formula-name">Palmgren-Miner Rule</div>
+                <div>
+                    \[D = \sum_{i=1}^{n} \frac{n_i}{N_i}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>D = cumulative damage</li>
+                    <li>n<sub>i</sub> = number of cycles at stress level i</li>
+                    <li>N<sub>i</sub> = number of cycles to failure at stress level i</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="economics" class="formula-section">
+            <h2>Economic Analysis</h2>
+            
+            <div class="formula-box">
+                <div class="formula-category">Cost Analysis</div>
+                <div class="formula-name">Levelized Cost of Energy (LCOE)</div>
+                <div>
+                    \[LCOE = \frac{CAPEX + \sum_{t=1}^{n}\frac{OPEX_t}{(1+r)^t}}{\sum_{t=1}^{n}\frac{AEP_t}{(1+r)^t}}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>CAPEX = capital expenditure [$]</li>
+                    <li>OPEX<sub>t</sub> = operating expense in year t [$]</li>
+                    <li>AEP<sub>t</sub> = annual energy production in year t [kWh]</li>
+                    <li>r = discount rate [-]</li>
+                    <li>n = project lifetime [years]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Financial Metrics</div>
+                <div class="formula-name">Net Present Value (NPV)</div>
+                <div>
+                    \[NPV = -C_0 + \sum_{t=1}^{n}\frac{CF_t}{(1+r)^t}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>C<sub>0</sub> = initial investment [$]</li>
+                    <li>CF<sub>t</sub> = cash flow in year t [$]</li>
+                </ul>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-category">Wake Effects</div>
+                <div class="formula-name">Jensen Wake Model</div>
+                <div>
+                    \[\frac{\Delta V}{V_0} = \frac{1-\sqrt{1-C_T}}{(1+kx/D)^2}\]
+                </div>
+                <ul class="formula-variables">
+                    <li>ΔV/V<sub>0</sub> = velocity deficit ratio</li>
+                    <li>C<sub>T</sub> = thrust coefficient</li>
+                    <li>k = wake decay constant ≈ 0.04-0.05</li>
+                    <li>x = downstream distance [m]</li>
+                    <li>D = rotor diameter [m]</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="navigation-footer">
+            <p>See also: <a href="calculators.html">Interactive Calculators</a> | <a href="theory.html">Theoretical Background</a></p>
+        </div>
+    </div>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</body>
+</html>

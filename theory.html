@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory - Offshore Wind Analysis Textbook</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <nav class="nav-main">
+        <a href="index.html">Home</a>
+        <a href="theory.html" class="active">Theory</a>
+        <a href="measurement.html">Measurements</a>
+        <a href="modeling.html">Modeling</a>
+        <a href="data-processing.html">Data Processing</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="advanced-topics.html">Advanced Topics</a>
+        <a href="calculators.html">Calculators</a>
+        <a href="exercises.html">Exercises</a>
+        <a href="formulas.html">Formulas</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="references.html">References</a>
+        <a href="datasets.html">Datasets</a>
+    </nav>
+
+    <div class="header">
+        <h1>🌊 Theoretical Foundations</h1>
+        <p>Understanding the Physics of Offshore Wind</p>
+    </div>
+
+    <div class="container">
+        <!-- Table of Contents -->
+        <div class="section">
+            <h2>📚 Chapter Overview</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Atmospheric Physics</h3>
+                    <ul>
+                        <li><a href="#boundary-layer">Atmospheric Boundary Layer</a></li>
+                        <li><a href="#stability">Atmospheric Stability</a></li>
+                        <li><a href="#turbulence-theory">Turbulence Theory</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Wind Profiles</h3>
+                    <ul>
+                        <li><a href="#logarithmic">Logarithmic Wind Profile</a></li>
+                        <li><a href="#power-law">Power Law Profile</a></li>
+                        <li><a href="#ekman">Ekman Spiral</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Marine Meteorology</h3>
+                    <ul>
+                        <li><a href="#air-sea">Air-Sea Interaction</a></li>
+                        <li><a href="#coastal-effects">Coastal Effects</a></li>
+                        <li><a href="#offshore-specific">Offshore Phenomena</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Atmospheric Boundary Layer -->
+        <div class="section" id="boundary-layer">
+            <h2>1. Atmospheric Boundary Layer (ABL)</h2>
+            
+            <div class="info-box">
+                <strong>Definition:</strong> The lowest part of the atmosphere directly influenced by the Earth's surface, responding to surface forcings within an hour or less.
+            </div>
+
+            <h3>1.1 Structure of the ABL</h3>
+            <p>The atmospheric boundary layer consists of several distinct layers:</p>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>ABL Structure</h4>
+                    <canvas id="ablStructure"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Diurnal Evolution</h4>
+                    <canvas id="diurnalABL"></canvas>
+                </div>
+            </div>
+
+            <h3>1.2 Surface Layer (0-100m)</h3>
+            <p>The surface layer is characterized by nearly constant momentum and heat fluxes with height. Key features include:</p>
+            
+            <ul>
+                <li><strong>Constant flux layer:</strong> Turbulent fluxes vary by less than 10% with height</li>
+                <li><strong>Monin-Obukhov Similarity Theory (MOST):</strong> Universal functions describe mean profiles</li>
+                <li><strong>Roughness effects:</strong> Surface characteristics strongly influence flow</li>
+            </ul>
+
+            <div class="formula-large">
+                $$\frac{\partial \overline{u}}{\partial z} = \frac{u_*}{\kappa z} \phi_m\left(\frac{z}{L}\right)$$
+            </div>
+
+            <h3>1.3 Ekman Layer (100m - ABL top)</h3>
+            <p>In the Ekman layer, the Coriolis force becomes significant, causing wind to veer with height:</p>
+            
+            <div class="formula">
+                Ekman spiral equations:<br>
+                $$u - u_g = -\frac{1}{f\rho} \frac{\partial \tau_{xz}}{\partial z}$$<br>
+                $$v - v_g = -\frac{1}{f\rho} \frac{\partial \tau_{yz}}{\partial z}$$
+            </div>
+
+            <h3>1.4 Marine Boundary Layer Characteristics</h3>
+            <table class="table">
+                <tr>
+                    <th>Property</th>
+                    <th>Offshore</th>
+                    <th>Onshore</th>
+                    <th>Impact on Wind Energy</th>
+                </tr>
+                <tr>
+                    <td>Surface Roughness (z₀)</td>
+                    <td>0.0001-0.001 m</td>
+                    <td>0.01-1.0 m</td>
+                    <td>Lower shear, higher wind speeds</td>
+                </tr>
+                <tr>
+                    <td>ABL Height</td>
+                    <td>200-800 m</td>
+                    <td>500-2000 m</td>
+                    <td>Lower turbine in relative position</td>
+                </tr>
+                <tr>
+                    <td>Stability Frequency</td>
+                    <td>More stable</td>
+                    <td>More unstable (day)</td>
+                    <td>Higher shear, lower turbulence</td>
+                </tr>
+                <tr>
+                    <td>Temperature Range</td>
+                    <td>Small (±5°C)</td>
+                    <td>Large (±20°C)</td>
+                    <td>More consistent conditions</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 2: Atmospheric Stability -->
+        <div class="section" id="stability">
+            <h2>2. Atmospheric Stability Theory</h2>
+            
+            <h3>2.1 Stability Parameters</h3>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Richardson Number Definition</h4>
+                    <div class="formula">
+                        $$Ri = \frac{g}{\theta} \frac{\partial \theta/\partial z}{(\partial u/\partial z)^2 + (\partial v/\partial z)^2}$$
+                    </div>
+                    <p>Critical values:</p>
+                    <ul>
+                        <li>Ri < 0: Unstable</li>
+                        <li>Ri ≈ 0: Neutral</li>
+                        <li>0 < Ri < 0.25: Stable</li>
+                        <li>Ri > 0.25: Very stable</li>
+                    </ul>
+                </div>
+                <div class="plot-box">
+                    <h4>Obukhov Length</h4>
+                    <div class="formula">
+                        $$L = -\frac{u_*^3 \overline{\theta_v}}{\kappa g \overline{w'\theta_v'}}$$
+                    </div>
+                    <p>Stability classes:</p>
+                    <ul>
+                        <li>L < 0: Unstable</li>
+                        <li>|L| → ∞: Neutral</li>
+                        <li>L > 0: Stable</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>2.2 Stability Functions</h3>
+            <p>The universal stability functions for momentum (φₘ) and heat (φₕ) are:</p>
+            
+            <div class="info-box">
+                <strong>Unstable conditions (ζ < 0):</strong><br>
+                $$\phi_m = (1 - 16\zeta)^{-1/4}$$<br>
+                $$\phi_h = (1 - 16\zeta)^{-1/2}$$<br><br>
+                
+                <strong>Stable conditions (ζ > 0):</strong><br>
+                $$\phi_m = \phi_h = 1 + 5\zeta$$
+            </div>
+
+            <h3>2.3 Impact on Wind Profiles</h3>
+            <canvas id="stabilityProfiles"></canvas>
+        </div>
+
+        <!-- Section 3: Turbulence Theory -->
+        <div class="section" id="turbulence-theory">
+            <h2>3. Turbulence Theory</h2>
+            
+            <h3>3.1 Kolmogorov Theory</h3>
+            <p>The energy cascade in turbulent flows follows Kolmogorov's -5/3 law:</p>
+            
+            <div class="formula-large">
+                $$E(k) = C_K \varepsilon^{2/3} k^{-5/3}$$
+            </div>
+            
+            <p>Where:</p>
+            <ul>
+                <li>E(k) = Energy spectrum</li>
+                <li>C<sub>K</sub> = Kolmogorov constant ≈ 1.5</li>
+                <li>ε = Turbulent dissipation rate</li>
+                <li>k = Wavenumber</li>
+            </ul>
+
+            <h3>3.2 Turbulence Scales</h3>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Length Scales</h4>
+                    <canvas id="lengthScales"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Time Scales</h4>
+                    <canvas id="timeScales"></canvas>
+                </div>
+            </div>
+
+            <h3>3.3 Turbulence Intensity</h3>
+            <div class="warning-box">
+                <strong>IEC 61400-1 Turbulence Classes:</strong>
+                <table class="table">
+                    <tr>
+                        <th>Class</th>
+                        <th>I<sub>ref</sub> at 15 m/s</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>A</td>
+                        <td>0.16</td>
+                        <td>High turbulence</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>0.14</td>
+                        <td>Medium turbulence</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td>0.12</td>
+                        <td>Low turbulence</td>
+                    </tr>
+                    <tr>
+                        <td>S</td>
+                        <td>User defined</td>
+                        <td>Special conditions</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 4: Logarithmic Wind Profile -->
+        <div class="section" id="logarithmic">
+            <h2>4. Logarithmic Wind Profile</h2>
+            
+            <h3>4.1 Neutral Conditions</h3>
+            <p>Under neutral atmospheric conditions, the wind profile follows:</p>
+            
+            <div class="formula-large">
+                $$u(z) = \frac{u_*}{\kappa} \ln\left(\frac{z}{z_0}\right)$$
+            </div>
+
+            <h3>4.2 Non-Neutral Conditions</h3>
+            <p>Including stability effects:</p>
+            
+            <div class="formula-large">
+                $$u(z) = \frac{u_*}{\kappa} \left[\ln\left(\frac{z}{z_0}\right) - \psi_m\left(\frac{z}{L}\right) + \psi_m\left(\frac{z_0}{L}\right)\right]$$
+            </div>
+
+            <h3>4.3 Integrated Stability Functions</h3>
+            <canvas id="psiFunction"></canvas>
+        </div>
+
+        <!-- Section 5: Power Law Profile -->
+        <div class="section" id="power-law">
+            <h2>5. Power Law Wind Profile</h2>
+            
+            <h3>5.1 Basic Formulation</h3>
+            <div class="formula-large">
+                $$u(z) = u_{ref} \left(\frac{z}{z_{ref}}\right)^\alpha$$
+            </div>
+
+            <h3>5.2 Shear Exponent Relationships</h3>
+            <p>The shear exponent α varies with stability and surface roughness:</p>
+            
+            <table class="table">
+                <tr>
+                    <th>Stability</th>
+                    <th>z₀ = 0.0002m (offshore)</th>
+                    <th>z₀ = 0.03m (coastal)</th>
+                    <th>z₀ = 0.3m (onshore)</th>
+                </tr>
+                <tr>
+                    <td>Very Unstable</td>
+                    <td>0.06</td>
+                    <td>0.11</td>
+                    <td>0.16</td>
+                </tr>
+                <tr>
+                    <td>Neutral</td>
+                    <td>0.10</td>
+                    <td>0.16</td>
+                    <td>0.23</td>
+                </tr>
+                <tr>
+                    <td>Very Stable</td>
+                    <td>0.25</td>
+                    <td>0.40</td>
+                    <td>0.60</td>
+                </tr>
+            </table>
+
+            <h3>5.3 Comparison of Profile Methods</h3>
+            <canvas id="profileComparison"></canvas>
+        </div>
+
+        <!-- Section 6: Ekman Spiral -->
+        <div class="section" id="ekman">
+            <h2>6. Ekman Spiral Theory</h2>
+            
+            <h3>6.1 Governing Equations</h3>
+            <p>The Ekman spiral describes wind turning with height due to Coriolis effects:</p>
+            
+            <div class="formula">
+                $$-f(v - v_g) = \frac{1}{\rho} \frac{\partial \tau_{xz}}{\partial z}$$<br>
+                $$f(u - u_g) = \frac{1}{\rho} \frac{\partial \tau_{yz}}{\partial z}$$
+            </div>
+
+            <h3>6.2 Classical Ekman Solution</h3>
+            <p>For constant eddy viscosity K:</p>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Ekman Spiral Visualization</h4>
+                    <canvas id="ekmanSpiral"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Wind Veer with Height</h4>
+                    <canvas id="windVeer"></canvas>
+                </div>
+            </div>
+
+            <h3>6.3 Modified Ekman Solutions</h3>
+            <p>Real atmospheric conditions require modifications:</p>
+            <ul>
+                <li>Variable eddy viscosity</li>
+                <li>Stability effects</li>
+                <li>Baroclinic conditions</li>
+                <li>Surface friction</li>
+            </ul>
+        </div>
+
+        <!-- Section 7: Air-Sea Interaction -->
+        <div class="section" id="air-sea">
+            <h2>7. Air-Sea Interaction</h2>
+            
+            <h3>7.1 Heat and Momentum Exchange</h3>
+            <div class="info-box">
+                <strong>Bulk formulae:</strong><br>
+                Momentum flux: $$\tau = \rho C_D |U_{10}| U_{10}$$<br>
+                Sensible heat flux: $$H = \rho c_p C_H |U_{10}| (T_s - T_a)$$<br>
+                Latent heat flux: $$LE = \rho L_v C_E |U_{10}| (q_s - q_a)$$
+            </div>
+
+            <h3>7.2 Sea Surface Roughness</h3>
+            <p>The Charnock relation for sea surface roughness:</p>
+            
+            <div class="formula-large">
+                $$z_0 = \alpha_c \frac{u_*^2}{g} + \frac{\nu}{9.1 u_*}$$
+            </div>
+
+            <h3>7.3 Wave-Induced Stress</h3>
+            <canvas id="waveStress"></canvas>
+        </div>
+
+        <!-- Section 8: Coastal Effects -->
+        <div class="section" id="coastal-effects">
+            <h2>8. Coastal Effects</h2>
+            
+            <h3>8.1 Internal Boundary Layer</h3>
+            <p>When flow transitions from land to sea or vice versa:</p>
+            
+            <div class="plot-box">
+                <h4>IBL Development</h4>
+                <canvas id="iblGrowth"></canvas>
+            </div>
+
+            <h3>8.2 Sea Breeze Circulation</h3>
+            <p>Thermal differences drive local circulation patterns:</p>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Sea Breeze Strength</h4>
+                    <canvas id="seaBreeze"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Hodograph</h4>
+                    <canvas id="hodograph"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Offshore-Specific Phenomena -->
+        <div class="section" id="offshore-specific">
+            <h2>9. Offshore-Specific Phenomena</h2>
+            
+            <h3>9.1 Low-Level Jets</h3>
+            <p>Offshore low-level jets are common due to:</p>
+            <ul>
+                <li>Inertial oscillations</li>
+                <li>Baroclinic effects</li>
+                <li>Land-sea temperature contrasts</li>
+                <li>Stable stratification</li>
+            </ul>
+
+            <div class="plot-box">
+                <h4>LLJ Profile</h4>
+                <canvas id="lljProfile"></canvas>
+            </div>
+
+            <h3>9.2 Marine Fog and Low Clouds</h3>
+            <table class="table">
+                <tr>
+                    <th>Type</th>
+                    <th>Formation Mechanism</th>
+                    <th>Impact on Wind</th>
+                </tr>
+                <tr>
+                    <td>Advection Fog</td>
+                    <td>Warm air over cold water</td>
+                    <td>Reduced mixing, higher shear</td>
+                </tr>
+                <tr>
+                    <td>Sea Fog</td>
+                    <td>Radiative cooling</td>
+                    <td>Very stable conditions</td>
+                </tr>
+                <tr>
+                    <td>Stratocumulus</td>
+                    <td>Marine boundary layer top</td>
+                    <td>Capping inversion effects</td>
+                </tr>
+            </table>
+
+            <h3>9.3 Swell-Wind Interaction</h3>
+            <p>Long-period swells can influence wind profiles through:</p>
+            <ul>
+                <li>Modified surface stress</li>
+                <li>Wave-induced momentum flux</li>
+                <li>Non-equilibrium sea states</li>
+            </ul>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="section">
+            <h2>📝 Chapter Summary</h2>
+            <div class="success-box">
+                <h3>Key Takeaways:</h3>
+                <ul>
+                    <li>The marine atmospheric boundary layer has unique characteristics that favor wind energy</li>
+                    <li>Stability plays a crucial role in determining wind profiles and turbulence</li>
+                    <li>Multiple theoretical frameworks (log law, power law, Ekman) describe wind variation with height</li>
+                    <li>Air-sea interaction creates phenomena not seen over land</li>
+                    <li>Coastal transitions require special consideration for near-shore wind farms</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Offshore Wind Analysis Textbook | Theory Chapter</p>
+        <p>
+            <a href="index.html">Home</a> | 
+            <a href="measurement.html">Next: Measurements →</a>
+        </p>
+    </footer>
+
+    <script>
+        // Initialize MathJax
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+
+        // Chart.js visualizations
+        document.addEventListener('DOMContentLoaded', function() {
+            // ABL Structure
+            const heights = [0, 10, 50, 100, 200, 500, 1000, 1500, 2000];
+            new Chart('ablStructure', {
+                type: 'line',
+                data: {
+                    labels: heights,
+                    datasets: [
+                        {
+                            label: 'Stable ABL',
+                            data: [15, 15.2, 15.5, 15.8, 16.2, 17, 18, 18.5, 19],
+                            borderColor: 'rgb(76, 175, 80)',
+                            fill: false
+                        },
+                        {
+                            label: 'Unstable ABL',
+                            data: [15, 14.8, 14.7, 14.6, 14.5, 14.4, 14.3, 15, 16],
+                            borderColor: 'rgb(244, 67, 54)',
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Potential Temperature Profiles' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Potential Temperature (°C)' } }
+                    }
+                }
+            });
+
+            // Diurnal ABL Evolution
+            const hours = Array.from({length: 24}, (_, i) => i);
+            new Chart('diurnalABL', {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'ABL Height',
+                        data: hours.map(h => {
+                            if (h < 6 || h > 18) return 200 + 50 * Math.random();
+                            return 500 + 300 * Math.sin((h - 6) * Math.PI / 12) + 100 * Math.random();
+                        }),
+                        borderColor: 'rgb(33, 150, 243)',
+                        backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Diurnal ABL Height Evolution' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Hour of Day' } },
+                        y: { title: { display: true, text: 'ABL Height (m)' } }
+                    }
+                }
+            });
+
+            // Stability Profiles
+            const profileHeights = Array.from({length: 20}, (_, i) => i * 10 + 10);
+            new Chart('stabilityProfiles', {
+                type: 'line',
+                data: {
+                    labels: profileHeights,
+                    datasets: [
+                        {
+                            label: 'Very Stable',
+                            data: profileHeights.map(h => 8 * Math.pow(h/10, 0.35)),
+                            borderColor: 'rgb(76, 175, 80)'
+                        },
+                        {
+                            label: 'Neutral',
+                            data: profileHeights.map(h => 8 * Math.pow(h/10, 0.11)),
+                            borderColor: 'rgb(33, 150, 243)'
+                        },
+                        {
+                            label: 'Very Unstable',
+                            data: profileHeights.map(h => 8 * Math.pow(h/10, 0.06)),
+                            borderColor: 'rgb(244, 67, 54)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Profiles Under Different Stability' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Height (m)' } }
+                    }
+                }
+            });
+
+            // Length Scales
+            new Chart('lengthScales', {
+                type: 'line',
+                data: {
+                    labels: [10, 20, 50, 100, 200, 300],
+                    datasets: [
+                        {
+                            label: 'Integral Scale',
+                            data: [20, 35, 70, 120, 180, 240],
+                            borderColor: 'rgb(255, 99, 132)'
+                        },
+                        {
+                            label: 'Taylor Microscale',
+                            data: [2, 3, 5, 8, 12, 16],
+                            borderColor: 'rgb(54, 162, 235)'
+                        },
+                        {
+                            label: 'Kolmogorov Scale',
+                            data: [0.001, 0.001, 0.002, 0.003, 0.004, 0.005],
+                            borderColor: 'rgb(255, 206, 86)',
+                            hidden: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Turbulence Length Scales' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { type: 'logarithmic', title: { display: true, text: 'Length Scale (m)' } }
+                    }
+                }
+            });
+
+            // Time Scales
+            new Chart('timeScales', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Eddy Turnover Time',
+                        data: Array.from({length: 50}, () => ({
+                            x: Math.random() * 300 + 10,
+                            y: Math.random() * 600 + 60
+                        })),
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Turbulence Time Scales' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Length Scale (m)' } },
+                        y: { title: { display: true, text: 'Time Scale (s)' } }
+                    }
+                }
+            });
+
+            // Psi Functions
+            const zL = Array.from({length: 40}, (_, i) => -2 + i * 0.1);
+            new Chart('psiFunction', {
+                type: 'line',
+                data: {
+                    labels: zL,
+                    datasets: [{
+                        label: 'ψm(z/L)',
+                        data: zL.map(x => {
+                            if (x < 0) {
+                                const phi = Math.pow(1 - 16 * x, 0.25);
+                                return 2 * Math.log((1 + phi) / 2) + Math.log((1 + phi * phi) / 2) - 2 * Math.atan(phi) + Math.PI / 2;
+                            }
+                            return -5 * x;
+                        }),
+                        borderColor: 'rgb(33, 150, 243)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Integrated Stability Function' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'z/L' } },
+                        y: { title: { display: true, text: 'ψm' } }
+                    }
+                }
+            });
+
+            // Profile Comparison
+            new Chart('profileComparison', {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Logarithmic',
+                            data: profileHeights.map(h => ({
+                                x: 8 * (1/0.4) * Math.log(h/0.0002),
+                                y: h
+                            })),
+                            borderColor: 'rgb(255, 99, 132)',
+                            showLine: true
+                        },
+                        {
+                            label: 'Power Law',
+                            data: profileHeights.map(h => ({
+                                x: 8 * Math.pow(h/10, 0.11),
+                                y: h
+                            })),
+                            borderColor: 'rgb(54, 162, 235)',
+                            showLine: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Log Law vs Power Law' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Height (m)' } }
+                    }
+                }
+            });
+
+            // Ekman Spiral
+            const ekmanCanvas = document.getElementById('ekmanSpiral');
+            const ekmanCtx = ekmanCanvas.getContext('2d');
+            ekmanCtx.fillStyle = '#f0f0f0';
+            ekmanCtx.fillRect(0, 0, ekmanCanvas.width, ekmanCanvas.height);
+            
+            // Draw spiral
+            ekmanCtx.strokeStyle = 'rgb(33, 150, 243)';
+            ekmanCtx.lineWidth = 2;
+            ekmanCtx.beginPath();
+            
+            const centerX = ekmanCanvas.width / 2;
+            const centerY = ekmanCanvas.height / 2;
+            const scale = 80;
+            
+            for (let z = 0; z <= 1000; z += 10) {
+                const angle = z * 0.001;
+                const magnitude = 1 - Math.exp(-z / 500);
+                const x = centerX + magnitude * scale * Math.cos(angle);
+                const y = centerY + magnitude * scale * Math.sin(angle);
+                
+                if (z === 0) {
+                    ekmanCtx.moveTo(x, y);
+                } else {
+                    ekmanCtx.lineTo(x, y);
+                }
+            }
+            ekmanCtx.stroke();
+            
+            // Add labels
+            ekmanCtx.fillStyle = '#333';
+            ekmanCtx.font = '14px Arial';
+            ekmanCtx.textAlign = 'center';
+            ekmanCtx.fillText('Ekman Spiral (Northern Hemisphere)', centerX, 30);
+
+            // Wind Veer
+            new Chart('windVeer', {
+                type: 'line',
+                data: {
+                    labels: [0, 50, 100, 200, 300, 500, 1000],
+                    datasets: [{
+                        label: 'Wind Direction Change',
+                        data: [0, 5, 10, 18, 25, 35, 45],
+                        borderColor: 'rgb(255, 152, 0)',
+                        backgroundColor: 'rgba(255, 152, 0, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Veer with Height' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Direction Change (°)' } }
+                    }
+                }
+            });
+
+            // Wave Stress
+            new Chart('waveStress', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Wave Age Effect',
+                        data: Array.from({length: 50}, () => {
+                            const waveAge = Math.random() * 2;
+                            return {
+                                x: waveAge,
+                                y: 0.001 * (1 + 0.5 * Math.exp(-waveAge))
+                            };
+                        }),
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Drag Coefficient vs Wave Age' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wave Age (cp/u*)' } },
+                        y: { title: { display: true, text: 'CD' } }
+                    }
+                }
+            });
+
+            // IBL Growth
+            new Chart('iblGrowth', {
+                type: 'line',
+                data: {
+                    labels: [0, 1, 2, 5, 10, 20, 50, 100],
+                    datasets: [{
+                        label: 'IBL Height',
+                        data: [0, 30, 50, 90, 150, 250, 450, 700],
+                        borderColor: 'rgb(76, 175, 80)',
+                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Internal Boundary Layer Growth' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Distance from Coast (km)' } },
+                        y: { title: { display: true, text: 'IBL Height (m)' } }
+                    }
+                }
+            });
+
+            // Sea Breeze
+            new Chart('seaBreeze', {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'Sea Breeze Component',
+                        data: hours.map(h => {
+                            if (h < 9 || h > 18) return 0;
+                            return 5 * Math.sin((h - 9) * Math.PI / 9);
+                        }),
+                        borderColor: 'rgb(33, 150, 243)',
+                        backgroundColor: 'rgba(33, 150, 243, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Sea Breeze Strength' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Hour of Day' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Hodograph
+            const hodographCanvas = document.getElementById('hodograph');
+            const hodographCtx = hodographCanvas.getContext('2d');
+            hodographCtx.fillStyle = '#f0f0f0';
+            hodographCtx.fillRect(0, 0, hodographCanvas.width, hodographCanvas.height);
+            
+            // Draw axes
+            hodographCtx.strokeStyle = '#999';
+            hodographCtx.lineWidth = 1;
+            hodographCtx.beginPath();
+            hodographCtx.moveTo(hodographCanvas.width / 2, 0);
+            hodographCtx.lineTo(hodographCanvas.width / 2, hodographCanvas.height);
+            hodographCtx.moveTo(0, hodographCanvas.height / 2);
+            hodographCtx.lineTo(hodographCanvas.width, hodographCanvas.height / 2);
+            hodographCtx.stroke();
+            
+            // Draw hodograph
+            hodographCtx.strokeStyle = 'rgb(255, 99, 132)';
+            hodographCtx.lineWidth = 2;
+            hodographCtx.beginPath();
+            
+            const hCenterX = hodographCanvas.width / 2;
+            const hCenterY = hodographCanvas.height / 2;
+            const hScale = 15;
+            
+            for (let h = 0; h <= 24; h++) {
+                const u = 5 + 3 * Math.cos(h * Math.PI / 12);
+                const v = 2 * Math.sin(h * Math.PI / 12);
+                const x = hCenterX + u * hScale;
+                const y = hCenterY - v * hScale;
+                
+                if (h === 0) {
+                    hodographCtx.moveTo(x, y);
+                } else {
+                    hodographCtx.lineTo(x, y);
+                }
+            }
+            hodographCtx.closePath();
+            hodographCtx.stroke();
+            
+            hodographCtx.fillStyle = '#333';
+            hodographCtx.font = '14px Arial';
+            hodographCtx.textAlign = 'center';
+            hodographCtx.fillText('Wind Hodograph', hCenterX, 30);
+
+            // LLJ Profile
+            new Chart('lljProfile', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Low-Level Jet',
+                        data: [
+                            {x: 6, y: 10}, {x: 7, y: 50}, {x: 10, y: 100},
+                            {x: 14, y: 200}, {x: 12, y: 300}, {x: 10, y: 500},
+                            {x: 9, y: 700}, {x: 8.5, y: 1000}
+                        ],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        showLine: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Typical LLJ Wind Profile' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Height (m)' } }
+                    }
+                }
+            });
+        });
+    </script>
+    <!-- Modal for enlarged charts -->
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-canvas-container">
+                <canvas id="modalCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        let modal = document.getElementById('chartModal');
+        let modalCanvas = document.getElementById('modalCanvas');
+        let modalClose = document.querySelector('.modal-close');
+        let activeChart = null;
+
+        // Function to open modal with chart
+        function openChartModal(originalCanvas) {
+            // Special handling for custom drawn canvases
+            if (originalCanvas.id === 'ekmanSpiral' || originalCanvas.id === 'hodograph') {
+                // For custom drawn canvases, just copy the image
+                modal.style.display = 'block';
+                modalCanvas.width = 800;
+                modalCanvas.height = 600;
+                const modalCtx = modalCanvas.getContext('2d');
+                modalCtx.fillStyle = '#fff';
+                modalCtx.fillRect(0, 0, modalCanvas.width, modalCanvas.height);
+                modalCtx.drawImage(originalCanvas, 0, 0, modalCanvas.width, modalCanvas.height);
+                return;
+            }
+
+            // Get the chart instance from the original canvas
+            let originalChart = Chart.getChart(originalCanvas);
+            if (!originalChart) return;
+
+            modal.style.display = 'block';
+            
+            // Clone the chart configuration
+            let config = JSON.parse(JSON.stringify(originalChart.config));
+            
+            // Adjust size for modal
+            modalCanvas.width = 800;
+            modalCanvas.height = 600;
+            
+            // Destroy previous chart if exists
+            if (activeChart) {
+                activeChart.destroy();
+            }
+            
+            // Create new chart in modal
+            activeChart = new Chart(modalCanvas, config);
+        }
+
+        // Close modal
+        modalClose.onclick = function() {
+            modal.style.display = 'none';
+            if (activeChart) {
+                activeChart.destroy();
+                activeChart = null;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                if (activeChart) {
+                    activeChart.destroy();
+                    activeChart = null;
+                }
+            }
+        }
+
+        // Add click handlers to all canvases after charts are loaded
+        setTimeout(() => {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                if (canvas.id !== 'modalCanvas') {
+                    canvas.classList.add('clickable-chart');
+                    canvas.addEventListener('click', function() {
+                        openChartModal(this);
+                    });
+                }
+            });
+        }, 500);
+    </script>
+</body>
+</html>

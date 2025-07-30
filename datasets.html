@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Datasets - Offshore Wind Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dataset-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+        .dataset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .dataset-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .download-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .download-btn:hover {
+            background: #0052a3;
+        }
+        .dataset-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .info-box {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .info-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .info-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .data-preview {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .data-table th {
+            background: #0066cc;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        .code-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .format-options {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .format-btn {
+            background: #e0e0e0;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .format-btn.active {
+            background: #0066cc;
+            color: white;
+        }
+        .metadata-box {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .metadata-box h4 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        .variables-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .variable-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #0066cc;
+        }
+        .variable-name {
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .variable-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="theory.html">Theory</a></li>
+            <li><a href="measurement.html">Measurement</a></li>
+            <li><a href="data-processing.html">Data Processing</a></li>
+            <li><a href="modeling.html">Modeling</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="formulas.html">Formulas</a></li>
+            <li><a href="exercises.html">Exercises</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="advanced-topics.html">Advanced Topics</a></li>
+            <li><a href="glossary.html">Glossary</a></li>
+            <li><a href="references.html">References</a></li>
+            <li><a href="datasets.html" class="active">Datasets</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Sample Datasets for Analysis</h1>
+        <p>Download and explore real-world offshore wind datasets for practice and research. All datasets are anonymized and provided for educational purposes.</p>
+
+        <!-- Dataset 1: Met Mast Time Series -->
+        <div class="dataset-section">
+            <div class="dataset-header">
+                <div class="dataset-title">1. Offshore Met Mast Time Series</div>
+                <button class="download-btn" onclick="generateDataset('metmast')">Generate Dataset</button>
+            </div>
+
+            <div class="dataset-info">
+                <div class="info-box">
+                    <div class="info-label">Duration</div>
+                    <div class="info-value">1 Year</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Resolution</div>
+                    <div class="info-value">10 minutes</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Heights</div>
+                    <div class="info-value">40, 60, 80, 100m</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Size</div>
+                    <div class="info-value">~8 MB</div>
+                </div>
+            </div>
+
+            <div class="metadata-box">
+                <h4>Dataset Description</h4>
+                <p>High-quality meteorological measurements from an offshore platform in the North Sea. Includes wind speed, direction, temperature, and atmospheric pressure at multiple heights.</p>
+            </div>
+
+            <div class="variables-list">
+                <div class="variable-item">
+                    <div class="variable-name">WS_40m, WS_60m, WS_80m, WS_100m</div>
+                    <div class="variable-desc">Wind speed at various heights (m/s)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">WD_80m</div>
+                    <div class="variable-desc">Wind direction at 80m (degrees)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Temp_2m, Temp_100m</div>
+                    <div class="variable-desc">Air temperature (°C)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Pressure</div>
+                    <div class="variable-desc">Atmospheric pressure (hPa)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">TI_80m</div>
+                    <div class="variable-desc">Turbulence intensity at 80m (%)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">RH</div>
+                    <div class="variable-desc">Relative humidity (%)</div>
+                </div>
+            </div>
+
+            <div class="data-preview">
+                <h4>Data Preview</h4>
+                <table class="data-table" id="metmast-preview">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>WS_40m</th>
+                            <th>WS_60m</th>
+                            <th>WS_80m</th>
+                            <th>WS_100m</th>
+                            <th>WD_80m</th>
+                            <th>Temp_2m</th>
+                            <th>Pressure</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2023-01-01 00:00</td><td>7.2</td><td>7.8</td><td>8.3</td><td>8.7</td><td>245</td><td>8.5</td><td>1013.2</td></tr>
+                        <tr><td>2023-01-01 00:10</td><td>7.5</td><td>8.1</td><td>8.6</td><td>9.0</td><td>248</td><td>8.4</td><td>1013.1</td></tr>
+                        <tr><td>2023-01-01 00:20</td><td>7.1</td><td>7.7</td><td>8.2</td><td>8.6</td><td>243</td><td>8.4</td><td>1013.0</td></tr>
+                        <tr><td>2023-01-01 00:30</td><td>6.9</td><td>7.5</td><td>8.0</td><td>8.4</td><td>241</td><td>8.3</td><td>1013.0</td></tr>
+                        <tr><td>2023-01-01 00:40</td><td>7.3</td><td>7.9</td><td>8.4</td><td>8.8</td><td>246</td><td>8.3</td><td>1012.9</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-example">
+# Python code to load and analyze this dataset
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv('offshore_metmast_data.csv', parse_dates=['Timestamp'])
+df.set_index('Timestamp', inplace=True)
+
+# Calculate wind shear exponent
+df['alpha'] = np.log(df['WS_100m']/df['WS_40m']) / np.log(100/40)
+
+# Plot diurnal variation
+hourly_mean = df.groupby(df.index.hour)['WS_80m'].mean()
+plt.figure(figsize=(10, 6))
+plt.plot(hourly_mean.index, hourly_mean.values)
+plt.xlabel('Hour of Day')
+plt.ylabel('Mean Wind Speed at 80m (m/s)')
+plt.title('Diurnal Wind Speed Pattern')
+plt.grid(True)
+plt.show()
+            </div>
+        </div>
+
+        <!-- Dataset 2: SCADA Production Data -->
+        <div class="dataset-section">
+            <div class="dataset-header">
+                <div class="dataset-title">2. Wind Turbine SCADA Data</div>
+                <button class="download-btn" onclick="generateDataset('scada')">Generate Dataset</button>
+            </div>
+
+            <div class="dataset-info">
+                <div class="info-box">
+                    <div class="info-label">Duration</div>
+                    <div class="info-value">6 Months</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Turbines</div>
+                    <div class="info-value">10 Units</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Resolution</div>
+                    <div class="info-value">10 minutes</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Size</div>
+                    <div class="info-value">~12 MB</div>
+                </div>
+            </div>
+
+            <div class="variables-list">
+                <div class="variable-item">
+                    <div class="variable-name">Power</div>
+                    <div class="variable-desc">Active power output (kW)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">WindSpeed</div>
+                    <div class="variable-desc">Nacelle wind speed (m/s)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">RotorSpeed</div>
+                    <div class="variable-desc">Rotor rotational speed (rpm)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">PitchAngle</div>
+                    <div class="variable-desc">Blade pitch angle (degrees)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">GenBearingTemp</div>
+                    <div class="variable-desc">Generator bearing temperature (°C)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">YawPosition</div>
+                    <div class="variable-desc">Nacelle yaw position (degrees)</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="scadaChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Dataset 3: Wave and Current Data -->
+        <div class="dataset-section">
+            <div class="dataset-header">
+                <div class="dataset-title">3. Wave and Current Measurements</div>
+                <button class="download-btn" onclick="generateDataset('waves')">Generate Dataset</button>
+            </div>
+
+            <div class="dataset-info">
+                <div class="info-box">
+                    <div class="info-label">Duration</div>
+                    <div class="info-value">3 Months</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Resolution</div>
+                    <div class="info-value">30 minutes</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Parameters</div>
+                    <div class="info-value">8 Variables</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Size</div>
+                    <div class="info-value">~2 MB</div>
+                </div>
+            </div>
+
+            <div class="variables-list">
+                <div class="variable-item">
+                    <div class="variable-name">Hs</div>
+                    <div class="variable-desc">Significant wave height (m)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Tp</div>
+                    <div class="variable-desc">Peak wave period (s)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">WaveDir</div>
+                    <div class="variable-desc">Mean wave direction (degrees)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">CurrentSpeed_Surface</div>
+                    <div class="variable-desc">Surface current speed (m/s)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">CurrentDir_Surface</div>
+                    <div class="variable-desc">Surface current direction (degrees)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">WaterTemp</div>
+                    <div class="variable-desc">Sea water temperature (°C)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dataset 4: LiDAR Wind Profile -->
+        <div class="dataset-section">
+            <div class="dataset-header">
+                <div class="dataset-title">4. Floating LiDAR Wind Profiles</div>
+                <button class="download-btn" onclick="generateDataset('lidar')">Generate Dataset</button>
+            </div>
+
+            <div class="dataset-info">
+                <div class="info-box">
+                    <div class="info-label">Duration</div>
+                    <div class="info-value">2 Months</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Heights</div>
+                    <div class="info-value">12 Levels</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Range</div>
+                    <div class="info-value">40-200m</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Size</div>
+                    <div class="info-value">~4 MB</div>
+                </div>
+            </div>
+
+            <div class="metadata-box">
+                <h4>Height Levels</h4>
+                <p>40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200 meters</p>
+                <p>Includes horizontal wind speed, vertical wind speed, and wind direction at each level.</p>
+            </div>
+        </div>
+
+        <!-- Dataset 5: Wind Farm Wake Data -->
+        <div class="dataset-section">
+            <div class="dataset-header">
+                <div class="dataset-title">5. Wind Farm Wake Measurements</div>
+                <button class="download-btn" onclick="generateDataset('wake')">Generate Dataset</button>
+            </div>
+
+            <div class="dataset-info">
+                <div class="info-box">
+                    <div class="info-label">Layout</div>
+                    <div class="info-value">5x5 Array</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Duration</div>
+                    <div class="info-value">1 Month</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Spacing</div>
+                    <div class="info-value">7D x 5D</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Size</div>
+                    <div class="info-value">~6 MB</div>
+                </div>
+            </div>
+
+            <div class="metadata-box">
+                <h4>Dataset Features</h4>
+                <ul>
+                    <li>Individual turbine power output</li>
+                    <li>Free stream wind conditions</li>
+                    <li>Turbine operational status</li>
+                    <li>Ambient turbulence intensity</li>
+                    <li>Atmospheric stability parameter</li>
+                </ul>
+            </div>
+
+            <div class="code-example">
+# Example: Calculate wake losses
+import numpy as np
+import pandas as pd
+
+# Load wake dataset
+df = pd.read_csv('windfarm_wake_data.csv')
+
+# Define turbine positions (normalized by rotor diameter)
+turbine_x = np.array([0, 7, 14, 21, 28] * 5)
+turbine_y = np.array([0]*5 + [5]*5 + [10]*5 + [15]*5 + [20]*5)
+
+# Calculate wake losses for different wind directions
+wind_dirs = np.arange(0, 360, 10)
+wake_losses = []
+
+for wd in wind_dirs:
+    # Identify upstream/downstream turbines
+    # Calculate power deficit
+    # Store results
+    pass
+            </div>
+        </div>
+
+        <!-- Usage Guidelines -->
+        <div class="dataset-section">
+            <h2>Usage Guidelines</h2>
+            
+            <div class="metadata-box">
+                <h4>Data Format Options</h4>
+                <p>All datasets are available in the following formats:</p>
+                <ul>
+                    <li><strong>CSV:</strong> Comma-separated values, compatible with Excel and most analysis tools</li>
+                    <li><strong>NetCDF:</strong> Self-describing format ideal for multi-dimensional scientific data</li>
+                    <li><strong>MAT:</strong> MATLAB format for direct loading in MATLAB/Octave</li>
+                    <li><strong>HDF5:</strong> Hierarchical format for large datasets with metadata</li>
+                </ul>
+            </div>
+
+            <div class="metadata-box">
+                <h4>Quality Flags</h4>
+                <p>Data quality flags are included where applicable:</p>
+                <ul>
+                    <li><strong>0:</strong> Good quality data</li>
+                    <li><strong>1:</strong> Questionable - use with caution</li>
+                    <li><strong>2:</strong> Bad - do not use</li>
+                    <li><strong>9:</strong> Missing data</li>
+                </ul>
+            </div>
+
+            <div class="metadata-box">
+                <h4>Coordinate System</h4>
+                <ul>
+                    <li>Wind directions: Coming from, degrees from North (meteorological convention)</li>
+                    <li>Turbine coordinates: UTM Zone 31N</li>
+                    <li>Time: UTC timezone</li>
+                    <li>Heights: Meters above mean sea level (MSL)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="navigation-footer">
+            <p>See also: <a href="exercises.html">Practice Exercises</a> | <a href="data-processing.html">Data Processing Guide</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize SCADA chart
+        const ctx = document.getElementById('scadaChart').getContext('2d');
+        
+        // Generate sample power curve data
+        const windSpeeds = [];
+        const powerOutput = [];
+        for (let ws = 0; ws <= 25; ws += 0.5) {
+            windSpeeds.push(ws);
+            let power = 0;
+            if (ws >= 3 && ws < 12) {
+                power = 500 * Math.pow((ws - 3) / 9, 3) + (Math.random() - 0.5) * 100;
+            } else if (ws >= 12 && ws < 25) {
+                power = 5000 + (Math.random() - 0.5) * 200;
+            }
+            powerOutput.push(Math.max(0, power));
+        }
+
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'SCADA Power Curve',
+                    data: windSpeeds.map((ws, i) => ({x: ws, y: powerOutput[i]})),
+                    backgroundColor: 'rgba(0, 102, 204, 0.5)',
+                    pointRadius: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Sample Turbine Power Curve from SCADA Data'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Wind Speed (m/s)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Power Output (kW)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Function to generate and download datasets
+        function generateDataset(type) {
+            // In a real implementation, this would generate actual data files
+            // For demonstration, we'll create a simple CSV string
+            
+            let csvContent = "";
+            let filename = "";
+            
+            switch(type) {
+                case 'metmast':
+                    csvContent = "Timestamp,WS_40m,WS_60m,WS_80m,WS_100m,WD_80m,Temp_2m,Pressure\n";
+                    // Add sample data rows
+                    const baseDate = new Date('2023-01-01');
+                    for (let i = 0; i < 100; i++) {
+                        const date = new Date(baseDate.getTime() + i * 10 * 60 * 1000);
+                        const ws40 = (7 + Math.random() * 3).toFixed(1);
+                        const ws60 = (parseFloat(ws40) + 0.5 + Math.random() * 0.5).toFixed(1);
+                        const ws80 = (parseFloat(ws60) + 0.4 + Math.random() * 0.4).toFixed(1);
+                        const ws100 = (parseFloat(ws80) + 0.3 + Math.random() * 0.3).toFixed(1);
+                        const wd = (240 + Math.random() * 20).toFixed(0);
+                        const temp = (8 + Math.random() * 2).toFixed(1);
+                        const pressure = (1010 + Math.random() * 10).toFixed(1);
+                        
+                        csvContent += `${date.toISOString()},${ws40},${ws60},${ws80},${ws100},${wd},${temp},${pressure}\n`;
+                    }
+                    filename = "offshore_metmast_sample.csv";
+                    break;
+                    
+                case 'scada':
+                    csvContent = "Timestamp,TurbineID,Power,WindSpeed,RotorSpeed,PitchAngle,GenBearingTemp\n";
+                    filename = "turbine_scada_sample.csv";
+                    break;
+                    
+                case 'waves':
+                    csvContent = "Timestamp,Hs,Tp,WaveDir,CurrentSpeed_Surface,CurrentDir_Surface,WaterTemp\n";
+                    filename = "wave_current_sample.csv";
+                    break;
+                    
+                case 'lidar':
+                    csvContent = "Timestamp,Height,WindSpeed,WindDirection,VerticalSpeed,TI,CNR\n";
+                    filename = "floating_lidar_sample.csv";
+                    break;
+                    
+                case 'wake':
+                    csvContent = "Timestamp,TurbineID,Power,WindSpeed,WindDirection,TI,Status\n";
+                    filename = "windfarm_wake_sample.csv";
+                    break;
+            }
+            
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', filename);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            alert(`Sample dataset "${filename}" has been generated and downloaded.`);
+        }
+    </script>
+</body>
+</html>

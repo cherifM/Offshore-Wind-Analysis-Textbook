@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>References - Offshore Wind Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .reference-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .reference-section h2 {
+            color: #0066cc;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .reference-entry {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-left: 3px solid #0066cc;
+            border-radius: 4px;
+        }
+        .reference-authors {
+            font-weight: bold;
+            color: #333;
+        }
+        .reference-title {
+            font-style: italic;
+            color: #0066cc;
+            margin: 5px 0;
+        }
+        .reference-details {
+            color: #666;
+            font-size: 0.95em;
+        }
+        .reference-tags {
+            margin-top: 10px;
+        }
+        .tag {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-right: 5px;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .resource-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .resource-card h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+        .resource-card a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .resource-card a:hover {
+            text-decoration: underline;
+        }
+        .book-list {
+            list-style: none;
+            padding: 0;
+        }
+        .book-list li {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .book-title {
+            font-weight: bold;
+            color: #0066cc;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .standards-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .standards-table th, .standards-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .standards-table th {
+            background: #0066cc;
+            color: white;
+        }
+        .standards-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .journal-section {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="theory.html">Theory</a></li>
+            <li><a href="measurement.html">Measurement</a></li>
+            <li><a href="data-processing.html">Data Processing</a></li>
+            <li><a href="modeling.html">Modeling</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="formulas.html">Formulas</a></li>
+            <li><a href="exercises.html">Exercises</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="advanced-topics.html">Advanced Topics</a></li>
+            <li><a href="glossary.html">Glossary</a></li>
+            <li><a href="references.html" class="active">References</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>References and Further Reading</h1>
+        <p>Comprehensive collection of academic papers, books, standards, and online resources for offshore wind energy analysis.</p>
+
+        <!-- Key Textbooks -->
+        <div class="reference-section">
+            <h2>Essential Textbooks</h2>
+            
+            <ul class="book-list">
+                <li>
+                    <span class="book-title">Wind Energy Handbook, 3rd Edition</span>
+                    <div class="reference-authors">Burton, T., Jenkins, N., Sharpe, D., and Bossanyi, E. (2021)</div>
+                    <div class="reference-details">John Wiley & Sons. ISBN: 978-1-119-45109-9</div>
+                    <div class="reference-tags">
+                        <span class="tag">Comprehensive</span>
+                        <span class="tag">Theory</span>
+                        <span class="tag">Design</span>
+                    </div>
+                </li>
+                
+                <li>
+                    <span class="book-title">Offshore Wind: A Comprehensive Guide to Successful Offshore Wind Farm Installation</span>
+                    <div class="reference-authors">Thomsen, K.E. (2014)</div>
+                    <div class="reference-details">Academic Press. ISBN: 978-0-12-410422-8</div>
+                    <div class="reference-tags">
+                        <span class="tag">Installation</span>
+                        <span class="tag">Project Management</span>
+                    </div>
+                </li>
+                
+                <li>
+                    <span class="book-title">Design of Offshore Wind Turbine Structures</span>
+                    <div class="reference-authors">DNV GL (2019)</div>
+                    <div class="reference-details">DNV-OS-J101. Det Norske Veritas</div>
+                    <div class="reference-tags">
+                        <span class="tag">Standards</span>
+                        <span class="tag">Structural Design</span>
+                    </div>
+                </li>
+                
+                <li>
+                    <span class="book-title">Wind Resource Assessment: A Practical Guide to Developing a Wind Project</span>
+                    <div class="reference-authors">Brower, M.C. (2012)</div>
+                    <div class="reference-details">John Wiley & Sons. ISBN: 978-1-118-02232-0</div>
+                    <div class="reference-tags">
+                        <span class="tag">Resource Assessment</span>
+                        <span class="tag">Practical</span>
+                    </div>
+                </li>
+                
+                <li>
+                    <span class="book-title">Aerodynamics of Wind Turbines, 3rd Edition</span>
+                    <div class="reference-authors">Hansen, M.O.L. (2015)</div>
+                    <div class="reference-details">Earthscan/Routledge. ISBN: 978-1-138-77507-7</div>
+                    <div class="reference-tags">
+                        <span class="tag">Aerodynamics</span>
+                        <span class="tag">Theory</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Key Papers -->
+        <div class="reference-section">
+            <h2>Seminal Papers</h2>
+            
+            <div class="reference-entry">
+                <div class="reference-authors">Barthelmie, R.J., et al. (2009)</div>
+                <div class="reference-title">Modelling and measuring flow and wind turbine wakes in large wind farms offshore</div>
+                <div class="reference-details">Wind Energy, 12(5), 431-444. DOI: 10.1002/we.348</div>
+                <div class="reference-tags">
+                    <span class="tag">Wake Effects</span>
+                    <span class="tag">Offshore</span>
+                    <span class="tag">Measurements</span>
+                </div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Jonkman, J.M. and Buhl Jr, M.L. (2005)</div>
+                <div class="reference-title">FAST User's Guide</div>
+                <div class="reference-details">NREL/EL-500-38230. National Renewable Energy Laboratory</div>
+                <div class="reference-tags">
+                    <span class="tag">Simulation</span>
+                    <span class="tag">Software</span>
+                    <span class="tag">Aeroelastic</span>
+                </div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Hasager, C.B., et al. (2013)</div>
+                <div class="reference-title">Offshore wind resource assessment from satellite SAR wind field maps</div>
+                <div class="reference-details">Wind Energy, 16(8), 1183-1198. DOI: 10.1002/we.1564</div>
+                <div class="reference-tags">
+                    <span class="tag">Remote Sensing</span>
+                    <span class="tag">Resource Assessment</span>
+                </div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Fleming, P., et al. (2019)</div>
+                <div class="reference-title">Initial results from a field campaign of wake steering applied at a commercial wind farm</div>
+                <div class="reference-details">Wind Energy Science, 4(2), 273-285. DOI: 10.5194/wes-4-273-2019</div>
+                <div class="reference-tags">
+                    <span class="tag">Wake Steering</span>
+                    <span class="tag">Control</span>
+                    <span class="tag">Field Results</span>
+                </div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Musial, W., et al. (2016)</div>
+                <div class="reference-title">Offshore Wind Energy Resource Assessment for the United States</div>
+                <div class="reference-details">NREL/TP-5000-66599. National Renewable Energy Laboratory</div>
+                <div class="reference-tags">
+                    <span class="tag">Resource Assessment</span>
+                    <span class="tag">U.S. Market</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Standards and Guidelines -->
+        <div class="reference-section">
+            <h2>International Standards and Guidelines</h2>
+            
+            <table class="standards-table">
+                <thead>
+                    <tr>
+                        <th>Standard</th>
+                        <th>Title</th>
+                        <th>Scope</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>IEC 61400-1</td>
+                        <td>Wind turbines - Part 1: Design requirements</td>
+                        <td>General design requirements for wind turbines</td>
+                    </tr>
+                    <tr>
+                        <td>IEC 61400-3-1</td>
+                        <td>Design requirements for fixed offshore wind turbines</td>
+                        <td>Specific to fixed-bottom offshore turbines</td>
+                    </tr>
+                    <tr>
+                        <td>IEC 61400-3-2</td>
+                        <td>Design requirements for floating offshore wind turbines</td>
+                        <td>Specific to floating wind turbines</td>
+                    </tr>
+                    <tr>
+                        <td>IEC 61400-12-1</td>
+                        <td>Power performance measurements</td>
+                        <td>Testing and verification procedures</td>
+                    </tr>
+                    <tr>
+                        <td>DNV-ST-0119</td>
+                        <td>Floating wind turbine structures</td>
+                        <td>Design and analysis of floating platforms</td>
+                    </tr>
+                    <tr>
+                        <td>API RP 2A-WSD</td>
+                        <td>Planning, Designing, and Constructing Fixed Offshore Platforms</td>
+                        <td>Foundation design standards</td>
+                    </tr>
+                    <tr>
+                        <td>ISO 19901-1</td>
+                        <td>Metocean design and operating considerations</td>
+                        <td>Environmental conditions for design</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Online Resources -->
+        <div class="reference-section">
+            <h2>Online Resources and Tools</h2>
+            
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>Software Tools</h4>
+                    <ul>
+                        <li><a href="https://www.nrel.gov/wind/nwtc/openfast.html" target="_blank">OpenFAST</a> - Aeroelastic simulation</li>
+                        <li><a href="https://www.wasp.dk/" target="_blank">WAsP</a> - Wind resource assessment</li>
+                        <li><a href="https://www.windographer.com/" target="_blank">Windographer</a> - Data analysis</li>
+                        <li><a href="https://www.emd.dk/windpro/" target="_blank">WindPRO</a> - Wind farm design</li>
+                        <li><a href="https://github.com/NREL/floris" target="_blank">FLORIS</a> - Wake modeling</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4>Data Sources</h4>
+                    <ul>
+                        <li><a href="https://www.renewables.ninja/" target="_blank">Renewables.ninja</a> - Historical wind data</li>
+                        <li><a href="https://globalwindatlas.info/" target="_blank">Global Wind Atlas</a> - Resource maps</li>
+                        <li><a href="https://www.windpoweringamerica.gov/windexchange/" target="_blank">WINDExchange</a> - U.S. wind data</li>
+                        <li><a href="https://map.neweuropeanwindatlas.eu/" target="_blank">New European Wind Atlas</a> - EU wind data</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4>Organizations</h4>
+                    <ul>
+                        <li><a href="https://gwec.net/" target="_blank">GWEC</a> - Global Wind Energy Council</li>
+                        <li><a href="https://windeurope.org/" target="_blank">WindEurope</a> - European association</li>
+                        <li><a href="https://www.awea.org/" target="_blank">AWEA</a> - American Wind Energy Association</li>
+                        <li><a href="https://ore.catapult.org.uk/" target="_blank">ORE Catapult</a> - UK research center</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4>Conferences</h4>
+                    <ul>
+                        <li>Wind Energy Science Conference (WESC)</li>
+                        <li>International Conference on Ocean, Offshore and Arctic Engineering (OMAE)</li>
+                        <li>European Wind Energy Conference (EWEA)</li>
+                        <li>AWEA Offshore WINDPOWER</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journals -->
+        <div class="journal-section">
+            <h2>Key Academic Journals</h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>Wind Energy Journals</h4>
+                    <ul>
+                        <li>Wind Energy (Wiley)</li>
+                        <li>Wind Energy Science (Copernicus)</li>
+                        <li>Journal of Wind Engineering and Industrial Aerodynamics</li>
+                        <li>Renewable Energy (Elsevier)</li>
+                        <li>IET Renewable Power Generation</li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <h4>Ocean Engineering Journals</h4>
+                    <ul>
+                        <li>Ocean Engineering (Elsevier)</li>
+                        <li>Marine Structures</li>
+                        <li>Journal of Offshore Mechanics and Arctic Engineering</li>
+                        <li>Applied Ocean Research</li>
+                        <li>International Journal of Offshore and Polar Engineering</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="reference-section">
+            <h2>Recent Review Articles</h2>
+            
+            <div class="reference-entry">
+                <div class="reference-authors">Veers, P., et al. (2019)</div>
+                <div class="reference-title">Grand challenges in the science of wind energy</div>
+                <div class="reference-details">Science, 366(6464). DOI: 10.1126/science.aau2027</div>
+                <div class="reference-tags">
+                    <span class="tag">Review</span>
+                    <span class="tag">Future Challenges</span>
+                </div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Porté-Agel, F., Bastankhah, M., and Shamsoddin, S. (2020)</div>
+                <div class="reference-title">Wind-turbine and wind-farm flows: A review</div>
+                <div class="reference-details">Boundary-Layer Meteorology, 174(1), 1-59. DOI: 10.1007/s10546-019-00473-0</div>
+                <div class="reference-tags">
+                    <span class="tag">Flow Physics</span>
+                    <span class="tag">Wake Modeling</span>
+                </div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Díaz, H. and Soares, C.G. (2020)</div>
+                <div class="reference-title">Review of the current status, technology and future trends of offshore wind farms</div>
+                <div class="reference-details">Ocean Engineering, 209, 107381. DOI: 10.1016/j.oceaneng.2020.107381</div>
+                <div class="reference-tags">
+                    <span class="tag">Technology Review</span>
+                    <span class="tag">Future Trends</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Machine Learning Papers -->
+        <div class="reference-section">
+            <h2>Machine Learning in Wind Energy</h2>
+            
+            <div class="reference-entry">
+                <div class="reference-authors">Clifton, A., Kilcher, L., Lundquist, J.K., and Fleming, P. (2013)</div>
+                <div class="reference-title">Using machine learning to predict wind turbine power output</div>
+                <div class="reference-details">Environmental Research Letters, 8(2), 024009. DOI: 10.1088/1748-9326/8/2/024009</div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Ti, Z., Deng, X.W., and Yang, H. (2020)</div>
+                <div class="reference-title">Wake modeling of wind turbines using machine learning</div>
+                <div class="reference-details">Applied Energy, 257, 114025. DOI: 10.1016/j.apenergy.2019.114025</div>
+            </div>
+
+            <div class="reference-entry">
+                <div class="reference-authors">Optis, M. and Perr-Sauer, J. (2019)</div>
+                <div class="reference-title">The importance of atmospheric turbulence and stability in machine-learning models of wind farm power production</div>
+                <div class="reference-details">Renewable and Sustainable Energy Reviews, 112, 27-41. DOI: 10.1016/j.rser.2019.05.031</div>
+            </div>
+        </div>
+
+        <div class="navigation-footer">
+            <p>See also: <a href="glossary.html">Glossary</a> | <a href="datasets.html">Sample Datasets</a></p>
+        </div>
+    </div>
+</body>
+</html>

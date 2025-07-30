@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offshore Wind Analysis - Complete Educational Textbook</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Page-specific styles for index.html */
+    </style>
+</head>
+<body>
+    <nav class="nav-main">
+        <a href="index.html" class="active">Home</a>
+        <a href="theory.html">Theory</a>
+        <a href="measurement.html">Measurements</a>
+        <a href="modeling.html">Modeling</a>
+        <a href="data-processing.html">Data Processing</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="advanced-topics.html">Advanced Topics</a>
+        <a href="calculators.html">Calculators</a>
+        <a href="exercises.html">Exercises</a>
+        <a href="formulas.html">Formulas</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="references.html">References</a>
+        <a href="datasets.html">Datasets</a>
+    </nav>
+
+    <div class="header">
+        <h1>🌊 Offshore Wind Analysis Textbook</h1>
+        <p>Comprehensive Educational Resource for Wind Data Analysis & Visualization</p>
+        <p style="font-size: 0.9em; margin-top: 10px;">📚 Complete guide for students, engineers, and researchers</p>
+    </div>
+
+    <div class="nav">
+        <button onclick="scrollToSection('basics')">Wind Basics</button>
+        <button onclick="scrollToSection('profiles')">Vertical Profiles</button>
+        <button onclick="scrollToSection('roses')">Wind Roses</button>
+        <button onclick="scrollToSection('turbulence')">Turbulence</button>
+        <button onclick="scrollToSection('distributions')">Distributions</button>
+        <button onclick="scrollToSection('temporal')">Temporal Analysis</button>
+        <button onclick="scrollToSection('power')">Power & Energy</button>
+        <button onclick="scrollToSection('stability')">Stability Analysis</button>
+        <button onclick="scrollToSection('correlations')">Correlations</button>
+    </div>
+
+    <div class="container">
+        <!-- Table of Contents -->
+        <div class="section">
+            <h2>📖 Table of Contents</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Core Analysis</h3>
+                    <ul>
+                        <li><a href="#basics">Wind Profile Fundamentals</a></li>
+                        <li><a href="#profiles">Vertical Profile Analysis</a></li>
+                        <li><a href="#roses">Wind Rose Analysis</a></li>
+                        <li><a href="#turbulence">Turbulence Characteristics</a></li>
+                        <li><a href="#distributions">Statistical Distributions</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Advanced Topics</h3>
+                    <ul>
+                        <li><a href="#temporal">Temporal Analysis</a></li>
+                        <li><a href="#power">Power & Energy Analysis</a></li>
+                        <li><a href="#stability">Atmospheric Stability</a></li>
+                        <li><a href="#correlations">Environmental Correlations</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Additional Resources</h3>
+                    <ul>
+                        <li><a href="theory.html">Theoretical Foundations</a></li>
+                        <li><a href="measurement.html">Measurement Techniques</a></li>
+                        <li><a href="calculators.html">Interactive Calculators</a></li>
+                        <li><a href="exercises.html">Practice Problems</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Wind Basics -->
+        <div class="section" id="basics">
+            <h2>📊 1. Wind Profile Fundamentals</h2>
+            
+            <div class="info-box">
+                <strong>Key Concepts:</strong>
+                <ul>
+                    <li><strong>Wind Shear:</strong> Change in wind speed with height</li>
+                    <li><strong>Wind Veer:</strong> Clockwise change in wind direction with height (Northern Hemisphere)</li>
+                    <li><strong>Atmospheric Stability:</strong> Thermal stratification affecting vertical mixing</li>
+                    <li><strong>Surface Roughness:</strong> z₀ ≈ 0.0002m offshore (vs 0.03-1.0m onshore)</li>
+                </ul>
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Wind Speed Profiles by Stability</h4>
+                    <canvas id="windSpeedProfile"></canvas>
+                    <div class="formula">
+                        Power Law: U(z) = U_ref × (z/z_ref)^α<br>
+                        Log Law: U(z) = (u*/κ) × ln(z/z₀)
+                    </div>
+                </div>
+                <div class="plot-box">
+                    <h4>Wind Veer Profiles</h4>
+                    <canvas id="windVeerProfile"></canvas>
+                    <div class="formula">
+                        Ekman Spiral: Δθ = arctan(f·z/K_m)^0.5<br>
+                        f = Coriolis parameter, K_m = eddy viscosity
+                    </div>
+                </div>
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Shear Exponent Variation</h4>
+                    <canvas id="shearExponent"></canvas>
+                    <div class="legend">α varies with stability and height</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Comparison: Offshore vs Onshore</h4>
+                    <canvas id="offshoreOnshore"></canvas>
+                    <div class="legend">Impact of surface roughness</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Vertical Profiles -->
+        <div class="section" id="profiles">
+            <h2>📈 2. Detailed Vertical Profile Analysis</h2>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Temperature Profile</h4>
+                    <canvas id="tempProfile"></canvas>
+                    <div class="legend">Potential temperature vs height</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Richardson Number Profile</h4>
+                    <canvas id="richardsonProfile"></canvas>
+                    <div class="formula">Ri = g/θ × (∂θ/∂z) / (∂U/∂z)²</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Mixing Length Profile</h4>
+                    <canvas id="mixingLength"></canvas>
+                    <div class="legend">l = κz / (1 + κz/λ)</div>
+                </div>
+            </div>
+
+            <table class="table">
+                <tr>
+                    <th>Stability Class</th>
+                    <th>Ri Range</th>
+                    <th>Typical α</th>
+                    <th>L (Obukhov Length)</th>
+                    <th>Occurrence Offshore</th>
+                </tr>
+                <tr>
+                    <td>Very Stable</td>
+                    <td>>0.25</td>
+                    <td>0.25-0.40</td>
+                    <td>0 to 50m</td>
+                    <td>15%</td>
+                </tr>
+                <tr>
+                    <td>Stable</td>
+                    <td>0.01-0.25</td>
+                    <td>0.15-0.25</td>
+                    <td>50-200m</td>
+                    <td>20%</td>
+                </tr>
+                <tr>
+                    <td>Neutral</td>
+                    <td>|Ri|<0.01</td>
+                    <td>0.10-0.15</td>
+                    <td>|L|>200m</td>
+                    <td>50%</td>
+                </tr>
+                <tr>
+                    <td>Unstable</td>
+                    <td>-0.25 to -0.01</td>
+                    <td>0.05-0.10</td>
+                    <td>-200 to -50m</td>
+                    <td>10%</td>
+                </tr>
+                <tr>
+                    <td>Very Unstable</td>
+                    <td><-0.25</td>
+                    <td>0.00-0.05</td>
+                    <td>-50 to 0m</td>
+                    <td>5%</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 3: Comprehensive Wind Roses -->
+        <div class="section" id="roses">
+            <h2>🌹 3. Comprehensive Wind Rose Analysis</h2>
+            
+            <h3>3.1 Standard Wind Roses by Stability</h3>
+            <div class="wind-rose-grid">
+                <div class="plot-box">
+                    <h4>All Data Combined</h4>
+                    <canvas id="roseAll" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Stable Conditions</h4>
+                    <canvas id="roseStable" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Neutral Conditions</h4>
+                    <canvas id="roseNeutral" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Unstable Conditions</h4>
+                    <canvas id="roseUnstable" width="350" height="350"></canvas>
+                </div>
+            </div>
+
+            <h3>3.2 Seasonal Wind Roses</h3>
+            <div class="wind-rose-grid">
+                <div class="plot-box">
+                    <h4>Winter (DJF)</h4>
+                    <canvas id="roseWinter" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Spring (MAM)</h4>
+                    <canvas id="roseSpring" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Summer (JJA)</h4>
+                    <canvas id="roseSummer" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Autumn (SON)</h4>
+                    <canvas id="roseAutumn" width="350" height="350"></canvas>
+                </div>
+            </div>
+
+            <h3>3.3 Diurnal Wind Roses</h3>
+            <div class="wind-rose-grid">
+                <div class="plot-box">
+                    <h4>Night (00-06)</h4>
+                    <canvas id="roseNight" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Morning (06-12)</h4>
+                    <canvas id="roseMorning" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Afternoon (12-18)</h4>
+                    <canvas id="roseAfternoon" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Evening (18-00)</h4>
+                    <canvas id="roseEvening" width="350" height="350"></canvas>
+                </div>
+            </div>
+
+            <h3>3.4 Height-Specific Wind Roses</h3>
+            <div class="wind-rose-grid">
+                <div class="plot-box">
+                    <h4>10m Height</h4>
+                    <canvas id="rose10m" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>50m Height</h4>
+                    <canvas id="rose50m" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>100m Height</h4>
+                    <canvas id="rose100m" width="350" height="350"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>150m Height</h4>
+                    <canvas id="rose150m" width="350" height="350"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Turbulence Analysis -->
+        <div class="section" id="turbulence">
+            <h2>🌀 4. Turbulence Characteristics</h2>
+            
+            <div class="info-box">
+                <strong>Turbulence Intensity (TI):</strong> TI = σ_u / U_mean<br>
+                <strong>IEC Classes:</strong> A (High TI > 0.16), B (Medium TI = 0.14), C (Low TI = 0.12)
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>TI vs Wind Speed</h4>
+                    <canvas id="tiWindSpeed"></canvas>
+                    <div class="legend">Colored by stability class</div>
+                </div>
+                <div class="plot-box">
+                    <h4>TI Vertical Profile</h4>
+                    <canvas id="tiProfile"></canvas>
+                    <div class="legend">TI typically decreases with height</div>
+                </div>
+                <div class="plot-box">
+                    <h4>TI by Direction</h4>
+                    <canvas id="tiDirection"></canvas>
+                    <div class="legend">Fetch and wake effects</div>
+                </div>
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Turbulence Spectra</h4>
+                    <canvas id="turbSpectra"></canvas>
+                    <div class="formula">S(f) ∝ f^(-5/3) in inertial subrange</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Integral Length Scales</h4>
+                    <canvas id="lengthScales"></canvas>
+                    <div class="legend">L_u vs height and stability</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Wind Speed Distributions -->
+        <div class="section" id="distributions">
+            <h2>📊 5. Statistical Distributions</h2>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Wind Speed Histogram</h4>
+                    <canvas id="windHistogram"></canvas>
+                    <div class="legend">With fitted Weibull distribution</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Weibull Parameters by Height</h4>
+                    <canvas id="weibullParams"></canvas>
+                    <div class="formula">f(v) = (k/A)(v/A)^(k-1) × exp[-(v/A)^k]</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Exceedance Probability</h4>
+                    <canvas id="exceedance"></canvas>
+                    <div class="legend">P(V > v) curves</div>
+                </div>
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Joint Distribution (Speed-Direction)</h4>
+                    <canvas id="jointDist"></canvas>
+                    <div class="legend">2D histogram</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Extreme Value Analysis</h4>
+                    <canvas id="extremeValue"></canvas>
+                    <div class="legend">50-year return period</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Temporal Variations -->
+        <div class="section" id="temporal">
+            <h2>⏰ 6. Temporal Analysis</h2>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Monthly Mean Wind Speed</h4>
+                    <canvas id="monthlyMean"></canvas>
+                    <div class="legend">With inter-annual variability</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Diurnal Variation</h4>
+                    <canvas id="diurnalVar"></canvas>
+                    <div class="legend">By season and height</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Annual Wind Speed Trend</h4>
+                    <canvas id="annualTrend"></canvas>
+                    <div class="legend">Long-term changes</div>
+                </div>
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Wind Speed Autocorrelation</h4>
+                    <canvas id="autocorr"></canvas>
+                    <div class="legend">Persistence analysis</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Seasonal Stability Distribution</h4>
+                    <canvas id="seasonalStability"></canvas>
+                    <div class="legend">Stability class frequency</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Power and Energy -->
+        <div class="section" id="power">
+            <h2>⚡ 7. Power & Energy Analysis</h2>
+            
+            <div class="warning-box">
+                <strong>Wind Power Density:</strong> P/A = 0.5 × ρ × v³ (W/m²)<br>
+                <strong>Capacity Factor:</strong> CF = Annual Energy / (Rated Power × 8760h)
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Power Density Profile</h4>
+                    <canvas id="powerDensity"></canvas>
+                    <div class="legend">Increases with height</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Power Curve & Distribution</h4>
+                    <canvas id="powerCurve"></canvas>
+                    <div class="legend">Generic 5MW turbine</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Capacity Factor by Month</h4>
+                    <canvas id="capacityFactor"></canvas>
+                    <div class="legend">Seasonal variations</div>
+                </div>
+            </div>
+
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Wake Loss Estimation</h4>
+                    <canvas id="wakeLoss"></canvas>
+                    <div class="legend">By wind direction</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Annual Energy Rose</h4>
+                    <canvas id="energyRose" width="350" height="350"></canvas>
+                    <div class="legend">Energy contribution by direction</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Stability Analysis -->
+        <div class="section" id="stability">
+            <h2>🌡️ 8. Atmospheric Stability Analysis</h2>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Stability Parameter Time Series</h4>
+                    <canvas id="stabilityTS"></canvas>
+                    <div class="legend">Bulk Richardson Number</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Monin-Obukhov Length Distribution</h4>
+                    <canvas id="obukhovDist"></canvas>
+                    <div class="legend">L = -u*³ / (κ × g/θ × H)</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Stability vs Wind Speed</h4>
+                    <canvas id="stabilityWind"></canvas>
+                    <div class="legend">Neutral dominates at high speeds</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Correlations -->
+        <div class="section" id="correlations">
+            <h2>🔗 9. Environmental Correlations</h2>
+            
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <h4>Wind-Wave Correlation</h4>
+                    <canvas id="windWave"></canvas>
+                    <div class="legend">Significant wave height vs wind speed</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Air-Sea Temperature Difference</h4>
+                    <canvas id="airSeaTemp"></canvas>
+                    <div class="legend">Impact on stability</div>
+                </div>
+                <div class="plot-box">
+                    <h4>Wind Speed Cross-Correlation</h4>
+                    <canvas id="crossCorr"></canvas>
+                    <div class="legend">Between different heights</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Offshore Wind Analysis Textbook | Educational Resource</p>
+        <p>
+            <a href="index.html">Home</a> | 
+            <a href="theory.html">Theory</a> | 
+            <a href="measurement.html">Measurements</a> | 
+            <a href="calculators.html">Calculators</a> | 
+            <a href="references.html">References</a>
+        </p>
+    </footer>
+
+    <!-- Modal for enlarged charts -->
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-canvas-container">
+                <canvas id="modalCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation function
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Global chart registry to store Chart.js instances
+        const chartRegistry = {};
+
+        // Modal functionality
+        let modal = document.getElementById('chartModal');
+        let modalCanvas = document.getElementById('modalCanvas');
+        let modalClose = document.querySelector('.modal-close');
+        let activeChart = null;
+
+        // Function to open modal with chart
+        function openChartModal(originalCanvas) {
+            console.log(`Opening modal for canvas: ${originalCanvas.id}`);
+            console.log(`Original canvas size: ${originalCanvas.width}x${originalCanvas.height}`);
+            
+            // Check if this is a Chart.js canvas
+            const chartInstance = chartRegistry[originalCanvas.id];
+            if (chartInstance) {
+                console.log(`Found Chart.js instance for ${originalCanvas.id}`);
+                // Force the chart to render
+                chartInstance.render();
+            }
+            
+            // Show modal
+            modal.style.display = 'block';
+            
+            // Set a reasonable fixed size for the modal canvas
+            modalCanvas.width = 800;
+            modalCanvas.height = 600;
+            
+            const modalCtx = modalCanvas.getContext('2d');
+            
+            // Clear the canvas with white background
+            modalCtx.fillStyle = '#ffffff';
+            modalCtx.fillRect(0, 0, modalCanvas.width, modalCanvas.height);
+            
+            // For Chart.js charts, we need to handle them specially
+            if (chartInstance) {
+                try {
+                    // Use Chart.js toBase64Image method which handles responsive charts properly
+                    const base64Image = chartInstance.toBase64Image();
+                    const img = new Image();
+                    
+                    img.onload = function() {
+                        // Clear and draw the image
+                        modalCtx.fillStyle = '#ffffff';
+                        modalCtx.fillRect(0, 0, modalCanvas.width, modalCanvas.height);
+                        
+                        // Scale to fit modal
+                        const scale = Math.min(
+                            modalCanvas.width / img.width,
+                            modalCanvas.height / img.height
+                        ) * 0.9;
+                        
+                        const scaledWidth = img.width * scale;
+                        const scaledHeight = img.height * scale;
+                        const x = (modalCanvas.width - scaledWidth) / 2;
+                        const y = (modalCanvas.height - scaledHeight) / 2;
+                        
+                        modalCtx.drawImage(img, x, y, scaledWidth, scaledHeight);
+                        console.log(`Successfully displayed Chart.js canvas ${originalCanvas.id} using base64`);
+                    };
+                    
+                    img.onerror = function() {
+                        console.error('Failed to load chart image');
+                        // Fallback to direct canvas copy
+                        try {
+                            modalCtx.drawImage(originalCanvas, 0, 0, modalCanvas.width, modalCanvas.height);
+                        } catch (e) {
+                            modalCtx.fillStyle = '#000';
+                            modalCtx.font = '20px Arial';
+                            modalCtx.textAlign = 'center';
+                            modalCtx.fillText('Error displaying chart', modalCanvas.width/2, modalCanvas.height/2);
+                        }
+                    };
+                    
+                    img.src = base64Image;
+                } catch (error) {
+                    console.error(`Error getting chart image:`, error);
+                    // Try direct canvas copy as fallback
+                    try {
+                        modalCtx.drawImage(originalCanvas, 0, 0, modalCanvas.width, modalCanvas.height);
+                    } catch (e) {
+                        modalCtx.fillStyle = '#000';
+                        modalCtx.font = '20px Arial';
+                        modalCtx.textAlign = 'center';
+                        modalCtx.fillText('Error displaying chart', modalCanvas.width/2, modalCanvas.height/2);
+                    }
+                }
+            } else {
+                // For non-Chart.js canvases (wind roses, etc)
+                requestAnimationFrame(() => {
+                    try {
+                        // Calculate scaling to fit the modal
+                        const scale = Math.min(
+                            modalCanvas.width / originalCanvas.width,
+                            modalCanvas.height / originalCanvas.height
+                        ) * 0.9;
+                        
+                        const scaledWidth = originalCanvas.width * scale;
+                        const scaledHeight = originalCanvas.height * scale;
+                        const x = (modalCanvas.width - scaledWidth) / 2;
+                        const y = (modalCanvas.height - scaledHeight) / 2;
+                        
+                        // Draw the scaled image centered
+                        modalCtx.drawImage(
+                            originalCanvas,
+                            0, 0, originalCanvas.width, originalCanvas.height,
+                            x, y, scaledWidth, scaledHeight
+                        );
+                        
+                        console.log(`Successfully copied canvas ${originalCanvas.id} to modal`);
+                    } catch (error) {
+                        console.error(`Error copying canvas:`, error);
+                    }
+                });
+            }
+        }
+
+        // Close modal
+        modalClose.onclick = function() {
+            modal.style.display = 'none';
+            if (activeChart) {
+                activeChart.destroy();
+                activeChart = null;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                if (activeChart) {
+                    activeChart.destroy();
+                    activeChart = null;
+                }
+            }
+        }
+
+        // Color schemes
+        const colors = {
+            stable: 'rgb(76, 175, 80)',
+            neutral: 'rgb(33, 150, 243)',
+            unstable: 'rgb(244, 67, 54)',
+            stableAlpha: 'rgba(76, 175, 80, 0.2)',
+            neutralAlpha: 'rgba(33, 150, 243, 0.2)',
+            unstableAlpha: 'rgba(244, 67, 54, 0.2)'
+        };
+
+        // Initialize all charts after DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            // First initialize all Chart.js charts
+            Promise.resolve()
+                .then(() => { try { initializeBasicProfiles(); } catch(e) { console.error('Error in Basic Profiles:', e); } })
+                .then(() => { try { initializeAdvancedProfiles(); } catch(e) { console.error('Error in Advanced Profiles:', e); } })
+                .then(() => { try { initializeTurbulence(); } catch(e) { console.error('Error in Turbulence:', e); } })
+                .then(() => { try { initializeDistributions(); } catch(e) { console.error('Error in Distributions:', e); } })
+                .then(() => { try { initializeTemporalAnalysis(); } catch(e) { console.error('Error in Temporal:', e); } })
+                .then(() => { try { initializePowerAnalysis(); } catch(e) { console.error('Error in Power:', e); } })
+                .then(() => { try { initializeStabilityAnalysis(); } catch(e) { console.error('Error in Stability:', e); } })
+                .then(() => { try { initializeCorrelations(); } catch(e) { console.error('Error in Correlations:', e); } })
+                .then(() => {
+                    // Then draw custom canvases after a longer delay to ensure all Chart.js operations are complete
+                    setTimeout(() => {
+                        console.log('Initializing wind roses...');
+                        try {
+                            // First check if canvases exist
+                            const testCanvas = document.getElementById('roseAll');
+                            if (!testCanvas) {
+                                console.error('Wind rose canvases not found in DOM!');
+                                return;
+                            }
+                            
+                            // Draw wind roses
+                            initializeWindRoses();
+                            
+                            // Verify they were drawn
+                            windRoseCanvases.forEach(id => {
+                                const canvas = document.getElementById(id);
+                                if (canvas) {
+                                    console.log(`Canvas ${id} drawn: width=${canvas.width}, height=${canvas.height}`);
+                                }
+                            });
+                            
+                        } catch (error) {
+                            console.error('Error drawing wind roses:', error);
+                        }
+                    }, 1000); // Increased delay to 1 second
+                })
+                .then(() => {
+                    // Finally make all charts clickable
+                    setTimeout(() => {
+                        document.querySelectorAll('canvas').forEach(canvas => {
+                            if (canvas.id !== 'modalCanvas') {
+                                canvas.classList.add('clickable-chart');
+                                canvas.addEventListener('click', function() {
+                                    console.log(`Clicked on canvas: ${this.id}`);
+                                    console.log(`Canvas dimensions: ${this.width}x${this.height}`);
+                                    // Add a small delay to ensure any pending renders complete
+                                    setTimeout(() => {
+                                        openChartModal(this);
+                                    }, 100);
+                                });
+                            }
+                        });
+                        // Log chart registry for debugging
+                        console.log('Chart Registry:', Object.keys(chartRegistry));
+                        
+                        // Force all charts to update/render
+                        Object.values(chartRegistry).forEach(chart => {
+                            if (chart && chart.update) {
+                                chart.update('none'); // Update without animation
+                            }
+                        });
+                        
+                        // Ensure all canvases have proper dimensions
+                        document.querySelectorAll('canvas').forEach(canvas => {
+                            if (canvas.id !== 'modalCanvas' && canvas.width === 0) {
+                                console.warn(`Canvas ${canvas.id} has zero width, setting default size`);
+                                canvas.width = canvas.offsetWidth || 400;
+                                canvas.height = canvas.offsetHeight || 300;
+                            }
+                        });
+                    }, 2000); // Increased delay to ensure all charts are fully rendered
+                })
+                .catch(error => {
+                    console.error('Error initializing charts:', error);
+                });
+        });
+
+        // 1. Basic Profiles
+        function initializeBasicProfiles() {
+            // Wind Speed Profile
+            const heights = [10, 20, 40, 60, 80, 100, 120, 150, 200, 250, 300];
+            const u10 = 8;
+            
+            chartRegistry['windSpeedProfile'] = new Chart('windSpeedProfile', {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Stable (α=0.25)',
+                            data: heights.map(h => ({x: u10 * Math.pow(h/10, 0.25), y: h})),
+                            borderColor: colors.stable,
+                            backgroundColor: colors.stableAlpha,
+                            showLine: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Neutral (α=0.11)',
+                            data: heights.map(h => ({x: u10 * Math.pow(h/10, 0.11), y: h})),
+                            borderColor: colors.neutral,
+                            backgroundColor: colors.neutralAlpha,
+                            showLine: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Unstable (α=0.06)',
+                            data: heights.map(h => ({x: u10 * Math.pow(h/10, 0.06), y: h})),
+                            borderColor: colors.unstable,
+                            backgroundColor: colors.unstableAlpha,
+                            showLine: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Speed Profiles by Stability' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' }, min: 6, max: 14 },
+                        y: { title: { display: true, text: 'Height (m)' }, min: 0, max: 300 }
+                    }
+                }
+            });
+
+            // Wind Veer Profile
+            chartRegistry['windVeerProfile'] = new Chart('windVeerProfile', {
+                type: 'line',
+                data: {
+                    labels: heights,
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: heights.map(h => h <= 10 ? 0 : Math.min(35 * Math.log(h/10), 50)),
+                            borderColor: colors.stable,
+                            backgroundColor: colors.stableAlpha,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Neutral',
+                            data: heights.map(h => h <= 10 ? 0 : Math.min(20 * Math.log(h/10), 30)),
+                            borderColor: colors.neutral,
+                            backgroundColor: colors.neutralAlpha,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Unstable',
+                            data: heights.map(h => h <= 10 ? 0 : Math.min(10 * Math.log(h/10), 15)),
+                            borderColor: colors.unstable,
+                            backgroundColor: colors.unstableAlpha,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Veer with Height' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Veer Angle (°)' }, min: 0, max: 60 }
+                    }
+                }
+            });
+
+            // Shear Exponent
+            const shearHeights = [20, 40, 60, 80, 100, 150, 200, 250, 300];
+            chartRegistry['shearExponent'] = new Chart('shearExponent', {
+                type: 'line',
+                data: {
+                    labels: shearHeights,
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: shearHeights.map(h => 0.25 - 0.05 * Math.log(h/10)),
+                            borderColor: colors.stable,
+                            backgroundColor: colors.stableAlpha
+                        },
+                        {
+                            label: 'Neutral',
+                            data: shearHeights.map(h => 0.11),
+                            borderColor: colors.neutral,
+                            backgroundColor: colors.neutralAlpha
+                        },
+                        {
+                            label: 'Unstable',
+                            data: shearHeights.map(h => 0.06 + 0.02 * Math.log(h/10)),
+                            borderColor: colors.unstable,
+                            backgroundColor: colors.unstableAlpha
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Shear Exponent vs Height' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Shear Exponent α' }, min: 0, max: 0.3 }
+                    }
+                }
+            });
+
+            // Offshore vs Onshore
+            chartRegistry['offshoreOnshore'] = new Chart('offshoreOnshore', {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Offshore (z₀=0.0002m)',
+                            data: heights.map(h => ({x: u10 * Math.pow(h/10, 0.11), y: h})),
+                            borderColor: 'rgb(0, 119, 190)',
+                            showLine: true
+                        },
+                        {
+                            label: 'Coastal (z₀=0.01m)',
+                            data: heights.map(h => ({x: u10 * Math.pow(h/10, 0.16), y: h})),
+                            borderColor: 'rgb(255, 152, 0)',
+                            showLine: true
+                        },
+                        {
+                            label: 'Onshore (z₀=0.3m)',
+                            data: heights.map(h => ({x: u10 * Math.pow(h/10, 0.22), y: h})),
+                            borderColor: 'rgb(139, 69, 19)',
+                            showLine: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Surface Roughness Effect' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' }, min: 4, max: 14 },
+                        y: { title: { display: true, text: 'Height (m)' }, min: 0, max: 400 }
+                    }
+                }
+            });
+        }
+
+        // 2. Advanced Profiles
+        function initializeAdvancedProfiles() {
+            const heights = [10, 20, 40, 60, 80, 100, 120, 150, 200, 250, 300,400];
+            
+            // Temperature Profile
+            chartRegistry['tempProfile'] = new Chart('tempProfile', {
+                type: 'line',
+                data: {
+                    labels: [0, 10, 20, 40, 60, 80, 100, 150, 200, 250, 300,400],
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: [15, 15.2, 15.5, 16.0, 16.3, 16.5, 16.7, 17.0, 17.2, 17.3, 17.4],
+                            borderColor: colors.stable
+                        },
+                        {
+                            label: 'Neutral',
+                            data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
+                            borderColor: colors.neutral
+                        },
+                        {
+                            label: 'Unstable',
+                            data: [15, 14.8, 14.5, 14.0, 13.7, 13.5, 13.3, 13.0, 12.8, 12.7, 12.6],
+                            borderColor: colors.unstable
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Potential Temperature Profiles' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Temperature (°C)' } }
+                    }
+                }
+            });
+
+            // Richardson Number
+            const riHeights = [20, 40, 60, 80, 100, 150, 200, 250, 300];
+            chartRegistry['richardsonProfile'] = new Chart('richardsonProfile', {
+                type: 'line',
+                data: {
+                    labels: riHeights,
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: riHeights.map(h => 0.3 * Math.exp(-h/100)),
+                            borderColor: colors.stable
+                        },
+                        {
+                            label: 'Neutral',
+                            data: riHeights.map(h => 0),
+                            borderColor: colors.neutral
+                        },
+                        {
+                            label: 'Unstable',
+                            data: riHeights.map(h => -0.2 * Math.exp(-h/150)),
+                            borderColor: colors.unstable
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Richardson Number Profile' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Ri' }, min: -0.3, max: 0.4 }
+                    }
+                }
+            });
+
+            // Mixing Length
+            chartRegistry['mixingLength'] = new Chart('mixingLength', {
+                type: 'line',
+                data: {
+                    labels: heights,
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: heights.map(h => 0.4 * h / (1 + 0.4 * h / 30)),
+                            borderColor: colors.stable
+                        },
+                        {
+                            label: 'Neutral',
+                            data: heights.map(h => 0.4 * h / (1 + 0.4 * h / 100)),
+                            borderColor: colors.neutral
+                        },
+                        {
+                            label: 'Unstable',
+                            data: heights.map(h => 0.4 * h / (1 + 0.4 * h / 200)),
+                            borderColor: colors.unstable
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Mixing Length vs Height' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Mixing Length (m)' } }
+                    }
+                }
+            });
+        }
+
+        // 3. Wind Rose Drawing Function
+        function drawWindRose(canvasId, data, title) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) {
+                console.error('Canvas not found:', canvasId);
+                return;
+            }
+            
+            // Make sure this canvas is not being used by Chart.js
+            const existingChart = Chart.getChart(canvas);
+            if (existingChart) {
+                existingChart.destroy();
+            }
+            
+            // Set canvas size if not already set
+            if (!canvas.width || !canvas.height) {
+                canvas.width = 350;
+                canvas.height = 350;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.min(centerX, centerY) - 50;
+            
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Debug: Add a border to verify canvas is being drawn
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background circles
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 4; i++) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (maxRadius / 4) * i, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                // Percentage labels
+                ctx.fillStyle = '#666';
+                ctx.font = '10px Arial';
+                ctx.fillText(`${i * 5}%`, centerX + 5, centerY - (maxRadius / 4) * i + 3);
+            }
+            
+            // Draw direction lines
+            const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+            const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+            
+            ctx.strokeStyle = '#ddd';
+            angles.forEach(angle => {
+                const radian = (angle - 90) * Math.PI / 180;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(
+                    centerX + Math.cos(radian) * maxRadius,
+                    centerY + Math.sin(radian) * maxRadius
+                );
+                ctx.stroke();
+            });
+            
+            // Direction labels
+            directions.forEach((dir, i) => {
+                const angle = (angles[i] - 90) * Math.PI / 180;
+                const x = centerX + Math.cos(angle) * (maxRadius + 25);
+                const y = centerY + Math.sin(angle) * (maxRadius + 25);
+                
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(dir, x, y);
+            });
+            
+            // Draw wind rose petals
+            const colors = ['#81c784', '#4fc3f7', '#2196f3', '#1565c0'];
+            
+            data.forEach((d, i) => {
+                const startAngle = (angles[i] - 22.5 - 90) * Math.PI / 180;
+                const endAngle = (angles[i] + 22.5 - 90) * Math.PI / 180;
+                
+                let cumulativeRadius = 0;
+                
+                d.speeds.forEach((speed, j) => {
+                    if (speed > 0) {
+                        const innerRadius = (maxRadius / 20) * cumulativeRadius;
+                        const outerRadius = (maxRadius / 20) * (cumulativeRadius + speed);
+                        
+                        ctx.beginPath();
+                        ctx.arc(centerX, centerY, outerRadius, startAngle, endAngle);
+                        ctx.arc(centerX, centerY, innerRadius, endAngle, startAngle, true);
+                        ctx.closePath();
+                        
+                        ctx.fillStyle = colors[j];
+                        ctx.fill();
+                        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+                        ctx.stroke();
+                        
+                        cumulativeRadius += speed;
+                    }
+                });
+            });
+            
+            // Center point
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = '#333';
+            ctx.fill();
+            
+            // Legend
+            ctx.fillStyle = '#333';
+            ctx.font = '11px Arial';
+            ctx.fillText('Wind Speed (m/s):', 10, canvas.height - 45);
+            const speedRanges = ['0-5', '5-10', '10-15', '>15'];
+            speedRanges.forEach((range, i) => {
+                ctx.fillStyle = colors[i];
+                ctx.fillRect(10 + i * 70, canvas.height - 30, 15, 15);
+                ctx.fillStyle = '#333';
+                ctx.fillText(range, 30 + i * 70, canvas.height - 20);
+            });
+            
+            // Title
+            if (title) {
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(title, centerX, 20);
+            }
+        }
+
+        // Store wind rose canvases to prevent them from being cleared
+        const windRoseCanvases = ['roseAll', 'roseStable', 'roseNeutral', 'roseUnstable', 
+                                 'roseWinter', 'roseSpring', 'roseSummer', 'roseAutumn',
+                                 'roseNight', 'roseMorning', 'roseAfternoon', 'roseEvening',
+                                 'rose10m', 'rose50m', 'rose100m', 'rose150m', 'energyRose'];
+        
+        // Initialize wind roses
+        function initializeWindRoses() {
+            console.log('Starting wind rose initialization...');
+            
+            // Generate sample data for different conditions
+            const generateWindRoseData = (pattern) => {
+                const patterns = {
+                    stable: [
+                        {speeds: [3, 2, 1, 0.5]}, {speeds: [2, 1.5, 0.5, 0]},
+                        {speeds: [2.5, 1.5, 1, 0]}, {speeds: [3.5, 2, 1, 0.5]},
+                        {speeds: [4, 2.5, 1.5, 0.5]}, {speeds: [3.5, 2, 1, 0.5]},
+                        {speeds: [3, 1.5, 1, 0]}, {speeds: [2.5, 1.5, 0.5, 0]}
+                    ],
+                    neutral: [
+                        {speeds: [2, 3, 2, 1]}, {speeds: [1.5, 2, 1.5, 0.5]},
+                        {speeds: [1, 1.5, 1, 0.5]}, {speeds: [1, 1, 0.5, 0]},
+                        {speeds: [1.5, 1.5, 1, 0.5]}, {speeds: [3, 4, 3.5, 2]},
+                        {speeds: [4, 5, 4, 2.5]}, {speeds: [3, 4, 3, 1.5]}
+                    ],
+                    unstable: [
+                        {speeds: [1.5, 2.5, 3, 1.5]}, {speeds: [1, 2, 2.5, 1]},
+                        {speeds: [0.5, 1, 1.5, 0.5]}, {speeds: [0.5, 1, 1, 0.5]},
+                        {speeds: [1, 1.5, 2, 1]}, {speeds: [2, 3.5, 4, 2.5]},
+                        {speeds: [3, 4.5, 5, 3]}, {speeds: [2, 3, 3.5, 2]}
+                    ],
+                    winter: [
+                        {speeds: [1, 2, 3, 2]}, {speeds: [1.5, 2.5, 3, 2]},
+                        {speeds: [1, 1.5, 2, 1]}, {speeds: [0.5, 1, 1, 0.5]},
+                        {speeds: [1, 1.5, 2, 1.5]}, {speeds: [2, 3, 4, 3]},
+                        {speeds: [3, 4, 5, 3.5]}, {speeds: [2.5, 3.5, 4, 2.5]}
+                    ],
+                    summer: [
+                        {speeds: [3, 2.5, 1.5, 0.5]}, {speeds: [2.5, 2, 1, 0]},
+                        {speeds: [2, 1.5, 0.5, 0]}, {speeds: [2.5, 2, 1, 0]},
+                        {speeds: [3, 2.5, 1.5, 0.5]}, {speeds: [3.5, 3, 2, 1]},
+                        {speeds: [3, 2.5, 1.5, 0.5]}, {speeds: [2.5, 2, 1, 0]}
+                    ]
+                };
+                return patterns[pattern] || patterns.neutral;
+            };
+
+            // Draw all wind roses
+            drawWindRose('roseAll', generateWindRoseData('neutral'), 'Annual Average');
+            drawWindRose('roseStable', generateWindRoseData('stable'), '');
+            drawWindRose('roseNeutral', generateWindRoseData('neutral'), '');
+            drawWindRose('roseUnstable', generateWindRoseData('unstable'), '');
+            
+            drawWindRose('roseWinter', generateWindRoseData('winter'), '');
+            drawWindRose('roseSpring', generateWindRoseData('neutral'), '');
+            drawWindRose('roseSummer', generateWindRoseData('summer'), '');
+            drawWindRose('roseAutumn', generateWindRoseData('neutral'), '');
+            
+            drawWindRose('roseNight', generateWindRoseData('stable'), '');
+            drawWindRose('roseMorning', generateWindRoseData('neutral'), '');
+            drawWindRose('roseAfternoon', generateWindRoseData('unstable'), '');
+            drawWindRose('roseEvening', generateWindRoseData('neutral'), '');
+            
+            drawWindRose('rose10m', generateWindRoseData('stable'), '');
+            drawWindRose('rose50m', generateWindRoseData('neutral'), '');
+            drawWindRose('rose100m', generateWindRoseData('neutral'), '');
+            drawWindRose('rose150m', generateWindRoseData('neutral'), '');
+            
+            drawWindRose('energyRose', generateWindRoseData('neutral'), '');
+        }
+
+        // 4. Turbulence Analysis
+        function initializeTurbulence() {
+            // TI vs Wind Speed
+            const windSpeeds = Array.from({length: 20}, (_, i) => i + 3);
+            chartRegistry['tiWindSpeed'] = new Chart('tiWindSpeed', {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: windSpeeds.map(v => ({x: v, y: 0.06 + 0.5/v + Math.random()*0.02})),
+                            backgroundColor: colors.stableAlpha,
+                            borderColor: colors.stable
+                        },
+                        {
+                            label: 'Neutral',
+                            data: windSpeeds.map(v => ({x: v, y: 0.04 + 0.6/v + Math.random()*0.02})),
+                            backgroundColor: colors.neutralAlpha,
+                            borderColor: colors.neutral
+                        },
+                        {
+                            label: 'Unstable',
+                            data: windSpeeds.map(v => ({x: v, y: 0.08 + 0.8/v + Math.random()*0.03})),
+                            backgroundColor: colors.unstableAlpha,
+                            borderColor: colors.unstable
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Turbulence Intensity vs Wind Speed' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Turbulence Intensity' }, min: 0, max: 0.3 }
+                    }
+                }
+            });
+
+            // TI Profile
+            chartRegistry['tiProfile'] = new Chart('tiProfile', {
+                type: 'line',
+                data: {
+                    labels: [10, 20, 40, 60, 80, 100, 150, 200],
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: [0.18, 0.16, 0.14, 0.13, 0.12, 0.11, 0.10, 0.09],
+                            borderColor: colors.stable
+                        },
+                        {
+                            label: 'Neutral',
+                            data: [0.15, 0.14, 0.13, 0.12, 0.11, 0.10, 0.09, 0.08],
+                            borderColor: colors.neutral
+                        },
+                        {
+                            label: 'Unstable',
+                            data: [0.20, 0.18, 0.16, 0.14, 0.13, 0.12, 0.11, 0.10],
+                            borderColor: colors.unstable
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'TI Vertical Profile' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Turbulence Intensity' } }
+                    }
+                }
+            });
+
+            // TI by Direction
+            chartRegistry['tiDirection'] = new Chart('tiDirection', {
+                type: 'radar',
+                data: {
+                    labels: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
+                    datasets: [{
+                        label: 'TI at 100m',
+                        data: [0.12, 0.11, 0.10, 0.11, 0.13, 0.14, 0.15, 0.13],
+                        borderColor: 'rgb(33, 150, 243)',
+                        backgroundColor: 'rgba(33, 150, 243, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'TI by Direction' }
+                    }
+                }
+            });
+
+            // Turbulence Spectra
+            const frequencies = Array.from({length: 50}, (_, i) => Math.pow(10, -3 + i*0.1));
+            chartRegistry['turbSpectra'] = new Chart('turbSpectra', {
+                type: 'line',
+                data: {
+                    labels: frequencies,
+                    datasets: [{
+                        label: 'Longitudinal',
+                        data: frequencies.map(f => 0.1 * Math.pow(f, -5/3)),
+                        borderColor: 'rgb(255, 99, 132)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Turbulence Power Spectrum' }
+                    },
+                    scales: {
+                        x: { type: 'logarithmic', title: { display: true, text: 'Frequency (Hz)' } },
+                        y: { type: 'logarithmic', title: { display: true, text: 'S(f) (m²/s²/Hz)' } }
+                    }
+                }
+            });
+
+            // Length Scales
+            chartRegistry['lengthScales'] = new Chart('lengthScales', {
+                type: 'line',
+                data: {
+                    labels: [10, 20, 40, 60, 80, 100, 150, 200],
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: [20, 30, 45, 55, 65, 75, 90, 100],
+                            borderColor: colors.stable
+                        },
+                        {
+                            label: 'Neutral',
+                            data: [40, 60, 90, 110, 130, 150, 180, 200],
+                            borderColor: colors.neutral
+                        },
+                        {
+                            label: 'Unstable',
+                            data: [60, 90, 135, 165, 195, 225, 270, 300],
+                            borderColor: colors.unstable
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Integral Length Scale' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Length Scale (m)' } }
+                    }
+                }
+            });
+        }
+
+        // 5. Statistical Distributions
+        function initializeDistributions() {
+            // Wind Speed Histogram
+            const speeds = Array.from({length: 25}, (_, i) => i);
+            const weibull = (v, k, A) => (k/A) * Math.pow(v/A, k-1) * Math.exp(-Math.pow(v/A, k));
+            const histogram = speeds.map(v => weibull(v, 2.2, 10) * 1000);
+            
+            chartRegistry['windHistogram'] = new Chart('windHistogram', {
+                type: 'bar',
+                data: {
+                    labels: speeds,
+                    datasets: [{
+                        label: 'Frequency',
+                        data: histogram,
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)',
+                        borderColor: 'rgb(33, 150, 243)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Speed Distribution' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Frequency (hours/year)' } }
+                    }
+                }
+            });
+
+            // Weibull Parameters
+            chartRegistry['weibullParams'] = new Chart('weibullParams', {
+                type: 'line',
+                data: {
+                    labels: [10, 20, 40, 60, 80, 100, 150, 200],
+                    datasets: [
+                        {
+                            label: 'Scale Parameter A',
+                            data: [8.5, 9.0, 9.8, 10.3, 10.7, 11.0, 11.5, 12.0],
+                            borderColor: 'rgb(255, 99, 132)',
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Shape Parameter k',
+                            data: [2.0, 2.1, 2.2, 2.3, 2.35, 2.4, 2.45, 2.5],
+                            borderColor: 'rgb(54, 162, 235)',
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Weibull Parameters by Height' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { type: 'linear', position: 'left', title: { display: true, text: 'Scale A (m/s)' } },
+                        y1: { type: 'linear', position: 'right', title: { display: true, text: 'Shape k' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+
+            // Exceedance
+            const exceedanceSpeeds = Array.from({length: 30}, (_, i) => i);
+            chartRegistry['exceedance'] = new Chart('exceedance', {
+                type: 'line',
+                data: {
+                    labels: exceedanceSpeeds,
+                    datasets: [
+                        {
+                            label: '10m',
+                            data: exceedanceSpeeds.map(v => Math.exp(-Math.pow(v/8.5, 2.0))),
+                            borderColor: 'rgb(255, 99, 132)'
+                        },
+                        {
+                            label: '100m',
+                            data: exceedanceSpeeds.map(v => Math.exp(-Math.pow(v/11, 2.4))),
+                            borderColor: 'rgb(54, 162, 235)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Speed Exceedance Probability' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'P(V > v)' }, type: 'logarithmic' }
+                    }
+                }
+            });
+
+            // Joint Distribution 2D Histogram
+            const jointCanvas = document.getElementById('jointDist');
+            const jointCtx = jointCanvas.getContext('2d');
+            
+            // Create 2D histogram data
+            const speedBins = 25;
+            const dirBins = 16;
+            const maxSpeed = 25;
+            const heatmapData = [];
+            
+            // Generate realistic joint distribution data
+            for (let d = 0; d < dirBins; d++) {
+                for (let s = 0; s < speedBins; s++) {
+                    const speed = (s + 0.5) * maxSpeed / speedBins;
+                    const dir = d * 22.5; // 16 direction bins
+                    
+                    // Simulate prevailing wind from SW (225°)
+                    const dirDiff = Math.abs(dir - 225);
+                    const dirWeight = Math.exp(-Math.pow(Math.min(dirDiff, 360 - dirDiff) / 45, 2));
+                    
+                    // Weibull-like speed distribution
+                    const speedWeight = (speed / 10) * Math.exp(-Math.pow(speed / 10, 2));
+                    
+                    const value = dirWeight * speedWeight * 1000 + Math.random() * 10;
+                    heatmapData.push({x: speed, y: dir, value: value});
+                }
+            }
+            
+            // Draw heatmap
+            const cellWidth = jointCanvas.width / speedBins;
+            const cellHeight = jointCanvas.height / dirBins;
+            
+            // Find max value for normalization
+            const maxValue = Math.max(...heatmapData.map(d => d.value));
+            
+            // Draw cells
+            heatmapData.forEach(point => {
+                const intensity = point.value / maxValue;
+                const hue = 240 - intensity * 240; // Blue to red
+                jointCtx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+                
+                const x = (point.x / maxSpeed) * jointCanvas.width;
+                const y = (point.y / 360) * jointCanvas.height;
+                
+                jointCtx.fillRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight);
+            });
+            
+            // Add axes labels
+            jointCtx.fillStyle = '#333';
+            jointCtx.font = '12px Arial';
+            jointCtx.textAlign = 'center';
+            
+            // Speed axis labels
+            for (let s = 0; s <= maxSpeed; s += 5) {
+                const x = (s / maxSpeed) * jointCanvas.width;
+                jointCtx.fillText(s.toString(), x, jointCanvas.height - 5);
+            }
+            
+            // Direction axis labels
+            const dirLabels = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+            dirLabels.forEach((label, i) => {
+                const y = (i / 8) * jointCanvas.height + jointCanvas.height / 16;
+                jointCtx.save();
+                jointCtx.textAlign = 'right';
+                jointCtx.fillText(label, 15, y);
+                jointCtx.restore();
+            });
+
+            // Extreme Value
+            const returnPeriods = [1, 2, 5, 10, 20, 50, 100];
+            chartRegistry['extremeValue'] = new Chart('extremeValue', {
+                type: 'line',
+                data: {
+                    labels: returnPeriods,
+                    datasets: [{
+                        label: 'Gumbel Distribution',
+                        data: [25, 28, 31, 33, 35, 38, 40],
+                        borderColor: 'rgb(255, 99, 132)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Extreme Wind Speeds' }
+                    },
+                    scales: {
+                        x: { type: 'logarithmic', title: { display: true, text: 'Return Period (years)' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+        }
+
+        // 6. Temporal Analysis
+        function initializeTemporalAnalysis() {
+            // Monthly Mean
+            chartRegistry['monthlyMean'] = new Chart('monthlyMean', {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Mean Wind Speed',
+                            data: [10.2, 9.8, 9.5, 8.7, 7.8, 7.2, 6.8, 7.0, 7.9, 9.1, 9.8, 10.5],
+                            backgroundColor: 'rgba(33, 150, 243, 0.5)',
+                            borderColor: 'rgb(33, 150, 243)',
+                            borderWidth: 1
+                        },
+                        {
+                            type: 'line',
+                            label: 'Std Dev',
+                            data: [2.1, 2.0, 1.9, 1.7, 1.5, 1.4, 1.3, 1.4, 1.6, 1.8, 2.0, 2.2],
+                            borderColor: 'rgb(255, 99, 132)',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Monthly Wind Speed Statistics' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Diurnal Variation
+            const hours = Array.from({length: 24}, (_, i) => i);
+            chartRegistry['diurnalVar'] = new Chart('diurnalVar', {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [
+                        {
+                            label: 'Winter',
+                            data: hours.map(h => 9.5 + 0.5 * Math.sin((h-6) * Math.PI / 12)),
+                            borderColor: 'rgb(33, 150, 243)'
+                        },
+                        {
+                            label: 'Summer',
+                            data: hours.map(h => 7.0 + 1.5 * Math.sin((h-6) * Math.PI / 12)),
+                            borderColor: 'rgb(255, 152, 0)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Diurnal Wind Speed Variation' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Hour of Day' } },
+                        y: { title: { display: true, text: 'Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Annual Trend
+            const years = Array.from({length: 20}, (_, i) => 2005 + i);
+            chartRegistry['annualTrend'] = new Chart('annualTrend', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Annual Mean',
+                        data: years.map(y => ({x: y, y: 8.5 + 0.02 * (y-2005) + (Math.random()-0.5)*0.5})),
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Long-term Wind Speed Trend' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Year' } },
+                        y: { title: { display: true, text: 'Annual Mean Wind Speed (m/s)' } }
+                    }
+                }
+            });
+
+            // Autocorrelation
+            const lags = Array.from({length: 48}, (_, i) => i);
+            chartRegistry['autocorr'] = new Chart('autocorr', {
+                type: 'line',
+                data: {
+                    labels: lags,
+                    datasets: [{
+                        label: 'ACF',
+                        data: lags.map(l => Math.exp(-l/10)),
+                        borderColor: 'rgb(33, 150, 243)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Speed Autocorrelation' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Lag (hours)' } },
+                        y: { title: { display: true, text: 'ACF' }, min: 0, max: 1 }
+                    }
+                }
+            });
+
+            // Seasonal Stability
+            chartRegistry['seasonalStability'] = new Chart('seasonalStability', {
+                type: 'bar',
+                data: {
+                    labels: ['Winter', 'Spring', 'Summer', 'Autumn'],
+                    datasets: [
+                        {
+                            label: 'Stable',
+                            data: [10, 20, 30, 15],
+                            backgroundColor: colors.stableAlpha
+                        },
+                        {
+                            label: 'Neutral',
+                            data: [60, 55, 45, 55],
+                            backgroundColor: colors.neutralAlpha
+                        },
+                        {
+                            label: 'Unstable',
+                            data: [30, 25, 25, 30],
+                            backgroundColor: colors.unstableAlpha
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Seasonal Stability Distribution (%)' }
+                    },
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true, title: { display: true, text: 'Frequency (%)' } }
+                    }
+                }
+            });
+        }
+
+        // 7. Power Analysis
+        function initializePowerAnalysis() {
+            // Power Density Profile
+            const heights = [10, 20, 40, 60, 80, 100, 120, 150, 200];
+            chartRegistry['powerDensity'] = new Chart('powerDensity', {
+                type: 'line',
+                data: {
+                    labels: heights,
+                    datasets: [{
+                        label: 'Power Density',
+                        data: heights.map(h => 300 * Math.pow(h/10, 0.33)),
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Power Density vs Height' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Height (m)' } },
+                        y: { title: { display: true, text: 'Power Density (W/m²)' } }
+                    }
+                }
+            });
+
+            // Power Curve
+            const windSpeeds = Array.from({length: 26}, (_, i) => i);
+            const powerCurve = windSpeeds.map(v => {
+                if (v < 3) return 0;
+                if (v < 12) return 0.5 * 1.225 * Math.PI * 63*63 * v*v*v * 0.45 / 1000000;
+                if (v < 25) return 5;
+                return 0;
+            });
+            
+            chartRegistry['powerCurve'] = new Chart('powerCurve', {
+                type: 'line',
+                data: {
+                    labels: windSpeeds,
+                    datasets: [{
+                        label: 'Power Output',
+                        data: powerCurve,
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: '5MW Turbine Power Curve' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Power Output (MW)' }, max: 6 }
+                    }
+                }
+            });
+
+            // Capacity Factor
+            chartRegistry['capacityFactor'] = new Chart('capacityFactor', {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Capacity Factor',
+                        data: [0.52, 0.48, 0.45, 0.38, 0.32, 0.28, 0.25, 0.27, 0.34, 0.42, 0.48, 0.54],
+                        backgroundColor: 'rgba(76, 175, 80, 0.5)',
+                        borderColor: 'rgb(76, 175, 80)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Monthly Capacity Factor' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Capacity Factor' }, min: 0, max: 0.6 }
+                    }
+                }
+            });
+
+            // Wake Loss
+            chartRegistry['wakeLoss'] = new Chart('wakeLoss', {
+                type: 'radar',
+                data: {
+                    labels: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
+                    datasets: [{
+                        label: 'Wake Loss (%)',
+                        data: [5, 4, 3, 4, 6, 8, 10, 7],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Directional Wake Losses' }
+                    }
+                }
+            });
+        }
+
+        // 8. Stability Analysis
+        function initializeStabilityAnalysis() {
+            // Stability Time Series
+            const hours = Array.from({length: 168}, (_, i) => i);
+            const stabilityData = hours.map(h => {
+                const dayHour = h % 24;
+                if (dayHour < 6 || dayHour > 18) return 0.2 + Math.random() * 0.1;
+                return -0.1 + Math.random() * 0.1;
+            });
+            
+            chartRegistry['stabilityTS'] = new Chart('stabilityTS', {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'Bulk Ri',
+                        data: stabilityData,
+                        borderColor: 'rgb(33, 150, 243)',
+                        borderWidth: 1,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Weekly Stability Parameter' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Hour' } },
+                        y: { title: { display: true, text: 'Richardson Number' }, min: -0.3, max: 0.4 }
+                    }
+                }
+            });
+
+            // Obukhov Length Distribution
+            const obukhovBins = [-200, -100, -50, -20, 0, 20, 50, 100, 200];
+            chartRegistry['obukhovDist'] = new Chart('obukhovDist', {
+                type: 'bar',
+                data: {
+                    labels: obukhovBins.map(l => l + 'm'),
+                    datasets: [{
+                        label: 'Frequency',
+                        data: [5, 8, 10, 15, 25, 15, 12, 7, 3],
+                        backgroundColor: 'rgba(255, 152, 0, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Monin-Obukhov Length Distribution' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Frequency (%)' } }
+                    }
+                }
+            });
+
+            // Stability vs Wind Speed
+            const windSpeedBins = Array.from({length: 20}, (_, i) => i + 1);
+            chartRegistry['stabilityWind'] = new Chart('stabilityWind', {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Observations',
+                            data: Array.from({length: 200}, () => ({
+                                x: Math.random() * 20 + 1,
+                                y: (Math.random() - 0.5) * 0.6
+                            })),
+                            backgroundColor: 'rgba(33, 150, 243, 0.3)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Stability Parameter vs Wind Speed' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Bulk Richardson Number' }, min: -0.4, max: 0.4 }
+                    }
+                }
+            });
+        }
+
+        // 9. Environmental Correlations
+        function initializeCorrelations() {
+            // Wind-Wave Correlation
+            const windWaveData = Array.from({length: 100}, () => {
+                const ws = Math.random() * 20 + 2;
+                const hs = 0.0246 * ws * ws * (1 + Math.random() * 0.2 - 0.1);
+                return {x: ws, y: hs};
+            });
+            
+            chartRegistry['windWave'] = new Chart('windWave', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Measurements',
+                        data: windWaveData,
+                        backgroundColor: 'rgba(33, 150, 243, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Wind Speed vs Significant Wave Height' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Wind Speed (m/s)' } },
+                        y: { title: { display: true, text: 'Hs (m)' } }
+                    }
+                }
+            });
+
+            // Air-Sea Temperature
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            chartRegistry['airSeaTemp'] = new Chart('airSeaTemp', {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Air Temp',
+                            data: [5, 6, 8, 11, 15, 19, 22, 22, 19, 15, 10, 7],
+                            borderColor: 'rgb(255, 99, 132)'
+                        },
+                        {
+                            label: 'Sea Temp',
+                            data: [8, 7, 8, 9, 12, 16, 19, 20, 19, 16, 13, 10],
+                            borderColor: 'rgb(54, 162, 235)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Air-Sea Temperature Difference' }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Temperature (°C)' } }
+                    }
+                }
+            });
+
+            // Cross-correlation
+            const lags = Array.from({length: 25}, (_, i) => i - 12);
+            chartRegistry['crossCorr'] = new Chart('crossCorr', {
+                type: 'bar',
+                data: {
+                    labels: lags,
+                    datasets: [{
+                        label: '10m-100m correlation',
+                        data: lags.map(l => Math.exp(-Math.abs(l)/5)),
+                        backgroundColor: 'rgba(76, 175, 80, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Cross-correlation between Heights' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Lag (minutes)' } },
+                        y: { title: { display: true, text: 'Correlation Coefficient' } }
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

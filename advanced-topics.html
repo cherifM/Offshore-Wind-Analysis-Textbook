@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Topics - Offshore Wind Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .topic-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+        .ml-example {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .tech-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tech-card h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+        .innovation-timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .innovation-item {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .innovation-year {
+            font-size: 2em;
+            font-weight: bold;
+            color: #0066cc;
+            margin-right: 20px;
+            min-width: 80px;
+        }
+        .algorithm-box {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .performance-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f0f0f0;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        .metric-value {
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .implementation-steps {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .implementation-steps ol {
+            padding-left: 20px;
+        }
+        .implementation-steps li {
+            margin: 10px 0;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        .future-tech {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .case-example {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="theory.html">Theory</a></li>
+            <li><a href="measurement.html">Measurement</a></li>
+            <li><a href="data-processing.html">Data Processing</a></li>
+            <li><a href="modeling.html">Modeling</a></li>
+            <li><a href="calculators.html">Calculators</a></li>
+            <li><a href="formulas.html">Formulas</a></li>
+            <li><a href="exercises.html">Exercises</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="advanced-topics.html" class="active">Advanced Topics</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Advanced Topics in Offshore Wind Analysis</h1>
+        <p>Exploring cutting-edge technologies, machine learning applications, and future innovations in offshore wind energy.</p>
+
+        <!-- Machine Learning Section -->
+        <div class="topic-section">
+            <h2>Machine Learning Applications</h2>
+            
+            <h3>1. Wind Speed Prediction</h3>
+            <div class="ml-example">
+                <h4>Deep Learning for Short-term Forecasting</h4>
+                <p>Using LSTM (Long Short-Term Memory) networks for wind speed prediction:</p>
+                
+                <div class="code-block">
+# LSTM Wind Speed Prediction Model
+import tensorflow as tf
+from tensorflow.keras import layers
+
+def create_lstm_model(sequence_length, n_features):
+    model = tf.keras.Sequential([
+        layers.LSTM(128, return_sequences=True, 
+                   input_shape=(sequence_length, n_features)),
+        layers.Dropout(0.2),
+        layers.LSTM(64, return_sequences=True),
+        layers.Dropout(0.2),
+        layers.LSTM(32),
+        layers.Dense(16, activation='relu'),
+        layers.Dense(1)  # Wind speed output
+    ])
+    
+    model.compile(optimizer='adam', 
+                  loss='mse',
+                  metrics=['mae'])
+    return model
+
+# Features: wind speed, direction, temperature, pressure, etc.
+# Sequence length: 48 hours (10-min data)
+# Prediction horizon: 1-24 hours ahead
+                </div>
+
+                <div class="performance-metric">
+                    <span>Typical RMSE (1-hour ahead):</span>
+                    <span class="metric-value">0.8-1.2 m/s</span>
+                </div>
+                <div class="performance-metric">
+                    <span>Typical RMSE (24-hour ahead):</span>
+                    <span class="metric-value">2.0-3.5 m/s</span>
+                </div>
+                <div class="performance-metric">
+                    <span>Improvement over persistence:</span>
+                    <span class="metric-value">30-45%</span>
+                </div>
+            </div>
+
+            <h3>2. Power Curve Modeling</h3>
+            <div class="ml-example">
+                <h4>Gaussian Process Regression for Uncertainty Quantification</h4>
+                
+                <div class="algorithm-box">
+                    <p><strong>Algorithm:</strong> Gaussian Process with Matérn kernel</p>
+                    <p><strong>Inputs:</strong> Wind speed, turbulence intensity, air density, yaw error</p>
+                    <p><strong>Output:</strong> Power output with uncertainty bounds</p>
+                    
+                    <p>Kernel function:</p>
+                    \[k(x, x') = \sigma^2 \left(1 + \frac{\sqrt{3}|x-x'|}{l}\right)\exp\left(-\frac{\sqrt{3}|x-x'|}{l}\right)\]
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="powerCurveML"></canvas>
+                </div>
+            </div>
+
+            <h3>3. Wake Effect Modeling</h3>
+            <div class="ml-example">
+                <h4>Neural Network Wake Models</h4>
+                <p>Replacing analytical wake models with data-driven approaches:</p>
+                
+                <div class="implementation-steps">
+                    <ol>
+                        <li><strong>Data Collection:</strong> SCADA data from upstream/downstream turbines</li>
+                        <li><strong>Feature Engineering:</strong>
+                            <ul>
+                                <li>Relative turbine positions</li>
+                                <li>Wind speed and direction</li>
+                                <li>Atmospheric stability parameters</li>
+                                <li>Turbulence intensity</li>
+                            </ul>
+                        </li>
+                        <li><strong>Model Architecture:</strong> Feed-forward NN with skip connections</li>
+                        <li><strong>Training:</strong> Multi-turbine wake interactions</li>
+                        <li><strong>Validation:</strong> Against LiDAR wake measurements</li>
+                    </ol>
+                </div>
+
+                <div class="case-example">
+                    <strong>Case Study:</strong> Anholt Wind Farm (Denmark)<br>
+                    ML wake model reduced wake loss prediction error by 40% compared to Jensen model
+                </div>
+            </div>
+
+            <h3>4. Anomaly Detection</h3>
+            <div class="ml-example">
+                <h4>Autoencoder-based Condition Monitoring</h4>
+                
+                <div class="code-block">
+# Variational Autoencoder for Anomaly Detection
+class VAE(tf.keras.Model):
+    def __init__(self, latent_dim=32):
+        super(VAE, self).__init__()
+        self.latent_dim = latent_dim
+        
+        # Encoder
+        self.encoder = tf.keras.Sequential([
+            layers.Dense(128, activation='relu'),
+            layers.Dense(64, activation='relu'),
+            layers.Dense(latent_dim * 2)  # mean and log_var
+        ])
+        
+        # Decoder
+        self.decoder = tf.keras.Sequential([
+            layers.Dense(64, activation='relu'),
+            layers.Dense(128, activation='relu'),
+            layers.Dense(n_features, activation='sigmoid')
+        ])
+    
+    def encode(self, x):
+        mean, log_var = tf.split(self.encoder(x), 2, axis=1)
+        return mean, log_var
+    
+    def decode(self, z):
+        return self.decoder(z)
+
+# Detect anomalies based on reconstruction error
+# Threshold: 99th percentile of training data
+                </div>
+
+                <div class="performance-metric">
+                    <span>Early fault detection rate:</span>
+                    <span class="metric-value">85-92%</span>
+                </div>
+                <div class="performance-metric">
+                    <span>False positive rate:</span>
+                    <span class="metric-value">&lt; 5%</span>
+                </div>
+                <div class="performance-metric">
+                    <span>Average lead time:</span>
+                    <span class="metric-value">2-4 weeks</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Digital Twin Technology -->
+        <div class="topic-section">
+            <h2>Digital Twin Technology</h2>
+            
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h4>Physics-Based Digital Twin</h4>
+                    <ul>
+                        <li>Real-time structural health monitoring</li>
+                        <li>Fatigue life consumption tracking</li>
+                        <li>Modal analysis and frequency tracking</li>
+                        <li>Integration with FEA models</li>
+                    </ul>
+                    <div class="algorithm-box">
+                        <p><strong>Update equation:</strong></p>
+                        \[\mathbf{x}_{k+1} = \mathbf{F}\mathbf{x}_k + \mathbf{K}(\mathbf{y}_k - \mathbf{H}\mathbf{x}_k)\]
+                        <p>Where K is the Kalman gain matrix</p>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <h4>Data-Driven Digital Twin</h4>
+                    <ul>
+                        <li>Machine learning model ensemble</li>
+                        <li>Continuous model updating</li>
+                        <li>Uncertainty quantification</li>
+                        <li>Predictive maintenance scheduling</li>
+                    </ul>
+                    <div class="case-example">
+                        <strong>Implementation:</strong> Hybrid approach combining physics models with ML corrections
+                    </div>
+                </div>
+            </div>
+
+            <h3>Digital Twin Architecture</h3>
+            <div class="implementation-steps">
+                <h4>System Components:</h4>
+                <ol>
+                    <li><strong>Data Acquisition Layer:</strong>
+                        <ul>
+                            <li>SCADA system (1 Hz data)</li>
+                            <li>Condition monitoring system (vibration, temperature)</li>
+                            <li>Structural health monitoring (strain gauges, accelerometers)</li>
+                            <li>Met ocean sensors</li>
+                        </ul>
+                    </li>
+                    <li><strong>Data Processing Layer:</strong>
+                        <ul>
+                            <li>Edge computing for real-time processing</li>
+                            <li>Data validation and cleaning</li>
+                            <li>Feature extraction</li>
+                            <li>Time synchronization</li>
+                        </ul>
+                    </li>
+                    <li><strong>Model Layer:</strong>
+                        <ul>
+                            <li>Aeroelastic model (FAST/OpenFAST)</li>
+                            <li>FEA model updates</li>
+                            <li>ML surrogate models</li>
+                            <li>State estimation (Kalman filtering)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Decision Support Layer:</strong>
+                        <ul>
+                            <li>Remaining useful life estimation</li>
+                            <li>Optimal control strategies</li>
+                            <li>Maintenance scheduling</li>
+                            <li>Performance optimization</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Emerging Technologies -->
+        <div class="topic-section">
+            <h2>Emerging Technologies</h2>
+
+            <h3>Innovation Timeline</h3>
+            <div class="innovation-timeline">
+                <div class="innovation-item">
+                    <div class="innovation-year">2024</div>
+                    <div>
+                        <h4>AI-Powered Control Systems</h4>
+                        <p>Reinforcement learning for turbine control optimization, achieving 3-5% AEP increase through intelligent yaw and pitch control.</p>
+                    </div>
+                </div>
+
+                <div class="innovation-item">
+                    <div class="innovation-year">2025</div>
+                    <div>
+                        <h4>Floating LiDAR Networks</h4>
+                        <p>Autonomous floating LiDAR buoys with satellite communication for continuous offshore wind resource assessment.</p>
+                    </div>
+                </div>
+
+                <div class="innovation-item">
+                    <div class="innovation-year">2026</div>
+                    <div>
+                        <h4>Quantum Computing Applications</h4>
+                        <p>Quantum algorithms for optimal wind farm layout solving NP-hard optimization problems.</p>
+                    </div>
+                </div>
+
+                <div class="innovation-item">
+                    <div class="innovation-year">2028</div>
+                    <div>
+                        <h4>Autonomous O&M Vessels</h4>
+                        <p>Fully autonomous vessels for offshore maintenance with AI-based decision making and robotic repair systems.</p>
+                    </div>
+                </div>
+
+                <div class="innovation-item">
+                    <div class="innovation-year">2030</div>
+                    <div>
+                        <h4>Energy Islands</h4>
+                        <p>Artificial islands serving as energy hubs with Power-to-X facilities and grid interconnections.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Control Strategies -->
+        <div class="topic-section">
+            <h2>Advanced Control Strategies</h2>
+
+            <h3>Wind Farm Control Optimization</h3>
+            <div class="ml-example">
+                <h4>Coordinated Control for Wake Steering</h4>
+                
+                <div class="algorithm-box">
+                    <p><strong>Objective Function:</strong></p>
+                    \[\max_{\gamma_i} \sum_{i=1}^{N} P_i(\gamma_1, ..., \gamma_N) - \lambda \sum_{i=1}^{N} \Delta DEL_i(\gamma_i)\]
+                    <p>Where:</p>
+                    <ul>
+                        <li>γ<sub>i</sub> = yaw misalignment angle for turbine i</li>
+                        <li>P<sub>i</sub> = power output of turbine i</li>
+                        <li>ΔDEL<sub>i</sub> = increase in damage equivalent loads</li>
+                        <li>λ = weighting factor</li>
+                    </ul>
+                </div>
+
+                <div class="implementation-steps">
+                    <h4>Implementation Strategy:</h4>
+                    <ol>
+                        <li>Train surrogate model on high-fidelity CFD simulations</li>
+                        <li>Real-time optimization using gradient-based methods</li>
+                        <li>Constraint handling for structural loads</li>
+                        <li>Adaptation to changing wind conditions</li>
+                    </ol>
+                </div>
+
+                <div class="performance-metric">
+                    <span>Typical AEP gain:</span>
+                    <span class="metric-value">1-3%</span>
+                </div>
+                <div class="performance-metric">
+                    <span>Load increase:</span>
+                    <span class="metric-value">&lt; 5%</span>
+                </div>
+            </div>
+
+            <h3>Grid Integration Technologies</h3>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h4>Virtual Synchronous Machines</h4>
+                    <p>Grid-forming converters providing synthetic inertia:</p>
+                    \[P = P_0 + K_d \frac{d\omega}{dt} + K_p(\omega_0 - \omega)\]
+                    <ul>
+                        <li>Frequency support capabilities</li>
+                        <li>Black start functionality</li>
+                        <li>Island mode operation</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h4>Power-to-X Integration</h4>
+                    <p>Hydrogen production optimization:</p>
+                    <ul>
+                        <li>Dynamic electrolyzer operation</li>
+                        <li>Grid balancing services</li>
+                        <li>Storage optimization</li>
+                        <li>Market coupling strategies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Future Research Directions -->
+        <div class="topic-section">
+            <h2>Future Research Directions</h2>
+
+            <div class="future-tech">
+                <h4>Airborne Wind Energy Systems</h4>
+                <p>Kite-based and tethered systems accessing higher altitude winds:</p>
+                <ul>
+                    <li>Operating altitudes: 200-600m</li>
+                    <li>Capacity factors > 60% possible</li>
+                    <li>Reduced material usage</li>
+                    <li>Challenges: control complexity, certification</li>
+                </ul>
+            </div>
+
+            <div class="future-tech">
+                <h4>Multi-Rotor Floating Platforms</h4>
+                <p>Shared floating platforms supporting multiple turbines:</p>
+                <ul>
+                    <li>Reduced mooring costs</li>
+                    <li>Increased power density</li>
+                    <li>Shared O&M infrastructure</li>
+                    <li>Complex wake interactions</li>
+                </ul>
+            </div>
+
+            <div class="future-tech">
+                <h4>Bio-Inspired Blade Design</h4>
+                <p>Adaptive blade technologies mimicking natural systems:</p>
+                <ul>
+                    <li>Morphing blade sections</li>
+                    <li>Active flow control</li>
+                    <li>Self-healing materials</li>
+                    <li>Noise reduction through serrated edges</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="navigation-footer">
+            <p>Next: <a href="glossary.html">Glossary</a> | See also: <a href="modeling.html">Modeling</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Power Curve ML Visualization
+        const ctx = document.getElementById('powerCurveML').getContext('2d');
+        
+        // Generate synthetic data with uncertainty
+        const windSpeeds = [];
+        const powerMean = [];
+        const powerUpper = [];
+        const powerLower = [];
+        
+        for (let v = 0; v <= 25; v += 0.5) {
+            windSpeeds.push(v);
+            
+            // Synthetic power curve with uncertainty
+            let p = 0;
+            let uncertainty = 0;
+            
+            if (v >= 3 && v < 12) {
+                p = 500 * Math.pow((v - 3) / 9, 3);
+                uncertainty = 50 + 20 * (v - 3);
+            } else if (v >= 12 && v < 25) {
+                p = 5000;
+                uncertainty = 200;
+            }
+            
+            powerMean.push(p);
+            powerUpper.push(p + 2 * uncertainty);
+            powerLower.push(p - 2 * uncertainty);
+        }
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: windSpeeds,
+                datasets: [{
+                    label: 'Mean Prediction',
+                    data: powerMean,
+                    borderColor: '#0066cc',
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointRadius: 0
+                }, {
+                    label: '95% Confidence Upper',
+                    data: powerUpper,
+                    borderColor: 'rgba(0, 102, 204, 0.3)',
+                    backgroundColor: 'transparent',
+                    borderWidth: 1,
+                    borderDash: [5, 5],
+                    pointRadius: 0
+                }, {
+                    label: '95% Confidence Lower',
+                    data: powerLower,
+                    borderColor: 'rgba(0, 102, 204, 0.3)',
+                    backgroundColor: 'transparent',
+                    borderWidth: 1,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: '+1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Gaussian Process Power Curve with Uncertainty Bounds'
+                    },
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Wind Speed (m/s)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Power Output (kW)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // MathJax configuration
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+</body>
+</html>
