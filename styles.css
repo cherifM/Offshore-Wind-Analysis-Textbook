@@ -571,6 +571,54 @@ canvas {
     }
 }
 
+/* Part dividers for better structure */
+.part-divider {
+    background: linear-gradient(to right, #f0f8ff, #ffffff, #f0f8ff);
+    border-top: 3px solid #0066cc;
+    border-bottom: 3px solid #0066cc;
+    margin: 60px 0 40px 0;
+    padding: 30px 0;
+}
+
+.part-header {
+    text-align: center;
+    color: #0066cc;
+    font-size: 2.2em;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+.part-intro {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+/* Improve navigation within parts */
+.card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.card ul ul {
+    padding-left: 20px;
+    margin-top: 5px;
+}
+
+.card ul li {
+    margin: 8px 0;
+}
+
+.card ul li strong {
+    color: #0066cc;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {

@@ -35,30 +35,58 @@
             <h2>📚 Chapter Overview</h2>
             <div class="card-grid">
                 <div class="card">
-                    <h3>Atmospheric Models</h3>
+                    <h3>Part I: Atmospheric Modeling</h3>
                     <ul>
-                        <li><a href="#nwp">Numerical Weather Prediction</a></li>
-                        <li><a href="#mesoscale">Mesoscale Modeling (WRF)</a></li>
-                        <li><a href="#microscale">Microscale CFD/LES</a></li>
+                        <li><strong>Scale Hierarchy</strong>
+                            <ul>
+                                <li><a href="#nwp">1. Global/Mesoscale (NWP)</a></li>
+                                <li><a href="#mesoscale">2. Regional (WRF)</a></li>
+                                <li><a href="#microscale">3. Local (CFD/LES)</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <div class="card">
-                    <h3>Wind Farm Modeling</h3>
+                    <h3>Part II: Wind Farm Modeling</h3>
                     <ul>
-                        <li><a href="#wake">Wake Modeling</a></li>
-                        <li><a href="#layout">Layout Optimization</a></li>
-                        <li><a href="#aep">Energy Production</a></li>
+                        <li><strong>Engineering Models</strong>
+                            <ul>
+                                <li><a href="#wake">4. Wake Models</a></li>
+                                <li><a href="#floris-section">- FLORIS Framework</a></li>
+                            </ul>
+                        </li>
+                        <li><strong>Applications</strong>
+                            <ul>
+                                <li><a href="#layout">5. Layout Optimization</a></li>
+                                <li><a href="#aep">6. Energy Production</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <div class="card">
-                    <h3>Advanced Topics</h3>
+                    <h3>Part III: Advanced Methods</h3>
                     <ul>
-                        <li><a href="#coupling">Model Coupling</a></li>
-                        <li><a href="#uncertainty">Uncertainty Quantification</a></li>
-                        <li><a href="#validation">Model Validation</a></li>
+                        <li><strong>Integration</strong>
+                            <ul>
+                                <li><a href="#coupling">7. Model Coupling</a></li>
+                                <li><a href="#openfoam-section">- OpenFOAM LES</a></li>
+                            </ul>
+                        </li>
+                        <li><strong>Best Practices</strong>
+                            <ul>
+                                <li><a href="#uncertainty">8. Uncertainty</a></li>
+                                <li><a href="#validation">9. Validation</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
+        </div>
+
+        <!-- ========== PART I: ATMOSPHERIC MODELING ========== -->
+        <div class="section part-divider">
+            <h2 style="text-align: center; color: #0066cc; font-size: 2em; margin: 40px 0;">Part I: Atmospheric Modeling</h2>
+            <p style="text-align: center; font-style: italic; margin-bottom: 40px;">From global weather patterns to local wind conditions</p>
         </div>
 
         <!-- Section 1: NWP -->
@@ -294,6 +322,12 @@
             </table>
         </div>
 
+        <!-- ========== PART II: WIND FARM MODELING ========== -->
+        <div class="section part-divider">
+            <h2 style="text-align: center; color: #0066cc; font-size: 2em; margin: 40px 0;">Part II: Wind Farm Modeling</h2>
+            <p style="text-align: center; font-style: italic; margin-bottom: 40px;">Engineering models for wind farm design and optimization</p>
+        </div>
+
         <!-- Section 4: Wake Modeling -->
         <div class="section" id="wake">
             <h2>4. Wake Modeling</h2>
@@ -360,6 +394,208 @@
 
             <h3>4.4 Wake Model Comparison</h3>
             <canvas id="wakeComparison"></canvas>
+        </div>
+
+        <!-- FLORIS Integration Section -->
+        <div class="model-section" id="floris-section">
+            <h3>4.5 FLORIS Wake Modeling Framework</h3>
+            
+            <h4>FLORIS Implementation Example</h4>
+            <div class="code-block">
+                <pre><code># FLORIS Python implementation for wake analysis
+import floris.tools as wfct
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Initialize FLORIS model
+fi = wfct.floris_interface.FlorisInterface("floris_input.yaml")
+
+# Define wind farm layout
+layout_x = [0, 840, 1680, 2520, 3360]  # 7D spacing
+layout_y = [0, 0, 0, 0, 0]
+fi.reinitialize(layout=(layout_x, layout_y))
+
+# Set atmospheric conditions
+wind_speeds = np.arange(3, 26, 1)
+wind_directions = np.arange(0, 360, 10)
+turbulence_intensities = [0.06, 0.08, 0.10]  # Low, medium, high TI
+
+# Calculate wake effects for different conditions
+results = []
+for ws in wind_speeds:
+    for wd in wind_directions:
+        for ti in turbulence_intensities:
+            fi.reinitialize(wind_speed=[ws], 
+                          wind_direction=[wd],
+                          turbulence_intensity=[ti])
+            fi.calculate_wake()
+            
+            # Get turbine powers
+            powers = fi.get_turbine_powers() / 1e6  # MW
+            
+            results.append({
+                'ws': ws, 'wd': wd, 'ti': ti,
+                'powers': powers,
+                'total_power': np.sum(powers),
+                'wake_losses': 1 - np.sum(powers) / (len(powers) * powers[0])
+            })
+
+# Analyze wake steering potential
+def optimize_yaw_angles(fi, wind_speed, wind_direction):
+    """Optimize yaw angles for wake steering"""
+    from scipy.optimize import minimize
+    
+    fi.reinitialize(wind_speed=[wind_speed], 
+                   wind_direction=[wind_direction])
+    
+    def objective(yaw_angles):
+        fi.calculate_wake(yaw_angles=yaw_angles.reshape(1, -1))
+        return -fi.get_farm_power()  # Negative for maximization
+    
+    # Initial guess: no yaw
+    x0 = np.zeros(len(layout_x))
+    
+    # Bounds: ±25 degrees yaw
+    bounds = [(-25, 25)] * len(layout_x)
+    
+    # Optimize
+    result = minimize(objective, x0, bounds=bounds, method='L-BFGS-B')
+    
+    return result.x, -result.fun
+
+# Example: Optimize for specific condition
+opt_yaw, opt_power = optimize_yaw_angles(fi, 8.0, 270.0)
+print(f"Optimal yaw angles: {opt_yaw}")
+print(f"Power improvement: {opt_power/1e6:.2f} MW")</code></pre>
+            </div>
+            
+            <h4>FLORIS Configuration File</h4>
+            <div class="code-block">
+                <pre><code># floris_input.yaml
+logging:
+  console:
+    enable: true
+    level: WARNING
+  file:
+    enable: false
+
+solver:
+  type: turbine_grid
+  turbine_grid_points: 3
+
+farm:
+  layout_x: []
+  layout_y: []
+  turbine_type:
+    - nrel_5MW
+
+flow_field:
+  air_density: 1.225
+  reference_wind_height: 90.0
+  turbulence_intensity: 0.06
+  wind_directions: [270.0]
+  wind_shear: 0.07  # Power law exponent for offshore
+  wind_speeds: [8.0]
+  wind_veer: 0.0
+
+wake:
+  model_strings:
+    combination_model: sosfs
+    deflection_model: gauss
+    turbulence_model: crespo_hernandez
+    velocity_model: gauss
+  
+  enable_secondary_steering: true
+  enable_yaw_added_recovery: true
+  enable_transverse_velocities: true
+  
+  wake_deflection_parameters:
+    gauss:
+      ad: 0.0
+      alpha: 0.58
+      bd: 0.0
+      beta: 0.077
+      dm: 1.0
+      ka: 0.38
+      kb: 0.004
+  
+  wake_velocity_parameters:
+    gauss:
+      alpha: 0.58
+      beta: 0.077
+      ka: 0.38
+      kb: 0.004
+  
+  wake_turbulence_parameters:
+    crespo_hernandez:
+      initial: 0.1
+      constant: 0.5
+      ai: 0.8
+      downstream: -0.32</code></pre>
+            </div>
+            
+            <h4>Wake Visualization and Analysis</h4>
+            <div class="code-block">
+                <pre><code># Visualize wake effects
+def plot_horizontal_plane(fi, wind_speed=8.0, wind_direction=270.0):
+    """Plot horizontal wake visualization"""
+    fi.reinitialize(wind_speed=[wind_speed], 
+                   wind_direction=[wind_direction])
+    fi.calculate_wake()
+    
+    # Get flow field
+    hor_plane = fi.calculate_horizontal_plane(height=90.0)
+    
+    # Create figure
+    fig, ax = plt.subplots(figsize=(12, 6))
+    
+    # Plot wake field
+    wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
+    
+    # Add turbine locations
+    for i, (x, y) in enumerate(zip(layout_x, layout_y)):
+        circle = plt.Circle((x, y), 63, fill=False, color='white', linewidth=2)
+        ax.add_patch(circle)
+        ax.text(x, y+100, f'T{i+1}', ha='center', color='white')
+    
+    ax.set_xlabel('x (m)')
+    ax.set_ylabel('y (m)')
+    ax.set_title(f'Wake Flow Field at Hub Height\n' + 
+                f'Wind: {wind_speed} m/s @ {wind_direction}°')
+    plt.tight_layout()
+    return fig
+
+# Generate wake deficit profiles
+def extract_wake_profiles(fi, turbine_idx=0, distances=[1, 3, 5, 7, 10]):
+    """Extract wake profiles at different downstream distances"""
+    profiles = {}
+    
+    for d in distances:
+        x_loc = layout_x[turbine_idx] + d * 126  # D = 126m
+        y_range = np.linspace(-200, 200, 100)
+        
+        velocities = []
+        for y in y_range:
+            u = fi.get_flow_field_velocity([x_loc], [y], [90.0])
+            velocities.append(u[0, 0, 0])
+        
+        profiles[f'{d}D'] = {
+            'y': y_range,
+            'u': np.array(velocities),
+            'deficit': 1 - np.array(velocities) / wind_speed
+        }
+    
+    return profiles</code></pre>
+            </div>
+            
+            <p><strong>FLORIS advantages for engineering analysis:</strong></p>
+            <ul>
+                <li>Fast computation enables optimization studies</li>
+                <li>Built-in wake steering and control algorithms</li>
+                <li>Validated against field data from multiple wind farms</li>
+                <li>Easy integration with uncertainty quantification</li>
+                <li>Supports various wake model formulations</li>
+            </ul>
         </div>
 
         <!-- Section 5: Layout Optimization -->
@@ -484,6 +720,12 @@
             <canvas id="aepUncertainty"></canvas>
         </div>
 
+        <!-- ========== PART III: ADVANCED METHODS ========== -->
+        <div class="section part-divider">
+            <h2 style="text-align: center; color: #0066cc; font-size: 2em; margin: 40px 0;">Part III: Advanced Methods</h2>
+            <p style="text-align: center; font-style: italic; margin-bottom: 40px;">Integration, uncertainty, and validation of modeling approaches</p>
+        </div>
+
         <!-- Section 7: Model Coupling -->
         <div class="section" id="coupling">
             <h2>7. Model Coupling Approaches</h2>
@@ -519,6 +761,41 @@
                     </ul>
                 </div>
             </div>
+            
+            <h3>7.4 OpenFOAM for High-Fidelity LES</h3>
+            <div class="info-box">
+                <strong>When to use OpenFOAM:</strong> Complex terrain, detailed wake interactions, atmospheric stability effects, or validation of engineering models.
+            </div>
+            
+            <div class="code-block">
+                <pre><code>// Example: Actuator disc model in OpenFOAM
+// constant/turbineProperties
+turbines
+{
+    turbine1
+    {
+        baseLocation    (1000 0 0);
+        tipRadius       63.0;
+        hubHeight       90.0;
+        
+        thrust
+        {
+            data  // Ct vs wind speed
+            (
+                (3.0  0.0)   (8.0  0.88)
+                (13.0 0.57)  (25.0 0.10)
+            );
+        }
+    }
+}
+
+// Atmospheric boundary layer setup
+Uref    8.0;     // Reference velocity
+Zref    90.0;    // Hub height
+z0      0.0002;  // Offshore roughness</code></pre>
+            </div>
+            
+            <p><strong>Key features:</strong> Actuator disc/line models, atmospheric physics, LES turbulence, parallel scalability</p>
         </div>
 
         <!-- Section 8: Uncertainty Quantification -->
