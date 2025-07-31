@@ -1,0 +1,4 @@
+flask==2.3.2
+flask-cors==4.0.0
+markdown==3.4.3
+pyyaml==6.0
