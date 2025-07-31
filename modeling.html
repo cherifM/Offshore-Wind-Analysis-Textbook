@@ -320,6 +320,185 @@
                     <td>Periodic/zero gradient</td>
                 </tr>
             </table>
+            
+            <h3>3.5 Turbulence Modeling for Wind Farms</h3>
+            
+            <div class="info-box">
+                <strong>Key Challenge:</strong> Wind farm simulations must capture both atmospheric turbulence and wake-generated turbulence. The choice of turbulence model significantly impacts wake recovery predictions and computational efficiency.
+            </div>
+            
+            <h4>Why Turbulence Modeling Matters</h4>
+            <div class="plot-grid">
+                <div class="plot-box">
+                    <canvas id="turbulenceEvolution"></canvas>
+                </div>
+                <div class="plot-box">
+                    <h4>Turbulence Sources in Wind Farms</h4>
+                    <ul>
+                        <li><strong>Atmospheric:</strong> Natural boundary layer turbulence</li>
+                        <li><strong>Mechanical:</strong> Turbine-generated shear</li>
+                        <li><strong>Thermal:</strong> Buoyancy effects (stability)</li>
+                        <li><strong>Wake:</strong> Tip vortices and hub vortex</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h4>The k-epsilon-fP Model</h4>
+            <div class="formula-large">
+                ∂k/∂t + U·∇k = ∇·[(ν + νt/σk)∇k] + Pk - ε + Sk<br>
+                ∂ε/∂t + U·∇ε = ∇·[(ν + νt/σε)∇ε] + C1ε(ε/k)Pk - C2ε(ε²/k) + Sε<br>
+                <br>
+                where: fP = 1 + (C3ε - 1)·max(0, Pk/ε - 1)
+            </div>
+            
+            <div class="warning-box">
+                <strong>k-epsilon-fP (Freitas-Prandtl modification):</strong>
+                <p>This model adds a modification factor (fP) to the standard k-epsilon model specifically designed to improve predictions when strong source terms are present - exactly what happens with actuator disc models!</p>
+            </div>
+            
+            <h4>Why k-epsilon-fP for Actuator Disc Models?</h4>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>✅ Advantages</h4>
+                    <ul>
+                        <li><strong>Wake Recovery:</strong> Better prediction of turbulence generation behind discs</li>
+                        <li><strong>Stability:</strong> Handles strong source terms without numerical issues</li>
+                        <li><strong>Efficiency:</strong> Only 2 additional equations (k and ε)</li>
+                        <li><strong>Calibration:</strong> Well-validated for wind turbine wakes</li>
+                        <li><strong>Far Wake:</strong> Good prediction of wake meandering</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>❌ Limitations</h4>
+                    <ul>
+                        <li><strong>Near Wall:</strong> Less accurate than k-omega models</li>
+                        <li><strong>Anisotropy:</strong> Assumes isotropic turbulence</li>
+                        <li><strong>Very Near Wake:</strong> May miss detailed vortex structures</li>
+                        <li><strong>Transition:</strong> Cannot predict laminar-turbulent transition</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h4>k-omega-SST Alternative</h4>
+            <div class="info-box">
+                <strong>When to consider k-omega-SST:</strong>
+                <ul>
+                    <li>Complex terrain with significant wall effects</li>
+                    <li>Detailed blade-resolved simulations</li>
+                    <li>Strong adverse pressure gradients</li>
+                    <li>Need for accurate boundary layer resolution</li>
+                </ul>
+                
+                <p><strong>Why k-epsilon-fP usually wins for wind farms:</strong></p>
+                <ul>
+                    <li>Actuator discs don't have walls - k-omega's advantage is lost</li>
+                    <li>k-omega-SST can be overly dissipative in free shear flows</li>
+                    <li>More complex (4 equations vs 2) with little benefit for wakes</li>
+                    <li>k-epsilon-fP is specifically tuned for actuator forcing</li>
+                </ul>
+            </div>
+            
+            <h4>Practical Implementation</h4>
+            <div class="code-block">
+                <pre><code>// OpenFOAM turbulence model setup for wind farms
+// constant/turbulenceProperties
+simulationType  RAS;  // Reynolds-Averaged Simulation
+
+RAS
+{
+    RASModel        kEpsilonFP;  // Freitas-Prandtl variant
+    
+    turbulence      on;
+    printCoeffs     on;
+    
+    kEpsilonFPCoeffs
+    {
+        // Standard k-epsilon constants
+        Cmu             0.09;
+        C1              1.44;
+        C2              1.92;
+        C3              0.8;    // Buoyancy term
+        sigmak          1.0;
+        sigmaEps        1.3;
+        
+        // Actuator disc enhancement
+        Prt             0.85;   // Turbulent Prandtl number
+        
+        // fP limiter for stability
+        fPMax           1.5;    // Maximum enhancement factor
+    }
+}
+
+// Initial conditions for atmospheric boundary layer
+// 0/k
+dimensions      [0 2 -2 0 0 0 0];
+internalField   uniform 0.5;  // k = 1.5*(U*I)^2, I~0.1
+
+boundaryField
+{
+    inlet
+    {
+        type            atmBoundaryLayerInletK;
+        Uref            8.0;
+        Zref            90.0;
+        z0              0.0002;
+        value           $internalField;
+    }
+}
+
+// 0/epsilon
+dimensions      [0 2 -3 0 0 0 0];
+internalField   uniform 0.01;
+
+boundaryField
+{
+    inlet
+    {
+        type            atmBoundaryLayerInletEpsilon;
+        Uref            8.0;
+        Zref            90.0;
+        z0              0.0002;
+        value           $internalField;
+    }
+}</code></pre>
+            </div>
+            
+            <h4>Turbulence Model Comparison</h4>
+            <canvas id="turbulenceComparison"></canvas>
+            
+            <h4>Best Practices for Wind Farm Simulations</h4>
+            <div class="success-box">
+                <ol>
+                    <li><strong>Model Selection:</strong>
+                        <ul>
+                            <li>Use k-epsilon-fP for actuator disc/line models</li>
+                            <li>Consider k-omega-SST only for blade-resolved or complex terrain</li>
+                            <li>LES for research and detailed wake studies</li>
+                        </ul>
+                    </li>
+                    <li><strong>Initialization:</strong>
+                        <ul>
+                            <li>Set k based on turbulence intensity: k = 1.5(UI)²</li>
+                            <li>Calculate ε from mixing length: ε = C_μ^(3/4) k^(3/2) / l</li>
+                            <li>Use atmospheric profiles at inlet</li>
+                        </ul>
+                    </li>
+                    <li><strong>Numerical Settings:</strong>
+                        <ul>
+                            <li>Use bounded schemes for k and ε transport</li>
+                            <li>Under-relax turbulence equations (0.7 typical)</li>
+                            <li>Monitor turbulence generation in wake</li>
+                        </ul>
+                    </li>
+                    <li><strong>Validation:</strong>
+                        <ul>
+                            <li>Compare TI profiles with measurements</li>
+                            <li>Check wake recovery against field data</li>
+                            <li>Verify mass and momentum conservation</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
         </div>
 
         <!-- ========== PART II: WIND FARM MODELING ========== -->
@@ -1636,6 +1815,97 @@ z0      0.0002;  // Offshore roughness</code></pre>
                             title: { display: true, text: 'Modeled Wind Speed (m/s)' },
                             min: 0,
                             max: 25
+                        }
+                    }
+                }
+            });
+
+            // Turbulence Evolution
+            new Chart('turbulenceEvolution', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 20}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Wake TI',
+                            data: Array.from({length: 20}, (_, i) => {
+                                const ambient = 0.06;
+                                const added = 0.15 * Math.exp(-i / 5);
+                                return ambient + added;
+                            }),
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            fill: true
+                        },
+                        {
+                            label: 'Ambient TI',
+                            data: Array.from({length: 20}, () => 0.06),
+                            borderColor: 'rgb(54, 162, 235)',
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Turbulence Intensity Evolution' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Distance (D)' } },
+                        y: { 
+                            title: { display: true, text: 'Turbulence Intensity' },
+                            min: 0,
+                            max: 0.25
+                        }
+                    }
+                }
+            });
+
+            // Turbulence Model Comparison
+            new Chart('turbulenceComparison', {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 15}, (_, i) => i + 1),
+                    datasets: [
+                        {
+                            label: 'k-ε-fP',
+                            data: [0.20, 0.18, 0.16, 0.14, 0.12, 0.11, 0.10, 0.09, 0.085, 0.08, 0.075, 0.07, 0.068, 0.065, 0.063],
+                            borderColor: 'rgb(76, 175, 80)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Standard k-ε',
+                            data: [0.20, 0.17, 0.14, 0.12, 0.10, 0.09, 0.08, 0.075, 0.07, 0.068, 0.065, 0.063, 0.061, 0.06, 0.06],
+                            borderColor: 'rgb(33, 150, 243)',
+                            borderDash: [5, 5]
+                        },
+                        {
+                            label: 'k-ω-SST',
+                            data: [0.20, 0.16, 0.13, 0.11, 0.095, 0.085, 0.077, 0.072, 0.068, 0.065, 0.063, 0.061, 0.06, 0.059, 0.058],
+                            borderColor: 'rgb(255, 152, 0)',
+                            borderDash: [10, 5]
+                        },
+                        {
+                            label: 'Field Data',
+                            data: [0.20, 0.175, 0.155, 0.135, 0.115, 0.105, 0.095, 0.087, 0.081, 0.076, 0.072, 0.069, 0.066, 0.064, 0.062],
+                            borderColor: 'rgb(255, 99, 132)',
+                            borderWidth: 0,
+                            pointRadius: 4,
+                            showLine: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Turbulence Model Performance in Wake' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Distance Downstream (D)' } },
+                        y: { 
+                            title: { display: true, text: 'Turbulence Intensity' },
+                            min: 0.05,
+                            max: 0.22
                         }
                     }
                 }
